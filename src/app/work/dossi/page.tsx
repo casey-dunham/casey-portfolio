@@ -48,10 +48,13 @@ const media: MediaItem[] = [
   { src: '/images/dossi/screens/welcome-iterations.png', alt: 'Welcome iterations', w: 2872, h: 1244, type: 'image', caption: 'Five directions for "Get started" — balancing warmth with medical credibility.' },
   { src: '/images/dossi/dossi-welcome-screen-ideation.jpg', alt: 'Welcome ideation', w: 1732, h: 1756, type: 'image', caption: 'Welcome screen ideation — layout, tone, hierarchy.' },
   { src: '/images/dossi/dossi-app-icon-ideation.jpg', alt: 'Icon ideation', w: 1732, h: 1756, type: 'image', caption: 'App icon ideation — gradient and orb explorations.' },
-  ...Array.from({ length: 15 }, (_, i) => ({
+  { src: '/images/dossi/dossi-color-palette.jpg', alt: 'Color palette', w: 1980, h: 2640, type: 'image', caption: 'Dossi color system — purple gradients and accent palette.' },
+  { src: '/images/dossi/ideation-1.jpg', alt: 'Ideation 1', w: 390, h: 844, type: 'image', caption: 'Early screen exploration.' },
+  { src: '/images/dossi/ideation-2.jpg', alt: 'Ideation 2', w: 390, h: 844, type: 'image', caption: 'Early screen exploration.' },
+  ...Array.from({ length: 16 }, (_, i) => ({
     src: `/images/dossi/icons/icon-${String(i + 1).padStart(2, '0')}.jpg`,
     alt: `Icon ${i + 1}`, w: 4267, h: 4267, type: 'image' as const,
-    caption: `App icon variation ${i + 1} of 15.`,
+    caption: `App icon variation ${i + 1} of 16.`,
   })),
   { src: '/images/dossi/startup-exchange.png', alt: 'Startup Exchange', w: 3420, h: 1897, type: 'image', caption: 'Georgia Tech Startup Exchange Genesis.' },
 ];
@@ -74,7 +77,7 @@ export default function DossiProject() {
 
       {/* ═══ HERO ═══ */}
       <section className="pt-28 md:pt-36 pb-20 md:pb-28 px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_0.9fr] gap-10 md:gap-12 items-start">
           <div>
             <motion.div {...fade(0.1)} className="mb-8">
               <Link href="/work" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
@@ -187,33 +190,9 @@ export default function DossiProject() {
               </motion.div>
             ))}
           </div>
-      </motion.section>
 
-      {/* ═══ WALKTHROUGH — title above, full-width ═══ */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.6 }}
-        className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] py-14 md:py-20"
-      >
-        <h2 className="font-display text-xs uppercase tracking-[0.2em] text-[#555] font-medium mb-8">Gallery</h2>
-
-        {/* 3 portrait phone videos in a row */}
-        <div className="grid grid-cols-3 gap-3 mb-10">
-          {([
-            ['/videos/dossi/insights-scroll-3a.mp4', 'Insights'],
-            ['/videos/dossi/5b.mp4', 'Quick Bolus'],
-            ['/videos/dossi/meal-entry-scroll-4b.mp4', 'Meal Entry'],
-          ] as const).map(([src, label], i) => (
-            <motion.div key={src} {...fade(i * 0.04)}>
-              <Vid src={src} onClick={open} />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Landscape + AI Chat side by side, matched height */}
-        <div className="flex gap-3 h-[280px] md:h-[340px]">
+        {/* Landscape + AI Chat side by side */}
+        <div className="flex gap-3 h-[280px] md:h-[340px] mt-8">
           <motion.div {...fade(0)} className="flex-1 rounded-lg overflow-hidden cursor-pointer min-w-0">
             <video src="/videos/dossi/landscape.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover block" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
           </motion.div>
@@ -225,59 +204,82 @@ export default function DossiProject() {
 
       {/* ═══ DESIGN ═══ */}
       <Sect label="Design Process">
-        {/* Onboarding explorations (left) + text (right) */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.7fr_0.8fr] gap-8 items-start mb-12">
+        {/* 01 — Onboarding */}
+        <div className="mb-20">
+          <motion.div {...fade(0)} className="mb-6">
+            <div className="flex items-baseline gap-3 mb-1.5">
+              <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">01</span>
+              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Onboarding</h3>
+            </div>
+            <p className="font-body text-[0.85rem] text-[#777] leading-[1.6] ">Five directions exploring tone, hierarchy, and how to balance warmth with medical credibility.</p>
+          </motion.div>
           <div className="grid grid-cols-5 gap-2.5">
             {Array.from({ length: 5 }, (_, i) => (
-              <motion.div key={i} {...pop(i)} className="relative" style={i === 4 ? { boxShadow: '0 0 18px rgba(139,143,199,0.3)', borderRadius: 8, outline: '1px solid rgba(139,143,199,0.4)' } : undefined}>
+              <motion.div key={i} {...pop(i)} style={i === 4 ? { boxShadow: '0 0 20px rgba(139,143,199,0.3)', borderRadius: 8, outline: '1px solid rgba(139,143,199,0.35)' } : undefined}>
                 <Img
                   src={`/images/dossi/screens/create-account-${i + 3}.jpg`}
                   alt={`Onboarding ${i + 3}`} w={1280} h={2778} onClick={open}
                 />
-                <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 font-body text-[0.65rem] text-[#555] tabular-nums">{i + 1}</span>
               </motion.div>
             ))}
-          </div>
-          <div>
-            <p className="font-display text-[0.85rem] font-medium text-[#aaa] mb-3">Onboarding explorations</p>
-            <p className="font-body text-fg text-[1.02rem] leading-[1.7] mb-4">
-              The onboarding flow had five distinct directions exploring how to balance
-              warmth with medical credibility.
-            </p>
-            <p className="font-body text-[#888] text-[0.9rem] leading-[1.7]">
-              I designed every screen, component, and interaction myself &mdash;
-              from the brand identity down to the micro-animations.
-            </p>
           </div>
         </div>
 
-        {/* Figma workspace */}
-        <motion.div {...fade(0)} className="mb-12">
-          <Img src="/images/dossi/figma-workspace-1.png" alt="Figma" w={3184} h={2232} onClick={open} />
-        </motion.div>
+        {/* 02 — Screen design */}
+        <div className="mb-20">
+          <motion.div {...fade(0)} className="mb-6">
+            <div className="flex items-baseline gap-3 mb-1.5">
+              <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">02</span>
+              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Screen Design</h3>
+            </div>
+            <p className="font-body text-[0.85rem] text-[#777] leading-[1.6] ">Every screen, component, and micro-interaction designed solo in Figma.</p>
+          </motion.div>
+          <motion.div {...fade(0)} className="rounded-lg border border-[#2A2A2A] overflow-hidden">
+            <Img src="/images/dossi/figma-workspace-1.png" alt="Figma workspace" w={3184} h={2232} onClick={open} rounded="rounded-none" />
+          </motion.div>
+        </div>
 
-        {/* App icon explorations — text left, grid right */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 items-start max-w-[700px]">
-          <div>
-            <p className="font-display text-[0.85rem] font-medium text-[#aaa] mb-3">App icon explorations</p>
-            <p className="font-body text-fg text-[1.02rem] leading-[1.7]">
-              13 directions exploring gradient treatments, orb shapes, wordmark placement,
-              and how the brand reads at small sizes on a home screen.
-            </p>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {/* icon-01 at 2x2, then 12 singles = 4×4 square */}
-            <motion.div {...pop(0)} className="col-span-2 row-span-2">
-              <Img src="/images/dossi/icons/icon-01.jpg" alt="Final icon" w={4267} h={4267} onClick={open} rounded="rounded-[22%]" />
-            </motion.div>
-            {[2,3,4,5,6,7,8,9,10,12,13,14].map((n, i) => (
-              <motion.div key={n} {...pop(i + 1)}>
-                <Img
-                  src={`/images/dossi/icons/icon-${String(n).padStart(2, '0')}.jpg`}
-                  alt={`Icon ${n}`} w={4267} h={4267} onClick={open} rounded="rounded-[22%]"
-                />
+        {/* 03 — App icon */}
+        <div>
+          <motion.div {...fade(0)} className="mb-6">
+            <div className="flex items-baseline gap-3 mb-1.5">
+              <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">03</span>
+              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">App Icon</h3>
+            </div>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-[320px_1px_1fr] gap-8 items-start">
+            <div className="grid grid-cols-4 gap-2">
+              <motion.div {...pop(0)} className="col-span-2 row-span-2">
+                <Img src="/images/dossi/icons/icon-01.jpg" alt="Final icon" w={4267} h={4267} onClick={open} rounded="rounded-[14%]" />
               </motion.div>
-            ))}
+              {[2,3,4,7,8,9,10,11,12,13,14,15].map((n, i) => (
+                <motion.div key={n} {...pop(i + 1)}>
+                  <Img
+                    src={`/images/dossi/icons/icon-${String(n).padStart(2, '0')}.jpg`}
+                    alt={`Icon ${n}`} w={4267} h={4267} onClick={open} rounded="rounded-[22%]"
+                  />
+                </motion.div>
+              ))}
+            </div>
+            <div className="hidden md:block w-px bg-[#2A2A2A] self-stretch" />
+            <motion.div {...fade(0.1)}>
+              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+                Dossi went through extensive iteration before any code was written.
+                The onboarding flow alone had five distinct directions exploring tone,
+                hierarchy, and how to balance warmth with medical credibility.
+              </p>
+              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-4">
+                Every screen, component, and micro-interaction was designed solo in
+                Figma &mdash; from brand identity and color system through final
+                production assets. 13 app icon explorations tested gradient treatments,
+                orb forms, and wordmark placement at every size.
+              </p>
+              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
+                The result is a visual language that feels approachable rather than
+                clinical &mdash; soft purple gradients and organic shapes that make
+                health data feel human.
+              </p>
+            </motion.div>
           </div>
         </div>
       </Sect>
@@ -326,7 +328,7 @@ export default function DossiProject() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-0 max-w-[640px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-0">
           {[
             { t: 'Bayesian Learning', d: 'Learns individual glucose patterns across 5+ contextual factors. Only applies effects after 15+ observations with 50%+ confidence. Baseline drift detection triggers recalibration.' },
             { t: 'BLE Pump Driver', d: 'Native Bluetooth LE driver for Omnipod DASH. Pod pairing, encrypted sessions, status monitoring, basal adjustments, and bolus delivery — all from scratch.' },
@@ -343,88 +345,63 @@ export default function DossiProject() {
         </div>
       </Sect>
 
-      {/* ═══ PRESENTATION ═══ */}
-      <Sect label="Presentation">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 items-start mb-10">
+      {/* ═══ CONTEXT ═══ */}
+      <Sect label="Context">
+        {/* Personal — lead with the story */}
+        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-10 items-start mb-16">
           <motion.div {...fade(0)}>
-            <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
+            <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+              I have Type&nbsp;1 Diabetes. I was diagnosed at age 10 and have been
+              managing insulin delivery every day since. I&rsquo;ve advocated to
+              Congress through Breakthrough&nbsp;T1D and mentored younger diabetics.
+            </p>
+            <p className="font-body text-[#888] text-[0.9rem] leading-[1.7] mb-6">
+              The app is fully functional and I have been using it for insulin
+              delivery for the past several weeks. Every line of code, every pixel,
+              every interaction was designed and built by me alone.
+            </p>
+            <a
+              href="https://hellodossi.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-body text-sm text-accent hover:text-fg transition-colors"
+            >
+              Visit hellodossi.com
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h8v8M13 3 5 11" /></svg>
+            </a>
           </motion.div>
-          <div>
-            {/* Slide deck screenshots */}
-            <div className="grid grid-cols-3 gap-3">
-              {Array.from({ length: 9 }, (_, i) => (
-                <motion.div key={i} {...pop(i)}>
-                  <Img src={`/images/dossi/slides/slide-${i + 1}.png`} alt={`Slide ${i + 1}`} w={1600} h={900} onClick={open} />
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            <motion.div {...pop(0)}>
+              <Img src="/images/dossi/jdrf-group.jpg" alt="JDRF group" w={2806} h={2764} onClick={open} />
+            </motion.div>
+            <motion.div {...pop(1)}>
+              <Img src="/images/dossi/jdrf-selfie.jpg" alt="JDRF selfie" w={2268} h={2279} onClick={open} />
+            </motion.div>
           </div>
         </div>
-      </Sect>
 
-      {/* ═══ CONTEXT — card-based with photos ═══ */}
-      <Sect label="Context">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Programs card */}
-          <motion.div {...fade(0)} className="rounded-lg bg-[#1E1E1E] p-6 space-y-4">
+        {/* Programs + Research — side by side with dividers */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 border-t border-[#2A2A2A] pt-12">
+          <motion.div {...fade(0)}>
             <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
-            <div>
-              <p className="font-body text-[0.7rem] text-accent uppercase tracking-[0.2em] mb-2">Programs</p>
-              <p className="font-body text-fg text-[0.9rem] leading-[1.7]">
-                Built through Georgia Tech&rsquo;s{' '}
-                <span className="text-accent">InVenture Prize</span> and{' '}
-                <span className="text-accent">Startup Exchange</span>.
-                Mentored by{' '}
-                <span className="text-fg font-medium">Rosa Arriaga</span>,
-                Senior Research Scientist in Interactive Computing
-                (Harvard PhD).
-              </p>
-            </div>
+            <p className="font-display text-[0.85rem] font-semibold text-[#ccc] mt-5 mb-2">Programs</p>
+            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
+              Built through Georgia Tech&rsquo;s{' '}
+              <span className="text-fg font-medium">InVenture Prize</span> and{' '}
+              <span className="text-fg font-medium">Startup Exchange</span>.
+              Mentored by Rosa Arriaga, Senior Research Scientist
+              in Interactive Computing (Harvard PhD).
+            </p>
           </motion.div>
-
-          {/* Research card */}
-          <motion.div {...fade(0.06)} className="rounded-lg bg-[#1E1E1E] p-6 space-y-4">
-            <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} maxH="max-h-[240px]" />
-            <div>
-              <p className="font-body text-[0.7rem] text-accent uppercase tracking-[0.2em] mb-2">Research</p>
-              <p className="font-body text-[#888] text-[0.9rem] leading-[1.7]">
-                Distributed flyers through Georgia Tech Disability Services to survey
-                T1D students. The most consistent feedback: people wanted to understand{' '}
-                <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Personal card — spans full width */}
-          <motion.div {...fade(0.12)} className="md:col-span-2 rounded-lg bg-[#1E1E1E] p-6">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-6 items-center">
-              <div>
-                <p className="font-body text-[0.7rem] text-accent uppercase tracking-[0.2em] mb-2">Personal</p>
-                <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
-                  I have Type&nbsp;1 Diabetes. I was diagnosed at age 10 and have been
-                  managing insulin delivery every day since. I&rsquo;ve advocated to
-                  Congress through Breakthrough&nbsp;T1D and mentored younger diabetics.
-                </p>
-                <p className="font-body text-[#888] text-[0.9rem] leading-[1.7] mb-5">
-                  The app is fully functional and I have been using it for insulin
-                  delivery for the past several weeks. Every line of code, every pixel,
-                  every interaction was designed and built by me alone.
-                </p>
-                <a
-                  href="https://hellodossi.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-body text-sm text-accent hover:text-fg transition-colors"
-                >
-                  Visit hellodossi.com
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h8v8M13 3 5 11" /></svg>
-                </a>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Img src="/images/dossi/jdrf-group.jpg" alt="JDRF group" w={2806} h={2764} onClick={open} />
-                <Img src="/images/dossi/jdrf-selfie.jpg" alt="JDRF selfie" w={2268} h={2279} onClick={open} />
-              </div>
-            </div>
+          <div className="hidden md:block w-px bg-[#2A2A2A]" />
+          <motion.div {...fade(0.06)}>
+            <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} />
+            <p className="font-display text-[0.85rem] font-semibold text-[#ccc] mt-5 mb-2">Research</p>
+            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
+              Distributed flyers through Georgia Tech Disability Services to survey
+              T1D students. The most consistent feedback: people wanted to understand{' '}
+              <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.
+            </p>
           </motion.div>
         </div>
       </Sect>
@@ -478,17 +455,17 @@ function Sect({ label, children }: { label: string; children: React.ReactNode })
   );
 }
 
-function Img({ src, alt, w, h, onClick, rounded = 'rounded-lg', maxH }: {
-  src: string; alt: string; w: number; h: number; onClick: (s: string) => void; rounded?: string; maxH?: string;
+function Img({ src, alt, w, h, onClick, rounded = 'rounded-lg', maxH, fit }: {
+  src: string; alt: string; w: number; h: number; onClick: (s: string) => void; rounded?: string; maxH?: string; fit?: boolean;
 }) {
   return (
     <motion.div
-      className={`${rounded} overflow-hidden cursor-pointer`}
+      className={`${rounded} overflow-hidden cursor-pointer ${fit ? 'h-full' : ''}`}
       onClick={() => onClick(src)}
       whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <Image src={src} alt={alt} width={w} height={h} quality={85} className={`w-full h-auto block ${maxH ?? ''} ${maxH ? 'object-cover' : ''}`} />
+      <Image src={src} alt={alt} width={w} height={h} quality={85} className={`block ${fit ? 'w-full h-full object-cover' : `w-full h-auto ${maxH ?? ''} ${maxH ? 'object-cover' : ''}`}`} />
     </motion.div>
   );
 }
