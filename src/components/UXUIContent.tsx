@@ -263,8 +263,8 @@ function VideoLightbox({
           key={video.src}
           initial={direction === 0 ? getInitial() : { x: direction > 0 ? 600 : -600, opacity: 0 }}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          exit={() => ({ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const })}
-          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
           className="video-lightbox-content"
           onClick={(e) => e.stopPropagation()}
         >

@@ -240,8 +240,8 @@ function ArtLightbox({
           key={piece.src}
           initial={getInitial()}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          exit={() => ({ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const })}
-          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
           className="art-lightbox-content"
           style={piece.width / piece.height > 2 ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
           onClick={(e) => e.stopPropagation()}
