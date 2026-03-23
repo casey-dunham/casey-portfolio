@@ -32,14 +32,12 @@ export default function FolderSection({
     const section = sectionRef.current;
     if (!content || !inner || !section) return;
 
-    // If this folder starts open, show it immediately — no scroll trigger
     if (startOpen) {
       content.style.maxHeight = 'none';
       content.style.opacity = '1';
       return;
     }
 
-    // Start closed
     content.style.maxHeight = '0px';
     content.style.opacity = '0';
     content.style.overflow = 'hidden';
@@ -47,14 +45,13 @@ export default function FolderSection({
     let trigger: ScrollTrigger | null = null;
 
     const setup = () => {
-      // Measure content height
       content.style.maxHeight = 'none';
       content.style.opacity = '1';
       content.style.position = 'absolute';
       content.style.visibility = 'hidden';
       content.style.width = section.offsetWidth + 'px';
 
-      const h = Math.max(inner.scrollHeight, 800);
+      const h = Math.max(inner.scrollHeight, 800) + 200; // extra buffer for lazy-loaded images
 
       content.style.position = '';
       content.style.visibility = '';
@@ -64,18 +61,23 @@ export default function FolderSection({
 
       if (trigger) trigger.kill();
 
-      const scrollDistance = Math.max(h * 0.35, 350);
+      const scrollDistance = Math.max(h * 0.6, 600);
 
       trigger = ScrollTrigger.create({
         trigger: section,
-        start: 'top 65%',
+        start: 'top 55%',
         end: `+=${scrollDistance}`,
-        scrub: 0.3,
+        scrub: 0.6,
         onUpdate: (self) => {
           const p = self.progress;
           const eased = 1 - Math.pow(1 - p, 2.5);
 
-          content.style.maxHeight = `${eased * h}px`;
+          if (p >= 0.98) {
+            // Fully open — remove max-height constraint so nothing clips
+            content.style.maxHeight = 'none';
+          } else {
+            content.style.maxHeight = `${eased * h}px`;
+          }
           content.style.opacity = `${Math.min(1, p * 2)}`;
 
           setIsOpen(p > 0.02);
@@ -112,38 +114,14 @@ export default function FolderSection({
   return (
     <div
       ref={sectionRef}
-      className={`folder-section ${isOpen ? 'is-open' : ''}`}
+      className={`section-block ${isOpen ? 'is-open' : ''}`}
     >
-      {/* Protruding folder tab */}
-      <div className="folder-tab-wrapper">
-        <div className="folder-tab">
-          <span className="font-body text-[11px] text-fg-muted tracking-widest uppercase opacity-60">
-            {folderNumber}
-          </span>
-          <h2 className="font-display text-sm md:text-base font-semibold tracking-tight"
-            style={{ color: '#FFFFFF' }}
-          >
-            {title}
-          </h2>
-          {!startOpen && (
-            <svg
-              className="w-3.5 h-3.5 text-fg-muted transition-transform duration-500 ml-auto"
-              style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          )}
-        </div>
+      <div className="section-header">
+        <span className="section-number">{folderNumber}</span>
+        <h2 className="section-title">{title}</h2>
       </div>
 
-      {/* Folder body */}
-      <div className="folder-body">
+      <div className="section-body">
         <div ref={contentRef} className="folder-content">
           <div ref={innerRef}>{children}</div>
         </div>

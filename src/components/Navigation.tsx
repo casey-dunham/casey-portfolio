@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
-  { name: 'About', href: '/about' },
+  { name: 'About + Resume', href: '/about' },
   { name: 'Work', href: '/work' },
   { name: 'Contact', href: '/contact' },
 ];
@@ -31,14 +31,10 @@ export default function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'backdrop-blur-2xl border-b border-border'
-            : ''
-        }`}
-        style={{ backgroundColor: isScrolled ? 'rgba(24,24,24,0.7)' : 'transparent' }}
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{ backgroundColor: '#181818' }}
       >
-        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-5 flex items-center justify-between">
+        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-3 flex items-center justify-between">
           <Link
             href="/"
             className={`group transition-opacity duration-300 ${

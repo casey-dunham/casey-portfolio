@@ -2,7 +2,7 @@ export default function About() {
   return (
     <main className="min-h-screen pt-32 pb-20 px-6 md:px-10 max-w-[1400px] mx-auto">
       <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] font-light leading-tight tracking-tight text-fg mb-16">
-        About
+        About + Resume
       </h1>
 
       {/* Portrait + Bio */}

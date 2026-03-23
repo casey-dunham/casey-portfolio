@@ -1,23 +1,24 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface CursorGlowProps {
   containerRef: React.RefObject<HTMLElement | null>;
 }
 
-interface Spark {
+interface Particle {
   x: number;
   y: number;
   vx: number;
   vy: number;
+  ox: number;
+  oy: number;
+  oz: number;
   size: number;
-  life: number;
-  maxLife: number;
-  hue: number;
 }
 
-export default function CursorGlow({ containerRef }: CursorGlowProps) {
+function CursorGlowCanvas({ containerRef }: CursorGlowProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -27,158 +28,191 @@ export default function CursorGlow({ containerRef }: CursorGlowProps) {
 
     const ctx = canvas.getContext('2d')!;
     let animFrame: number;
-    let mouseX = -100;
-    let mouseY = -100;
-    let prevMouseX = -100;
-    let prevMouseY = -100;
-    const sparks: Spark[] = [];
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let smoothX = -9999;
+    let smoothY = -9999;
+    let prevSmoothX = -9999;
+    let prevSmoothY = -9999;
+    let time = 0;
+    let currentSpeed = 0;
+    let hasInit = false;
+
+    const PARTICLE_COUNT = 300;
+    const ORB_RADIUS = 24;
+    const particles: Particle[] = [];
+
+    const dpr = window.devicePixelRatio || 1;
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
       const rect = container.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener('resize', resize);
 
-    // Reposition canvas on scroll
     const reposition = () => {
       const rect = container.getBoundingClientRect();
       canvas.style.top = rect.top + 'px';
       canvas.style.left = rect.left + 'px';
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      prevMouseX = mouseX;
-      prevMouseY = mouseY;
-      // Convert to container-relative coordinates
       const rect = container.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
+
+      // Snap on first move into container
+      if (!hasInit && mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+        hasInit = true;
+        smoothX = mouseX;
+        smoothY = mouseY;
+        prevSmoothX = mouseX;
+        prevSmoothY = mouseY;
+        for (const p of particles) {
+          const perspective = 200;
+          const scale = perspective / (perspective + p.oz);
+          p.x = mouseX + p.ox * scale;
+          p.y = mouseY + p.oy * scale;
+        }
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('scroll', reposition, { passive: true });
+
+    // Fibonacci sphere distribution
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const phi = Math.acos(1 - 2 * (i + 0.5) / PARTICLE_COUNT);
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+      const r = ORB_RADIUS * (0.6 + Math.random() * 0.4);
+
+      particles.push({
+        x: -9999,
+        y: -9999,
+        vx: 0,
+        vy: 0,
+        ox: r * Math.sin(phi) * Math.cos(theta),
+        oy: r * Math.sin(phi) * Math.sin(theta),
+        oz: r * Math.cos(phi),
+        size: 0.8 + Math.random() * 1.0,
+      });
+    }
 
     const draw = () => {
       reposition();
       const rect = container.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
+      time++;
 
-      // Check if canvas needs resize
-      const dpr = window.devicePixelRatio || 1;
       if (Math.abs(canvas.width - w * dpr) > 2 || Math.abs(canvas.height - h * dpr) > 2) {
         resize();
       }
 
       ctx.clearRect(0, 0, w, h);
 
-      // Check if container is even visible
-      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+      if (!hasInit || rect.bottom < 0 || rect.top > window.innerHeight) {
         animFrame = requestAnimationFrame(draw);
         return;
       }
 
-      const dx = mouseX - prevMouseX;
-      const dy = mouseY - prevMouseY;
-      const speed = Math.sqrt(dx * dx + dy * dy);
+      // Check if mouse is in container bounds
+      const inBounds = mouseX >= -50 && mouseX <= w + 50 && mouseY >= -50 && mouseY <= h + 50;
 
-      // Only spawn if cursor is within container bounds
-      const inBounds = mouseX >= 0 && mouseX <= w && mouseY >= 0 && mouseY <= h;
+      // Smooth cursor tracking
+      prevSmoothX = smoothX;
+      prevSmoothY = smoothY;
+      smoothX += (mouseX - smoothX) * 0.1;
+      smoothY += (mouseY - smoothY) * 0.1;
 
-      if (inBounds) {
-        const count = Math.min(6, Math.floor(speed * 0.4) + 2);
-        for (let i = 0; i < count; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const vel = 1 + Math.random() * 3;
-          const maxLife = 25 + Math.random() * 50;
-          const hues = [330, 280, 220, 300, 190, 260, 340];
-          const hue = hues[Math.floor(Math.random() * hues.length)];
+      const dx = smoothX - prevSmoothX;
+      const dy = smoothY - prevSmoothY;
+      const instantSpeed = Math.sqrt(dx * dx + dy * dy);
+      currentSpeed += (instantSpeed - currentSpeed) * 0.08;
 
-          sparks.push({
-            x: mouseX + (Math.random() - 0.5) * 30,
-            y: mouseY + (Math.random() - 0.5) * 30,
-            vx: Math.cos(angle) * vel + dx * 0.15,
-            vy: Math.sin(angle) * vel + dy * 0.15 - 0.8,
-            size: 2 + Math.random() * 4.5,
-            life: maxLife,
-            maxLife,
-            hue,
-          });
+      const dispersion = Math.min(1, currentSpeed / 8);
+      const moveAngle = Math.atan2(dy, dx);
+
+      // Slowly rotate the sphere
+      const rotSpeed = 0.005;
+      const cosR = Math.cos(rotSpeed);
+      const sinR = Math.sin(rotSpeed);
+      const cosR2 = Math.cos(rotSpeed * 0.7);
+      const sinR2 = Math.sin(rotSpeed * 0.7);
+
+      const edgeFade = 50;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Y-axis rotation
+        const newOx = p.ox * cosR - p.oz * sinR;
+        const newOz = p.ox * sinR + p.oz * cosR;
+        p.ox = newOx;
+        p.oz = newOz;
+
+        // X-axis rotation
+        const newOy = p.oy * cosR2 - p.oz * sinR2;
+        const newOz2 = p.oy * sinR2 + p.oz * cosR2;
+        p.oy = newOy;
+        p.oz = newOz2;
+
+        // 3D → 2D projection
+        const perspective = 200;
+        const scale = perspective / (perspective + p.oz);
+        const sphereX = p.ox * scale;
+        const sphereY = p.oy * scale;
+
+        let targetX = smoothX + sphereX;
+        let targetY = smoothY + sphereY;
+
+        // Trail dispersion when moving
+        if (dispersion > 0.01) {
+          const dist = Math.sqrt(p.ox * p.ox + p.oy * p.oy + p.oz * p.oz);
+          const trail = dispersion * (dist / ORB_RADIUS) * 3;
+          targetX -= Math.cos(moveAngle) * trail * ORB_RADIUS * 0.8;
+          targetY -= Math.sin(moveAngle) * trail * ORB_RADIUS * 0.8;
+
+          const perp = moveAngle + Math.PI / 2;
+          const scatter = dispersion * Math.sin(time * 0.03 + i * 0.5) * 0.5 * dist * 0.3;
+          targetX += Math.cos(perp) * scatter;
+          targetY += Math.sin(perp) * scatter;
         }
-      }
 
-      // Edge fade distances
-      const edgeFade = 80;
+        // Spring physics
+        const spring = 0.06 + (1 - dispersion) * 0.06;
+        p.vx += (targetX - p.x) * spring;
+        p.vy += (targetY - p.y) * spring;
+        p.vx *= 0.78;
+        p.vy *= 0.78;
+        p.x += p.vx;
+        p.y += p.vy;
 
-      for (let i = sparks.length - 1; i >= 0; i--) {
-        const s = sparks[i];
-        s.life--;
+        if (!inBounds) continue;
 
-        if (s.life <= 0) {
-          sparks.splice(i, 1);
-          continue;
-        }
+        // Edge fade only (no transparency otherwise — solid dots)
+        let alpha = 1;
+        if (p.x < edgeFade) alpha = Math.min(alpha, p.x / edgeFade);
+        if (p.x > w - edgeFade) alpha = Math.min(alpha, (w - p.x) / edgeFade);
+        if (p.y < edgeFade) alpha = Math.min(alpha, p.y / edgeFade);
+        if (p.y > h - edgeFade) alpha = Math.min(alpha, (h - p.y) / edgeFade);
+        alpha = Math.max(0, alpha);
+        if (alpha < 0.01) continue;
 
-        s.x += s.vx;
-        s.y += s.vy;
-        s.vy += 0.03;
-        s.vx *= 0.97;
-        s.vy *= 0.97;
-
-        const t = s.life / s.maxLife;
-
-        // Compute edge fade factor
-        let edgeAlpha = 1;
-        if (s.x < edgeFade) edgeAlpha = Math.min(edgeAlpha, Math.max(0, s.x / edgeFade));
-        if (s.x > w - edgeFade) edgeAlpha = Math.min(edgeAlpha, Math.max(0, (w - s.x) / edgeFade));
-        if (s.y < edgeFade) edgeAlpha = Math.min(edgeAlpha, Math.max(0, s.y / edgeFade));
-        if (s.y > h - edgeFade) edgeAlpha = Math.min(edgeAlpha, Math.max(0, (h - s.y) / edgeFade));
-
-        // Skip if fully outside
-        if (s.x < -10 || s.x > w + 10 || s.y < -10 || s.y > h + 10) {
-          sparks.splice(i, 1);
-          continue;
-        }
-
-        const alpha = t * edgeAlpha;
-        const r = s.size * (0.4 + t * 0.6);
-
-        // Outer glow
-        const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * 4);
-        glow.addColorStop(0, `hsla(${s.hue}, 100%, 70%, ${alpha * 0.25})`);
-        glow.addColorStop(1, `hsla(${s.hue}, 100%, 50%, 0)`);
+        const drawSize = p.size * scale;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, r * 4, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
-
-        // Core
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${s.hue}, 100%, 75%, ${alpha * 0.9})`;
-        ctx.fill();
-
-        // White center
-        if (t > 0.4) {
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, r * 0.35, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
-          ctx.fill();
+        ctx.arc(p.x, p.y, drawSize, 0, Math.PI * 2);
+        if (alpha < 1) {
+          ctx.fillStyle = `rgba(225, 225, 225, ${alpha.toFixed(2)})`;
+        } else {
+          ctx.fillStyle = '#e1e1e1';
         }
-      }
-
-      if (sparks.length > 300) {
-        sparks.splice(0, sparks.length - 300);
+        ctx.fill();
       }
 
       animFrame = requestAnimationFrame(draw);
@@ -202,8 +236,18 @@ export default function CursorGlow({ containerRef }: CursorGlowProps) {
         top: 0,
         left: 0,
         pointerEvents: 'none',
-        zIndex: 1,
+        zIndex: 5,
       }}
     />
+  );
+}
+
+export default function CursorGlow({ containerRef }: CursorGlowProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return createPortal(
+    <CursorGlowCanvas containerRef={containerRef} />,
+    document.body
   );
 }

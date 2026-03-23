@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero';
 import FolderSection from '@/components/FolderSection';
 import UXUIContent from '@/components/UXUIContent';
+import VisualArtContent, { PhotographyContent } from '@/components/VisualArtContent';
 import ScrollToTop from '@/components/ScrollToTop';
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
           <UXUIContent />
         </FolderSection>
 
-        <FolderSection title="Visual Art" index={1}>
+        <FolderSection title="Product" index={1}>
           <div className="px-4 md:px-8 lg:px-12 py-20">
             <p className="text-fg-dim font-body text-sm uppercase tracking-widest">
               Coming soon
@@ -21,15 +22,23 @@ export default function Home() {
           </div>
         </FolderSection>
 
-        <FolderSection title="Product" index={2}>
-          <div className="px-4 md:px-8 lg:px-12 py-20">
-            <p className="text-fg-dim font-body text-sm uppercase tracking-widest">
-              Coming soon
-            </p>
+        <div className="section-block">
+          <div className="section-header">
+            <span className="section-number">03</span>
+            <h2 className="section-title">Visual Art</h2>
           </div>
-        </FolderSection>
+          <VisualArtContent />
+        </div>
 
-        <FolderSection title="Footer" index={3}>
+        <div className="section-block">
+          <div className="section-header">
+            <span className="section-number">04</span>
+            <h2 className="section-title">Photography</h2>
+          </div>
+          <PhotographyContent />
+        </div>
+
+        <FolderSection title="Products" index={4}>
           <footer className="px-4 md:px-8 lg:px-12 py-16">
             <div className="flex flex-col md:flex-row md:justify-between gap-12">
               <div>

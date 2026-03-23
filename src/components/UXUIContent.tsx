@@ -39,8 +39,8 @@ const rows: VideoRow[] = [
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/nutrition-page-scroll-4a.mp4', label: 'Nutrition Page' },
-      { src: '/videos/uxui/meal-entry-scroll-4b.mp4', label: 'Meal Entry' },
+      { src: '/videos/uxui/avatar-selection-6a.mp4', label: 'Avatar Selection' },
+      { src: '/videos/uxui/ai-orb-6b.mp4', label: 'AI Orb' },
     ],
   },
   {
@@ -54,8 +54,8 @@ const rows: VideoRow[] = [
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/avatar-selection-6a.mp4', label: 'Avatar Selection' },
-      { src: '/videos/uxui/ai-orb-6b.mp4', label: 'AI Orb' },
+      { src: '/videos/uxui/nutrition-page-scroll-4a.mp4', label: 'Nutrition Page' },
+      { src: '/videos/uxui/meal-entry-scroll-4b.mp4', label: 'Meal Entry' },
     ],
   },
   {
@@ -219,7 +219,7 @@ function VideoLightbox({
           initial={getInitial()}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
           exit={{ opacity: 0, x: direction > 0 ? -slideX : slideX }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
           className="video-lightbox-content"
           onClick={(e) => e.stopPropagation()}
         >

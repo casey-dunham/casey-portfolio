@@ -12,10 +12,34 @@ export default function Contact() {
               Email
             </p>
             <a
-              href="mailto:casey@dossi.dev"
+              href="mailto:caseyedunham@gmail.com"
               className="font-body text-lg text-fg hover:text-accent transition-colors"
             >
-              casey@dossi.dev
+              caseyedunham@gmail.com
+            </a>
+          </div>
+          <div>
+            <p className="font-body text-xs text-fg-dim uppercase tracking-widest mb-2">
+              Phone
+            </p>
+            <a
+              href="tel:302-377-5638"
+              className="font-body text-lg text-fg hover:text-accent transition-colors"
+            >
+              302-377-5638
+            </a>
+          </div>
+          <div>
+            <p className="font-body text-xs text-fg-dim uppercase tracking-widest mb-2">
+              LinkedIn
+            </p>
+            <a
+              href="https://www.linkedin.com/in/casey-dunham/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-lg text-fg hover:text-accent transition-colors"
+            >
+              linkedin.com/in/casey-dunham
             </a>
           </div>
           <div>
@@ -23,15 +47,7 @@ export default function Contact() {
               Location
             </p>
             <p className="font-body text-lg text-fg-muted">
-              Philadelphia, PA
-            </p>
-          </div>
-          <div>
-            <p className="font-body text-xs text-fg-dim uppercase tracking-widest mb-2">
-              Resume
-            </p>
-            <p className="font-body text-fg-muted">
-              Available upon request
+              Atlanta, GA
             </p>
           </div>
         </div>
