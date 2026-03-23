@@ -4,11 +4,17 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
+interface ArtDetail {
+  title: string;
+  description: string;
+}
+
 interface ArtPiece {
   src: string;
   alt: string;
   width: number;
   height: number;
+  detail?: ArtDetail;
 }
 
 interface ArtRow {
@@ -24,68 +30,74 @@ const rows: ArtRow[] = [
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/bird1.jpeg', alt: 'Bird Study I — Charcoal on toned paper', width: 989, height: 1200 },
-      { src: '/images/art/bird2.jpeg', alt: 'Bird Study II — Charcoal on toned paper', width: 933, height: 1200 },
-      { src: '/images/art/bird3.jpeg', alt: 'Bird Study III — Charcoal on toned paper', width: 1200, height: 981 },
+      { src: '/images/art/bird1.jpeg', alt: 'Bird Study I — Charcoal on toned paper', width: 989, height: 1200, detail: { title: 'Bird Study I', description: 'Charcoal on toned paper. Part of a triptych exploring form and movement in birds.' } },
+      { src: '/images/art/bird2.jpeg', alt: 'Bird Study II — Charcoal on toned paper', width: 933, height: 1200, detail: { title: 'Bird Study II', description: 'Charcoal on toned paper.' } },
+      { src: '/images/art/bird3.jpeg', alt: 'Bird Study III — Charcoal on toned paper', width: 1200, height: 981, detail: { title: 'Bird Study III', description: 'Charcoal on toned paper.' } },
     ],
   },
-  // Treasured left, ballet+study top-right, phone bottom-right
   {
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907 },
-      { src: '/images/art/ballet-dancers.jpeg', alt: 'Ballet Dancers — Charcoal', width: 1200, height: 937 },
-      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439 },
-      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957 },
+      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal drawing.' } },
+      { src: '/images/art/delicate.png', alt: 'Delicate', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Placeholder description.' } },
+      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite drawing.' } },
+      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite drawing.' } },
     ],
   },
-  // Paintings + drawings row — all same height
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal', width: 1200, height: 1801 },
-      { src: '/images/art/delicate.jpg', alt: 'Delicate — Graphite', width: 1200, height: 899 },
-      { src: '/images/art/sargent-study.jpg', alt: 'Sargent Study — Oil on canvas', width: 1892, height: 2763 },
-      { src: '/images/art/still-life.jpg', alt: 'Still Life — Oil on canvas', width: 2123, height: 2503 },
-      { src: '/images/art/beach-digital.jpg', alt: 'Beach Scene — Digital illustration', width: 2295, height: 2994 },
+      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal drawing.' } },
+      { src: '/images/art/still-life.jpg', alt: 'Still Life — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life', description: 'Oil on canvas.' } },
+      { src: '/images/art/sargent-study.jpg', alt: 'Sargent Study — Oil on canvas', width: 1892, height: 2763, detail: { title: 'Sargent Study', description: 'Oil on canvas. A study after John Singer Sargent.' } },
+      { src: '/images/art/beach-digital.jpg', alt: 'Beach Scene — Digital illustration', width: 2295, height: 2994, detail: { title: 'Beach Scene', description: 'Digital illustration.' } },
     ],
   },
 ];
 
 const photoRows: ArtRow[] = [
-  // Boy drinking soda left, right: basket+girl top, clothesline+gazelle stacked bottom
   {
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Boy Drinking Soda — Photography', width: 716, height: 1200 },
-      { src: '/images/art/basket-of-mangos.jpeg', alt: 'Basket of Mangoes — Photography', width: 675, height: 1200 },
-      { src: '/images/art/girl-with-water.jpg', alt: 'Girl with Water — Photography', width: 675, height: 1200 },
-      { src: '/images/art/clothesline.jpg', alt: 'Clothesline — Photography', width: 1600, height: 900 },
+      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Boy Drinking Soda — Photography', width: 716, height: 1200, detail: { title: 'Boy Drinking Soda', description: 'Photography.' } },
+      { src: '/images/art/basket-of-mangos.jpeg', alt: 'Basket of Mangoes — Photography', width: 675, height: 1200, detail: { title: 'Basket of Mangoes', description: 'Photography.' } },
+      { src: '/images/art/girl-with-water.jpg', alt: 'Girl with Water — Photography', width: 675, height: 1200, detail: { title: 'Girl with Water', description: 'Photography.' } },
+      { src: '/images/art/clothesline.jpg', alt: 'Clothesline — Photography', width: 1600, height: 900, detail: { title: 'Clothesline', description: 'Photography.' } },
     ],
   },
-  // Sink + portrait + cabin chair — same height
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/sink.jpeg', alt: 'Sink — Photography', width: 737, height: 1200 },
-      { src: '/images/art/portrait.jpg', alt: 'Portrait — Photography', width: 719, height: 1200 },
-      { src: '/images/art/supersonic.jpg', alt: 'Supersonic — Photography', width: 1067, height: 1200 },
+      { src: '/images/art/sink.jpeg', alt: 'Sink — Photography', width: 737, height: 1200, detail: { title: 'Sink', description: 'Photography.' } },
+      { src: '/images/art/portrait.jpg', alt: 'Portrait — Photography', width: 719, height: 1200, detail: { title: 'Portrait', description: 'Photography.' } },
+      { src: '/images/art/supersonic.jpg', alt: 'Supersonic — Photography', width: 1067, height: 1200, detail: { title: 'Supersonic', description: 'Photography.' } },
     ],
   },
-  // Zebras — solo
   {
     cols: 1,
     pieces: [
-      { src: '/images/art/zebras.jpg', alt: 'Zebras — Photography', width: 6000, height: 1693 },
+      { src: '/images/art/zebrastripe.jpg', alt: 'Zebra Stripes', width: 5884, height: 1533, detail: { title: 'Zebra Stripes', description: 'Photography.' } },
     ],
   },
 ];
 
-const allPieces = [...rows, ...photoRows].flatMap((r) => r.pieces);
+const productRows: ArtRow[] = [
+  {
+    cols: 3,
+    equalHeight: true,
+    pieces: [
+      { src: '/images/product/2.jpg', alt: 'Product Design', width: 795, height: 1200, detail: { title: 'Product Design', description: 'Placeholder description.' } },
+      { src: '/images/product/Studio_3.jpeg', alt: 'Product Studio', width: 900, height: 1200, detail: { title: 'Product Studio', description: 'Placeholder description.' } },
+      { src: '/images/product/Detail_1.jpeg', alt: 'Product Detail', width: 900, height: 1200, detail: { title: 'Product Detail', description: 'Placeholder description.' } },
+    ],
+  },
+];
+
+const allPieces = [...rows, ...photoRows, ...productRows].flatMap((r) => r.pieces);
 
 function AnimatedArtCell({
   piece,
@@ -157,7 +169,8 @@ function ArtLightbox({
   const piece = allPieces[pieceIndex];
   const hasPrev = pieceIndex > 0;
   const hasNext = pieceIndex < allPieces.length - 1;
-  const slideX = 300;
+  const dirRef = useRef(direction);
+  dirRef.current = direction;
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -171,7 +184,7 @@ function ArtLightbox({
 
   const getInitial = () => {
     if (direction === 0) return { opacity: 0, scale: 0.9 };
-    return { opacity: 0, x: direction > 0 ? slideX : -slideX };
+    return { x: direction > 0 ? 600 : -600, opacity: 0 };
   };
 
   return (
@@ -210,13 +223,14 @@ function ArtLightbox({
         </motion.button>
       )}
 
-      <AnimatePresence mode="popLayout" initial={false}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <AnimatePresence initial={false}>
         <motion.div
           key={piece.src}
           initial={getInitial()}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction > 0 ? -slideX : slideX }}
-          transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+          animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+          exit={() => ({ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const })}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           className="art-lightbox-content"
           onClick={(e) => e.stopPropagation()}
         >
@@ -228,8 +242,15 @@ function ArtLightbox({
             className="art-lightbox-image"
             quality={90}
           />
+          {piece.detail && (
+            <div className="video-lightbox-detail">
+              <span className="video-lightbox-detail-name">{piece.detail.title}</span>
+              <p className="video-lightbox-detail-desc">{piece.detail.description}</p>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
+      </div>
 
       {hasNext && (
         <motion.button
@@ -438,6 +459,27 @@ export default function VisualArtContent() {
   return (
     <>
       <ArtGallery galleryRows={rows} handleClick={handleClick} />
+      <AnimatePresence>
+        {activeIndex !== null && (
+          <ArtLightbox
+            pieceIndex={activeIndex}
+            direction={direction}
+            onClose={closeLightbox}
+            onPrev={goPrev}
+            onNext={goNext}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+export function ProductContent() {
+  const { activeIndex, direction, closeLightbox, goPrev, goNext, handleClick } = useGallery();
+
+  return (
+    <>
+      <ArtGallery galleryRows={productRows} handleClick={handleClick} />
       <AnimatePresence>
         {activeIndex !== null && (
           <ArtLightbox

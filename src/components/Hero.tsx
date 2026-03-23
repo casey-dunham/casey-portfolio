@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import CursorGlow from './CursorGlow';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -96,14 +95,14 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative px-4 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
+    <section ref={heroRef} className="relative px-[1rem] md:px-[2rem] lg:px-[3rem] max-w-[1400px] mx-auto">
       {/* Title — word-by-word stagger */}
       <motion.div
         initial="hidden"
         animate="visible"
         className="min-h-[40vh] flex items-end pb-8 pt-28"
       >
-        <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-fg max-w-[700px]">
+        <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight text-fg max-w-[700px]">
           {titleWords.map((word, i) => (
             <motion.span
               key={i}
@@ -117,7 +116,6 @@ export default function Hero() {
         </h1>
       </motion.div>
 
-      <CursorGlow containerRef={heroRef} />
 
       {/* Scroll-highlight paragraphs */}
       <div ref={highlightRef} className="scroll-highlight-section">

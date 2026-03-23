@@ -3,9 +3,17 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface VideoDetail {
+  icon: string;
+  name: string;
+  description: string;
+  href: string;
+}
+
 interface VideoItem {
   src: string;
   label: string;
+  detail?: VideoDetail;
 }
 
 interface VideoRow {
@@ -13,65 +21,79 @@ interface VideoRow {
   videos: VideoItem[];
 }
 
+const dossiDetail: VideoDetail = {
+  icon: '/images/dossi-app-icon.png',
+  name: 'Dossi',
+  description: 'A diabetes management app designed to help people make sense of their blood sugar data. Dossi combines continuous glucose monitoring with intelligent insights, making it easier to understand patterns, adjust dosing, and feel more confident in daily health decisions.',
+  href: '/work/dossi',
+};
+
+const rewiredDetail: VideoDetail = {
+  icon: '/images/rewired-app-icon.png',
+  name: 'Rewired',
+  description: 'A neuroplasticity-based wellness app that helps users build healthier mental habits through guided exercises, cognitive reframing, and personalized lesson plans rooted in behavioral science.',
+  href: '/work/rewired',
+};
+
 const rows: VideoRow[] = [
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/dossi-welcome-flow-1a.mp4', label: 'Dossi Welcome Flow' },
-      { src: '/videos/uxui/cgm-selection-1b.mp4', label: 'CGM Selection' },
+      { src: '/videos/uxui/dossi-welcome-flow-1a.mp4', label: 'Dossi Welcome Flow', detail: dossiDetail },
+      { src: '/videos/uxui/cgm-selection-1b.mp4', label: 'CGM Selection', detail: dossiDetail },
     ],
   },
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/rewired-value-props-2a.mp4', label: 'Rewired Value Props' },
-      { src: '/videos/uxui/rewired-onboarding-2b.mp4', label: 'Rewired Onboarding' },
+      { src: '/videos/uxui/rewired-value-props-2a.mp4', label: 'Rewired Value Props', detail: rewiredDetail },
+      { src: '/videos/uxui/rewired-onboarding-2b.mp4', label: 'Rewired Onboarding', detail: rewiredDetail },
     ],
   },
   {
     cols: 3,
     videos: [
-      { src: '/videos/uxui/insights-scroll-3a.mp4', label: 'Insights Scroll' },
-      { src: '/videos/uxui/quick-action-bolus-3b.mp4', label: 'Quick Action Bolus' },
-      { src: '/videos/uxui/notifications-toggle-3c.mp4', label: 'Notifications Toggle' },
+      { src: '/videos/uxui/insights-scroll-3a.mp4', label: 'Insights Scroll', detail: dossiDetail },
+      { src: '/videos/uxui/quick-action-bolus-3b.mp4', label: 'Quick Action Bolus', detail: dossiDetail },
+      { src: '/videos/uxui/notifications-toggle-3c.mp4', label: 'Notifications Toggle', detail: dossiDetail },
     ],
   },
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/avatar-selection-6a.mp4', label: 'Avatar Selection' },
-      { src: '/videos/uxui/ai-orb-6b.mp4', label: 'AI Orb' },
+      { src: '/videos/uxui/avatar-selection-6a.mp4', label: 'Avatar Selection', detail: dossiDetail },
+      { src: '/videos/uxui/ai-orb-6b.mp4', label: 'AI Orb', detail: dossiDetail },
     ],
   },
   {
     cols: 3,
     videos: [
-      { src: '/videos/uxui/ai-chat-text-5b.mp4', label: 'AI Chat — Text' },
-      { src: '/videos/uxui/ai-chat-photo-5a.mp4', label: 'AI Chat — Photo' },
-      { src: '/videos/uxui/ai-chat-insights-5c.mp4', label: 'AI Chat — Insights' },
+      { src: '/videos/uxui/ai-chat-text-5b.mp4', label: 'AI Chat — Text', detail: dossiDetail },
+      { src: '/videos/uxui/ai-chat-photo-5a.mp4', label: 'AI Chat — Photo', detail: dossiDetail },
+      { src: '/videos/uxui/ai-chat-insights-5c.mp4', label: 'AI Chat — Insights', detail: dossiDetail },
     ],
   },
   {
     cols: 2,
     videos: [
-      { src: '/videos/uxui/nutrition-page-scroll-4a.mp4', label: 'Nutrition Page' },
-      { src: '/videos/uxui/meal-entry-scroll-4b.mp4', label: 'Meal Entry' },
+      { src: '/videos/uxui/nutrition-page-scroll-4a.mp4', label: 'Nutrition Page', detail: dossiDetail },
+      { src: '/videos/uxui/meal-entry-scroll-4b.mp4', label: 'Meal Entry', detail: dossiDetail },
     ],
   },
   {
     cols: 3,
     videos: [
-      { src: '/videos/uxui/rewired-questions-7a.mp4', label: 'Rewired Questions' },
-      { src: '/videos/uxui/rewired-finished-7b.mp4', label: 'Rewired — Complete' },
-      { src: '/videos/uxui/rewired-lesson-7c.mp4', label: 'Rewired Lesson' },
+      { src: '/videos/uxui/rewired-questions-7a.mp4', label: 'Rewired Questions', detail: rewiredDetail },
+      { src: '/videos/uxui/rewired-finished-7b.mp4', label: 'Rewired — Complete', detail: rewiredDetail },
+      { src: '/videos/uxui/rewired-lesson-7c.mp4', label: 'Rewired Lesson', detail: rewiredDetail },
     ],
   },
   {
     cols: 3,
     videos: [
-      { src: '/videos/uxui/dossi-metabolic-profile-8a.mp4', label: 'Metabolic Profile' },
-      { src: '/videos/uxui/dossi-onboarding-8b.mp4', label: 'Dossi Onboarding' },
-      { src: '/videos/uxui/dossi-account-8c.mp4', label: 'Dossi Account' },
+      { src: '/videos/uxui/dossi-metabolic-profile-8a.mp4', label: 'Metabolic Profile', detail: dossiDetail },
+      { src: '/videos/uxui/dossi-onboarding-8b.mp4', label: 'Dossi Onboarding', detail: dossiDetail },
+      { src: '/videos/uxui/dossi-account-8c.mp4', label: 'Dossi Account', detail: dossiDetail },
     ],
   },
 ];
@@ -79,12 +101,15 @@ const rows: VideoRow[] = [
 function VideoCell({
   video,
   onClick,
+  paused,
 }: {
   video: VideoItem;
   onClick: (rect: DOMRect) => void;
+  paused?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const cellRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(false);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -92,7 +117,8 @@ function VideoCell({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && !paused) {
           el.play().catch(() => {});
         } else {
           el.pause();
@@ -103,7 +129,17 @@ function VideoCell({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [paused]);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (paused) {
+      el.pause();
+    } else if (isVisibleRef.current) {
+      el.play().catch(() => {});
+    }
+  }, [paused]);
 
 
   const handleClick = () => {
@@ -148,6 +184,8 @@ function VideoLightbox({
   const hasPrev = videoIndex > 0;
   const hasNext = videoIndex < allVideos.length - 1;
   const isInitialOpen = originRect !== null && direction === 0;
+  const dirRef = useRef(direction);
+  dirRef.current = direction;
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -213,19 +251,35 @@ function VideoLightbox({
         </motion.button>
       )}
 
-      <AnimatePresence mode="popLayout" initial={false}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <AnimatePresence initial={false}>
         <motion.div
           key={video.src}
-          initial={getInitial()}
+          initial={direction === 0 ? getInitial() : { x: direction > 0 ? 600 : -600, opacity: 0 }}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          exit={{ opacity: 0, x: direction > 0 ? -slideX : slideX }}
-          transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+          exit={() => ({ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const })}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           className="video-lightbox-content"
           onClick={(e) => e.stopPropagation()}
         >
-          <video src={video.src} autoPlay loop muted playsInline className="video-lightbox-video" />
+          <div className="video-lightbox-video-wrap" onClick={(e) => {
+            const vid = e.currentTarget.querySelector('video');
+            if (vid) vid.paused ? vid.play() : vid.pause();
+          }}>
+            <video src={video.src} autoPlay loop muted playsInline className="video-lightbox-video" style={{ cursor: 'pointer' }} />
+          </div>
+          {video.detail && (
+            <div className="video-lightbox-detail">
+              <a href={video.detail.href} className="video-lightbox-detail-header">
+                <img src={video.detail.icon} alt={video.detail.name} className="video-lightbox-detail-icon" />
+                <span className="video-lightbox-detail-name">{video.detail.name}</span>
+              </a>
+              <p className="video-lightbox-detail-desc">{video.detail.description}</p>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
+      </div>
 
       {hasNext && (
         <motion.button
@@ -271,6 +325,7 @@ export default function UXUIContent() {
                 key={vidIndex}
                 video={video}
                 onClick={(rect) => handleVideoClick(video, rect)}
+                paused={activeIndex !== null}
               />
             ))}
           </div>

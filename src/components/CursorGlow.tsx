@@ -7,15 +7,23 @@ interface CursorGlowProps {
   containerRef: React.RefObject<HTMLElement | null>;
 }
 
-interface Particle {
+interface TrailPoint {
+  x: number;
+  y: number;
+  age: number;
+  width: number;
+}
+
+interface Mote {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  ox: number;
-  oy: number;
-  oz: number;
+  angle: number;
+  radius: number;
+  speed: number;
   size: number;
+  phase: number;
 }
 
 function CursorGlowCanvas({ containerRef }: CursorGlowProps) {
@@ -23,10 +31,9 @@ function CursorGlowCanvas({ containerRef }: CursorGlowProps) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas) return;
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d', { alpha: true })!;
     let animFrame: number;
     let mouseX = -9999;
     let mouseY = -9999;
@@ -34,186 +41,212 @@ function CursorGlowCanvas({ containerRef }: CursorGlowProps) {
     let smoothY = -9999;
     let prevSmoothX = -9999;
     let prevSmoothY = -9999;
-    let time = 0;
     let currentSpeed = 0;
     let hasInit = false;
+    let time = 0;
 
-    const PARTICLE_COUNT = 300;
-    const ORB_RADIUS = 24;
-    const particles: Particle[] = [];
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    const dpr = window.devicePixelRatio || 1;
+    // Trail history
+    const trail: TrailPoint[] = [];
+    const MAX_TRAIL = 50;
+    const TRAIL_LIFETIME = 60;
+
+    // Orbiting motes
+    const MOTE_COUNT = 18;
+    const motes: Mote[] = [];
+    for (let i = 0; i < MOTE_COUNT; i++) {
+      const angle = (i / MOTE_COUNT) * Math.PI * 2;
+      motes.push({
+        x: 0, y: 0,
+        vx: 0, vy: 0,
+        angle,
+        radius: 12 + Math.random() * 20,
+        speed: 0.008 + Math.random() * 0.012,
+        size: 1 + Math.random() * 1.5,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
 
     const resize = () => {
-      const rect = container.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const reposition = () => {
-      const rect = container.getBoundingClientRect();
-      canvas.style.top = rect.top + 'px';
-      canvas.style.left = rect.left + 'px';
-    };
-
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-      // Snap on first move into container
-      if (!hasInit && mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+      if (!hasInit) {
         hasInit = true;
         smoothX = mouseX;
         smoothY = mouseY;
         prevSmoothX = mouseX;
         prevSmoothY = mouseY;
-        for (const p of particles) {
-          const perspective = 200;
-          const scale = perspective / (perspective + p.oz);
-          p.x = mouseX + p.ox * scale;
-          p.y = mouseY + p.oy * scale;
+        for (const m of motes) {
+          m.x = mouseX + Math.cos(m.angle) * m.radius;
+          m.y = mouseY + Math.sin(m.angle) * m.radius;
         }
       }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', reposition, { passive: true });
-
-    // Fibonacci sphere distribution
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const phi = Math.acos(1 - 2 * (i + 0.5) / PARTICLE_COUNT);
-      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-      const r = ORB_RADIUS * (0.6 + Math.random() * 0.4);
-
-      particles.push({
-        x: -9999,
-        y: -9999,
-        vx: 0,
-        vy: 0,
-        ox: r * Math.sin(phi) * Math.cos(theta),
-        oy: r * Math.sin(phi) * Math.sin(theta),
-        oz: r * Math.cos(phi),
-        size: 0.8 + Math.random() * 1.0,
-      });
-    }
 
     const draw = () => {
-      reposition();
-      const rect = container.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
       time++;
-
-      if (Math.abs(canvas.width - w * dpr) > 2 || Math.abs(canvas.height - h * dpr) > 2) {
-        resize();
-      }
 
       ctx.clearRect(0, 0, w, h);
 
-      if (!hasInit || rect.bottom < 0 || rect.top > window.innerHeight) {
+      if (!hasInit) {
         animFrame = requestAnimationFrame(draw);
         return;
       }
 
-      // Check if mouse is in container bounds
-      const inBounds = mouseX >= -50 && mouseX <= w + 50 && mouseY >= -50 && mouseY <= h + 50;
-
-      // Smooth cursor tracking
+      // Smooth cursor
       prevSmoothX = smoothX;
       prevSmoothY = smoothY;
-      smoothX += (mouseX - smoothX) * 0.1;
-      smoothY += (mouseY - smoothY) * 0.1;
+      smoothX += (mouseX - smoothX) * 0.15;
+      smoothY += (mouseY - smoothY) * 0.15;
 
       const dx = smoothX - prevSmoothX;
       const dy = smoothY - prevSmoothY;
       const instantSpeed = Math.sqrt(dx * dx + dy * dy);
-      currentSpeed += (instantSpeed - currentSpeed) * 0.08;
+      currentSpeed += (instantSpeed - currentSpeed) * 0.1;
 
-      const dispersion = Math.min(1, currentSpeed / 8);
+      // Add trail points when moving
+      if (currentSpeed > 0.5) {
+        trail.push({
+          x: smoothX,
+          y: smoothY,
+          age: 0,
+          width: Math.min(3, 0.5 + currentSpeed * 0.3),
+        });
+        if (trail.length > MAX_TRAIL) trail.shift();
+      }
+
+      // Age and draw trail as a fluid ribbon
+      if (trail.length > 2) {
+        for (let i = trail.length - 1; i >= 0; i--) {
+          trail[i].age++;
+          if (trail[i].age > TRAIL_LIFETIME) {
+            trail.splice(i, 1);
+          }
+        }
+
+        if (trail.length > 2) {
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+
+          for (let i = 1; i < trail.length; i++) {
+            const p = trail[i];
+            const prev = trail[i - 1];
+            const life = 1 - p.age / TRAIL_LIFETIME;
+            const fade = life * life;
+
+            // Blend from warm accent to cool white based on speed
+            const speedBlend = Math.min(1, currentSpeed / 6);
+            const r = Math.round(196 * speedBlend + 225 * (1 - speedBlend));
+            const g = Math.round(93 * speedBlend + 225 * (1 - speedBlend));
+            const b = Math.round(62 * speedBlend + 225 * (1 - speedBlend));
+
+            ctx.beginPath();
+            ctx.moveTo(prev.x, prev.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${(fade * 0.35).toFixed(3)})`;
+            ctx.lineWidth = p.width * fade;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Update and draw motes
       const moveAngle = Math.atan2(dy, dx);
+      const dispersion = Math.min(1, currentSpeed / 5);
 
-      // Slowly rotate the sphere
-      const rotSpeed = 0.005;
-      const cosR = Math.cos(rotSpeed);
-      const sinR = Math.sin(rotSpeed);
-      const cosR2 = Math.cos(rotSpeed * 0.7);
-      const sinR2 = Math.sin(rotSpeed * 0.7);
+      for (let i = 0; i < motes.length; i++) {
+        const m = motes[i];
 
-      const edgeFade = 50;
+        // Orbit rotation
+        m.angle += m.speed * (1 - dispersion * 0.6);
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+        // Breathing radius
+        const breathe = Math.sin(time * 0.02 + m.phase) * 4;
+        const effectiveRadius = m.radius + breathe;
 
-        // Y-axis rotation
-        const newOx = p.ox * cosR - p.oz * sinR;
-        const newOz = p.ox * sinR + p.oz * cosR;
-        p.ox = newOx;
-        p.oz = newOz;
+        // Target position: orbit around cursor, stretched when moving
+        let targetX = smoothX + Math.cos(m.angle) * effectiveRadius;
+        let targetY = smoothY + Math.sin(m.angle) * effectiveRadius;
 
-        // X-axis rotation
-        const newOy = p.oy * cosR2 - p.oz * sinR2;
-        const newOz2 = p.oy * sinR2 + p.oz * cosR2;
-        p.oy = newOy;
-        p.oz = newOz2;
+        // Disperse backward when moving fast
+        if (dispersion > 0.05) {
+          const trailDist = (m.radius / 30) * dispersion * 25;
+          targetX -= Math.cos(moveAngle) * trailDist;
+          targetY -= Math.sin(moveAngle) * trailDist;
 
-        // 3D → 2D projection
-        const perspective = 200;
-        const scale = perspective / (perspective + p.oz);
-        const sphereX = p.ox * scale;
-        const sphereY = p.oy * scale;
-
-        let targetX = smoothX + sphereX;
-        let targetY = smoothY + sphereY;
-
-        // Trail dispersion when moving
-        if (dispersion > 0.01) {
-          const dist = Math.sqrt(p.ox * p.ox + p.oy * p.oy + p.oz * p.oz);
-          const trail = dispersion * (dist / ORB_RADIUS) * 3;
-          targetX -= Math.cos(moveAngle) * trail * ORB_RADIUS * 0.8;
-          targetY -= Math.sin(moveAngle) * trail * ORB_RADIUS * 0.8;
-
+          // Perpendicular scatter
           const perp = moveAngle + Math.PI / 2;
-          const scatter = dispersion * Math.sin(time * 0.03 + i * 0.5) * 0.5 * dist * 0.3;
+          const scatter = Math.sin(time * 0.04 + i * 1.2) * dispersion * 8;
           targetX += Math.cos(perp) * scatter;
           targetY += Math.sin(perp) * scatter;
         }
 
         // Spring physics
-        const spring = 0.06 + (1 - dispersion) * 0.06;
-        p.vx += (targetX - p.x) * spring;
-        p.vy += (targetY - p.y) * spring;
-        p.vx *= 0.78;
-        p.vy *= 0.78;
-        p.x += p.vx;
-        p.y += p.vy;
+        const spring = 0.04;
+        m.vx += (targetX - m.x) * spring;
+        m.vy += (targetY - m.y) * spring;
+        m.vx *= 0.82;
+        m.vy *= 0.82;
+        m.x += m.vx;
+        m.y += m.vy;
 
-        if (!inBounds) continue;
+        // Draw mote
+        const pulse = 0.85 + Math.sin(time * 0.03 + m.phase) * 0.15;
+        const drawSize = m.size * pulse;
 
-        // Edge fade only (no transparency otherwise — solid dots)
-        let alpha = 1;
-        if (p.x < edgeFade) alpha = Math.min(alpha, p.x / edgeFade);
-        if (p.x > w - edgeFade) alpha = Math.min(alpha, (w - p.x) / edgeFade);
-        if (p.y < edgeFade) alpha = Math.min(alpha, p.y / edgeFade);
-        if (p.y > h - edgeFade) alpha = Math.min(alpha, (h - p.y) / edgeFade);
-        alpha = Math.max(0, alpha);
-        if (alpha < 0.01) continue;
-
-        const drawSize = p.size * scale;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, drawSize, 0, Math.PI * 2);
-        if (alpha < 1) {
-          ctx.fillStyle = `rgba(225, 225, 225, ${alpha.toFixed(2)})`;
-        } else {
-          ctx.fillStyle = '#e1e1e1';
-        }
+        ctx.arc(m.x, m.y, drawSize, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(225, 225, 225, 0.7)`;
         ctx.fill();
+
+        // Draw faint connection lines between nearby motes
+        for (let j = i + 1; j < motes.length; j++) {
+          const m2 = motes[j];
+          const connDx = m.x - m2.x;
+          const connDy = m.y - m2.y;
+          const dist = Math.sqrt(connDx * connDx + connDy * connDy);
+
+          if (dist < 40) {
+            const connAlpha = (1 - dist / 40) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(m.x, m.y);
+            ctx.lineTo(m2.x, m2.y);
+            ctx.strokeStyle = `rgba(225, 225, 225, ${connAlpha.toFixed(3)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
       }
+
+      // Soft glow at cursor position
+      const glowAlpha = 0.04 + dispersion * 0.03;
+      const glowSize = 30 + dispersion * 15;
+      const gradient = ctx.createRadialGradient(
+        smoothX, smoothY, 0,
+        smoothX, smoothY, glowSize
+      );
+      gradient.addColorStop(0, `rgba(225, 225, 225, ${glowAlpha})`);
+      gradient.addColorStop(1, 'rgba(225, 225, 225, 0)');
+      ctx.beginPath();
+      ctx.arc(smoothX, smoothY, glowSize, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
 
       animFrame = requestAnimationFrame(draw);
     };
@@ -222,11 +255,10 @@ function CursorGlowCanvas({ containerRef }: CursorGlowProps) {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', reposition);
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animFrame);
     };
-  }, [containerRef]);
+  }, []);
 
   return (
     <canvas
