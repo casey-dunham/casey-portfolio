@@ -1,12 +1,16 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 interface ArtDetail {
   title: string;
   description: string;
+  href?: string;
+  tags?: string[];
+  processImages?: { src: string; alt: string; width: number; height: number }[];
 }
 
 interface ArtPiece {
@@ -22,6 +26,7 @@ interface ArtRow {
   pieces: ArtPiece[];
   equalHeight?: boolean;
   layout?: 'stacked-right' | 'left-tall-right-grid' | 'left-tall-right-2x2' | 'left-tall-right-2-stacked';
+  groupLabel?: string;
 }
 
 const rows: ArtRow[] = [
@@ -30,29 +35,29 @@ const rows: ArtRow[] = [
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/bird1.jpeg', alt: 'Bird Study I — Charcoal on toned paper', width: 989, height: 1200, detail: { title: 'Bird Study I', description: 'Charcoal on toned paper. Part of a triptych exploring form and movement in birds.' } },
-      { src: '/images/art/bird2.jpeg', alt: 'Bird Study II — Charcoal on toned paper', width: 933, height: 1200, detail: { title: 'Bird Study II', description: 'Charcoal on toned paper.' } },
-      { src: '/images/art/bird3.jpeg', alt: 'Bird Study III — Charcoal on toned paper', width: 1200, height: 981, detail: { title: 'Bird Study III', description: 'Charcoal on toned paper.' } },
+      { src: '/images/art/bird1.jpeg', alt: 'American Kestrel — Charcoal on toned paper', width: 989, height: 1200, detail: { title: 'American Kestrel', description: 'Charcoal on toned paper, 2022. Drawn for a volunteer project with the Brandywine Zoo in Delaware. Each piece in this series depicts an endangered bird species native to the state.', tags: ['Charcoal'] } },
+      { src: '/images/art/bird2.jpeg', alt: 'Black-crowned Night-Heron — Charcoal on toned paper', width: 933, height: 1200, detail: { title: 'Black-crowned Night-Heron', description: 'Charcoal on toned paper, 2022. Part of the Brandywine Zoo endangered species series. The juvenile night-heron is one of Delaware\'s most at-risk wading birds.', tags: ['Charcoal'] } },
+      { src: '/images/art/bird3.jpeg', alt: 'Red Knot — Charcoal on toned paper', width: 1200, height: 981, detail: { title: 'Red Knot', description: 'Charcoal on toned paper, 2022. The red knot migrates through Delaware Bay each spring and is federally listed as threatened. Drawn for the Brandywine Zoo endangered species series.', tags: ['Charcoal'] } },
     ],
   },
   {
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal drawing.' } },
-      { src: '/images/art/delicate.png', alt: 'Delicate', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Placeholder description.' } },
-      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite drawing.' } },
-      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite drawing.' } },
+      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Charcoal'] } },
+      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards. Drawn in tenth grade.', tags: ['Graphite'] } },
+      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a reference found in the Library of Congress archives.', tags: ['Graphite'] } },
+      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. An exploration of graphite texture and tonal range through the form of a vintage telephone.', tags: ['Graphite'] } },
     ],
   },
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal drawing.' } },
-      { src: '/images/art/still-life.jpg', alt: 'Still Life — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life', description: 'Oil on canvas.' } },
-      { src: '/images/art/sargent-study.jpg', alt: 'Sargent Study — Oil on canvas', width: 1892, height: 2763, detail: { title: 'Sargent Study', description: 'Oil on canvas. A study after John Singer Sargent.' } },
-      { src: '/images/art/beach-digital.jpg', alt: 'Beach Scene — Digital illustration', width: 2295, height: 2994, detail: { title: 'Beach Scene', description: 'Digital illustration.' } },
+      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal, 2023.', tags: ['Charcoal'] } },
+      { src: '/images/art/lemons-and-antlers.jpg', alt: 'Lemons and Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Lemons and Antlers', description: 'Oil on canvas, 2023.', tags: ['Oil'] } },
+      { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his brushwork and approach to light on skin.', tags: ['Oil'] } },
+      { src: '/images/art/beach-digital.jpg', alt: 'Beach Scene — Digital', width: 2295, height: 2994, detail: { title: 'Beach Scene', description: 'Digital, 2023. Created in Procreate.', tags: ['Procreate'] } },
     ],
   },
 ];
@@ -62,37 +67,43 @@ const photoRows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Boy Drinking Soda — Photography', width: 716, height: 1200, detail: { title: 'Boy Drinking Soda', description: 'Photography.' } },
-      { src: '/images/art/basket-of-mangos.jpeg', alt: 'Basket of Mangoes — Photography', width: 675, height: 1200, detail: { title: 'Basket of Mangoes', description: 'Photography.' } },
-      { src: '/images/art/girl-with-water.jpg', alt: 'Girl with Water — Photography', width: 675, height: 1200, detail: { title: 'Girl with Water', description: 'Photography.' } },
-      { src: '/images/art/clothesline.jpg', alt: 'Clothesline — Photography', width: 1600, height: 900, detail: { title: 'Clothesline', description: 'Photography.' } },
+      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Orange — Kenya, 2024', width: 716, height: 1200, detail: { title: 'Orange', description: 'Photographed in Kenya, 2024.' } },
+      { src: '/images/art/basket-of-mangos.jpeg', alt: 'The Harvest — Kenya, 2024', width: 675, height: 1200, detail: { title: 'The Harvest', description: 'Photographed in Kenya, 2024.' } },
+      { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Water Carry', description: 'Photographed in Kenya, 2024.' } },
+      { src: '/images/art/clothesline.jpg', alt: 'Drying Day — Kenya, 2024', width: 1600, height: 900, detail: { title: 'Drying Day', description: 'Photographed in Kenya, 2024.' } },
     ],
   },
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/sink.jpeg', alt: 'Sink — Photography', width: 737, height: 1200, detail: { title: 'Sink', description: 'Photography.' } },
-      { src: '/images/art/portrait.jpg', alt: 'Portrait — Photography', width: 719, height: 1200, detail: { title: 'Portrait', description: 'Photography.' } },
-      { src: '/images/art/supersonic.jpg', alt: 'Supersonic — Photography', width: 1067, height: 1200, detail: { title: 'Supersonic', description: 'Photography.' } },
+      { src: '/images/art/sink.jpeg', alt: 'Wash — Kenya, 2024', width: 737, height: 1200, detail: { title: 'Wash', description: 'Photographed in Kenya, 2024.' } },
+      { src: '/images/art/portrait.jpg', alt: 'Hands to Heart — Kenya, 2024', width: 719, height: 1200, detail: { title: 'Hands to Heart', description: 'Photographed in Kenya, 2024.' } },
+      { src: '/images/art/supersonic.jpg', alt: 'Window Seat — Kenya, 2024', width: 1067, height: 1200, detail: { title: 'Window Seat', description: 'Photographed in Kenya, 2024.' } },
     ],
   },
   {
     cols: 1,
     pieces: [
-      { src: '/images/art/zebrastripe.jpg', alt: 'Zebra Stripes', width: 5884, height: 1533, detail: { title: 'Zebra Stripes', description: 'Photography.' } },
+      { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', width: 5884, height: 1533, detail: { title: 'The Herd', description: 'Photographed in Kenya, 2024.' } },
     ],
   },
+];
+
+const stoolProcessImages = [
+  { src: '/images/product/cardboard.png', alt: 'Cardboard Prototype', width: 1024, height: 1024 },
+  { src: '/images/product/cnc.png', alt: 'CNC-cut Parts', width: 2824, height: 1532 },
 ];
 
 const productRows: ArtRow[] = [
   {
     cols: 3,
     equalHeight: true,
+    groupLabel: 'Step Stool',
     pieces: [
-      { src: '/images/product/2.jpg', alt: 'Product Design', width: 795, height: 1200, detail: { title: 'Product Design', description: 'Placeholder description.' } },
-      { src: '/images/product/Studio_3.jpeg', alt: 'Product Studio', width: 900, height: 1200, detail: { title: 'Product Studio', description: 'Placeholder description.' } },
-      { src: '/images/product/Detail_1.jpeg', alt: 'Product Detail', width: 900, height: 1200, detail: { title: 'Product Detail', description: 'Placeholder description.' } },
+      { src: '/images/product/2.jpg', alt: 'Step Stool — In Context', width: 795, height: 1200, detail: { title: 'Step Stool — In Context', description: 'A step stool designed for the laundry room, featuring a pull-out table for resting a basket while loading or unloading machines. CNC-cut from Baltic birch plywood with finger joint construction. Modeled in Fusion 360 and prototyped in laser-cut cardboard before final fabrication.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
+      { src: '/images/product/Studio_3.jpeg', alt: 'Step Stool — Studio', width: 900, height: 1200, detail: { title: 'Step Stool — Studio', description: 'Studio shot showing the two-tier step stool with the pull-out table extended. The slatted surface allows airflow and adds visual lightness to the form.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
+      { src: '/images/product/Detail_1.jpeg', alt: 'Step Stool — Detail', width: 900, height: 1200, detail: { title: 'Step Stool — Detail', description: 'Joinery detail showing the finger joints and sliding table mechanism. The arched cutouts reduce weight while adding a subtle design element.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
     ],
   },
 ];
@@ -232,6 +243,7 @@ function ArtLightbox({
           exit={() => ({ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const })}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           className="art-lightbox-content"
+          style={piece.width > piece.height ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
           onClick={(e) => e.stopPropagation()}
         >
           <Image
@@ -241,11 +253,31 @@ function ArtLightbox({
             height={piece.height}
             className="art-lightbox-image"
             quality={90}
+            style={piece.width > piece.height ? { maxWidth: '80vw', width: '80vw' } : undefined}
           />
           {piece.detail && (
-            <div className="video-lightbox-detail">
+            <div className="video-lightbox-detail" style={piece.width > piece.height ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
               <span className="video-lightbox-detail-name">{piece.detail.title}</span>
               <p className="video-lightbox-detail-desc">{piece.detail.description}</p>
+              {piece.detail.href && (
+                <a href={piece.detail.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--fg-muted)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  View in AP Art & Design Exhibit →
+                </a>
+              )}
+              {piece.detail.tags && (
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                  {piece.detail.tags.map((tag) => (
+                    <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                  ))}
+                </div>
+              )}
+              {piece.detail.processImages && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '1rem' }}>
+                  {piece.detail.processImages.map((img) => (
+                    <Image key={img.src} src={img.src} alt={img.alt} width={img.width} height={img.height} quality={80} style={{ width: '100%', height: 'auto', borderRadius: '6px' }} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </motion.div>
@@ -408,7 +440,7 @@ function ArtGallery({ galleryRows, handleClick }: { galleryRows: ArtRow[]; handl
           );
         }
 
-        return (
+        const grid = (
           <div
             key={rowIndex}
             className={`art-row${row.equalHeight ? '' : ` art-cols-${row.cols}`}`}
@@ -431,12 +463,22 @@ function ArtGallery({ galleryRows, handleClick }: { galleryRows: ArtRow[]; handl
             })}
           </div>
         );
+
+        return grid;
       })}
     </div>
   );
 }
 
-function useGallery() {
+import { createContext, useContext } from 'react';
+
+interface GalleryContextValue {
+  openLightbox: (piece: ArtPiece) => void;
+}
+
+const GalleryContext = createContext<GalleryContextValue>({ openLightbox: () => {} });
+
+export function ArtGalleryProvider({ children }: { children: React.ReactNode }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
 
@@ -444,74 +486,44 @@ function useGallery() {
   const goPrev = useCallback(() => { setDirection(-1); setActiveIndex((i) => (i !== null && i > 0 ? i - 1 : i)); }, []);
   const goNext = useCallback(() => { setDirection(1); setActiveIndex((i) => (i !== null && i < allPieces.length - 1 ? i + 1 : i)); }, []);
 
-  const handleClick = useCallback((piece: ArtPiece) => {
+  const openLightbox = useCallback((piece: ArtPiece) => {
     const idx = allPieces.findIndex((p) => p.src === piece.src);
     setDirection(0);
     setActiveIndex(idx);
   }, []);
 
-  return { activeIndex, direction, closeLightbox, goPrev, goNext, handleClick };
+  return (
+    <GalleryContext.Provider value={{ openLightbox }}>
+      {children}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {activeIndex !== null && (
+            <ArtLightbox
+              pieceIndex={activeIndex}
+              direction={direction}
+              onClose={closeLightbox}
+              onPrev={goPrev}
+              onNext={goNext}
+            />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </GalleryContext.Provider>
+  );
 }
 
 export default function VisualArtContent() {
-  const { activeIndex, direction, closeLightbox, goPrev, goNext, handleClick } = useGallery();
-
-  return (
-    <>
-      <ArtGallery galleryRows={rows} handleClick={handleClick} />
-      <AnimatePresence>
-        {activeIndex !== null && (
-          <ArtLightbox
-            pieceIndex={activeIndex}
-            direction={direction}
-            onClose={closeLightbox}
-            onPrev={goPrev}
-            onNext={goNext}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  );
+  const { openLightbox } = useContext(GalleryContext);
+  return <ArtGallery galleryRows={rows} handleClick={openLightbox} />;
 }
 
 export function ProductContent() {
-  const { activeIndex, direction, closeLightbox, goPrev, goNext, handleClick } = useGallery();
-
-  return (
-    <>
-      <ArtGallery galleryRows={productRows} handleClick={handleClick} />
-      <AnimatePresence>
-        {activeIndex !== null && (
-          <ArtLightbox
-            pieceIndex={activeIndex}
-            direction={direction}
-            onClose={closeLightbox}
-            onPrev={goPrev}
-            onNext={goNext}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  );
+  const { openLightbox } = useContext(GalleryContext);
+  return <ArtGallery galleryRows={productRows} handleClick={openLightbox} />;
 }
 
 export function PhotographyContent() {
-  const { activeIndex, direction, closeLightbox, goPrev, goNext, handleClick } = useGallery();
-
-  return (
-    <>
-      <ArtGallery galleryRows={photoRows} handleClick={handleClick} />
-      <AnimatePresence>
-        {activeIndex !== null && (
-          <ArtLightbox
-            pieceIndex={activeIndex}
-            direction={direction}
-            onClose={closeLightbox}
-            onPrev={goPrev}
-            onNext={goNext}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  );
+  const { openLightbox } = useContext(GalleryContext);
+  return <ArtGallery galleryRows={photoRows} handleClick={openLightbox} />;
 }

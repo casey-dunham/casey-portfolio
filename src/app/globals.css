@@ -319,6 +319,8 @@ body:has(.video-lightbox-backdrop) header {
   flex: 1;
   min-width: 200px;
   max-width: 250px;
+  max-height: 85vh;
+  overflow-y: auto;
   padding-top: 0.5rem;
 }
 
@@ -330,9 +332,9 @@ body:has(.video-lightbox-backdrop) header {
 }
 
 .video-lightbox-detail-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
 }
 
 .video-lightbox-detail-name {
@@ -447,6 +449,7 @@ body:has(.video-lightbox-backdrop) header {
   color: var(--fg-muted);
 }
 
+/* Art group */
 /* Art gallery */
 .art-gallery {
   display: flex;

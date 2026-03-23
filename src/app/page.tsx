@@ -1,7 +1,7 @@
 import Hero from '@/components/Hero';
 import FolderSection from '@/components/FolderSection';
 import UXUIContent from '@/components/UXUIContent';
-import VisualArtContent, { ProductContent, PhotographyContent } from '@/components/VisualArtContent';
+import VisualArtContent, { ProductContent, PhotographyContent, ArtGalleryProvider } from '@/components/VisualArtContent';
 import ScrollToTop from '@/components/ScrollToTop';
 
 export default function Home() {
@@ -14,17 +14,19 @@ export default function Home() {
           <UXUIContent />
         </FolderSection>
 
-        <FolderSection title="Products" index={1}>
-          <ProductContent />
-        </FolderSection>
+        <ArtGalleryProvider>
+          <FolderSection title="Products" index={1}>
+            <ProductContent />
+          </FolderSection>
 
-        <FolderSection title="Fine Art" index={2}>
-          <VisualArtContent />
-        </FolderSection>
+          <FolderSection title="Fine Art" index={2}>
+            <VisualArtContent />
+          </FolderSection>
 
-        <FolderSection title="Photography" index={3}>
-          <PhotographyContent />
-        </FolderSection>
+          <FolderSection title="Photography" index={3}>
+            <PhotographyContent />
+          </FolderSection>
+        </ArtGalleryProvider>
 
       </div>
 
