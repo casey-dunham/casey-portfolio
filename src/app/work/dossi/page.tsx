@@ -57,6 +57,15 @@ const media: MediaItem[] = [
     caption: `App icon variation ${i + 1} of 16.`,
   })),
   { src: '/images/dossi/startup-exchange.png', alt: 'Startup Exchange', w: 3420, h: 1897, type: 'image', caption: 'Georgia Tech Startup Exchange Genesis.' },
+  // Key screens
+  { src: '/images/dossi/screens/welcome.png', alt: 'Welcome', w: 1170, h: 2532, type: 'image', caption: 'Welcome screen.' },
+  { src: '/images/dossi/screens/dash.png', alt: 'Dashboard', w: 1170, h: 2532, type: 'image', caption: 'Dashboard — real-time glucose and contextual factors.' },
+  { src: '/images/dossi/screens/insights.png', alt: 'Insights', w: 1170, h: 2532, type: 'image', caption: 'Insights — glucose score, time in range, pattern analysis.' },
+  { src: '/images/dossi/screens/nutrition.png', alt: 'Nutrition', w: 1170, h: 2532, type: 'image', caption: 'Nutrition — meal logging and macro breakdown.' },
+  { src: '/images/dossi/screens/quickaction.png', alt: 'Quick Action', w: 1170, h: 2532, type: 'image', caption: 'Quick bolus delivery.' },
+  { src: '/images/dossi/screens/omnipod.png', alt: 'Omnipod', w: 1170, h: 2532, type: 'image', caption: 'Omnipod management — pod status and controls.' },
+  { src: '/images/dossi/screens/settings.png', alt: 'Settings', w: 1170, h: 2532, type: 'image', caption: 'Settings and configuration.' },
+  { src: '/images/dossi/screens/aichat.jpg', alt: 'AI Chat', w: 1170, h: 2532, type: 'image', caption: 'AI chat — natural language meal logging and guidance.' },
 ];
 
 function idx(src: string) { return media.findIndex((m) => m.src === src); }
@@ -215,11 +224,38 @@ export default function DossiProject() {
           </motion.div>
           <div className="grid grid-cols-5 gap-2.5">
             {Array.from({ length: 5 }, (_, i) => (
-              <motion.div key={i} {...pop(i)} style={i === 4 ? { boxShadow: '0 0 20px rgba(139,143,199,0.3)', borderRadius: 8, outline: '1px solid rgba(139,143,199,0.35)' } : undefined}>
+              <motion.div key={i} {...pop(i)} className="relative">
                 <Img
                   src={`/images/dossi/screens/create-account-${i + 3}.jpg`}
                   alt={`Onboarding ${i + 3}`} w={1280} h={2778} onClick={open}
                 />
+                {i === 4 && (
+                  <svg
+                    viewBox="0 0 50 50"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute pointer-events-none"
+                    style={{ top: '-7%', right: '-12%', width: '40%', height: 'auto' }}
+                  >
+                    <path
+                      d="M25 3 L30 19 L47 19 L33 29 L39 46 L25 35 L11 46 L17 29 L3 19 L20 19 Z"
+                      transform="rotate(12, 25, 25)"
+                      stroke="#8B8FC7"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      fill="none"
+                      opacity="0.85"
+                      style={{ filter: 'url(#roughStar)' }}
+                    />
+                    <defs>
+                      <filter id="roughStar">
+                        <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="5" result="noise" />
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
+                      </filter>
+                    </defs>
+                  </svg>
+                )}
               </motion.div>
             ))}
           </div>
@@ -312,6 +348,26 @@ export default function DossiProject() {
         </div>
       </Sect>
 
+      {/* ═══ KEY SCREENS ═══ */}
+      <Sect label="Key Screens">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+          {([
+            ['/images/dossi/screens/welcome.png', 'Welcome'],
+            ['/images/dossi/screens/dash.png', 'Dashboard'],
+            ['/images/dossi/screens/insights.png', 'Insights'],
+            ['/images/dossi/screens/nutrition.png', 'Nutrition'],
+            ['/images/dossi/screens/quickaction.png', 'Quick Action'],
+            ['/images/dossi/screens/omnipod.png', 'Omnipod'],
+            ['/images/dossi/screens/settings.png', 'Settings'],
+            ['/images/dossi/screens/aichat.jpg', 'AI Chat'],
+          ] as const).map(([src, alt], i) => (
+            <motion.div key={src} {...pop(i)}>
+              <Img src={src} alt={alt} w={1170} h={2532} onClick={open} />
+            </motion.div>
+          ))}
+        </div>
+      </Sect>
+
       {/* ═══ BY THE NUMBERS ═══ */}
       <Sect label="By the Numbers">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
@@ -347,8 +403,8 @@ export default function DossiProject() {
 
       {/* ═══ CONTEXT ═══ */}
       <Sect label="Context">
-        {/* Personal — lead with the story */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-10 items-start mb-16">
+        {/* Lead text + link */}
+        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 items-start mb-16">
           <motion.div {...fade(0)}>
             <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
               I have Type&nbsp;1 Diabetes. I was diagnosed at age 10 and have been
@@ -371,20 +427,22 @@ export default function DossiProject() {
             </a>
           </motion.div>
           <div className="grid grid-cols-2 gap-3">
-            <motion.div {...pop(0)}>
+            <motion.div {...pop(0)} className="rounded-lg overflow-hidden">
               <Img src="/images/dossi/jdrf-group.jpg" alt="JDRF group" w={2806} h={2764} onClick={open} />
             </motion.div>
-            <motion.div {...pop(1)}>
+            <motion.div {...pop(1)} className="rounded-lg overflow-hidden">
               <Img src="/images/dossi/jdrf-selfie.jpg" alt="JDRF selfie" w={2268} h={2279} onClick={open} />
             </motion.div>
           </div>
         </div>
 
-        {/* Programs + Research — side by side with dividers */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 border-t border-[#2A2A2A] pt-12">
+        {/* Programs + Research — editorial row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-[#2A2A2A] pt-12">
           <motion.div {...fade(0)}>
-            <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
-            <p className="font-display text-[0.85rem] font-semibold text-[#ccc] mt-5 mb-2">Programs</p>
+            <motion.div {...pop(0)} className="rounded-lg overflow-hidden mb-5">
+              <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
+            </motion.div>
+            <p className="font-display text-xs uppercase tracking-[0.15em] text-[#666] font-medium mb-2">Programs</p>
             <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
               Built through Georgia Tech&rsquo;s{' '}
               <span className="text-fg font-medium">InVenture Prize</span> and{' '}
@@ -393,10 +451,11 @@ export default function DossiProject() {
               in Interactive Computing (Harvard PhD).
             </p>
           </motion.div>
-          <div className="hidden md:block w-px bg-[#2A2A2A]" />
           <motion.div {...fade(0.06)}>
-            <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} />
-            <p className="font-display text-[0.85rem] font-semibold text-[#ccc] mt-5 mb-2">Research</p>
+            <motion.div {...pop(1)} className="rounded-lg overflow-hidden mb-5">
+              <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} />
+            </motion.div>
+            <p className="font-display text-xs uppercase tracking-[0.15em] text-[#666] font-medium mb-2">Research</p>
             <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
               Distributed flyers through Georgia Tech Disability Services to survey
               T1D students. The most consistent feedback: people wanted to understand{' '}

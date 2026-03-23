@@ -116,6 +116,7 @@ export default function RewiredProject() {
               crafted by hand.
             </motion.p>
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">Sep – Dec 2025</span>
               {['SwiftUI', 'SwiftData', 'Gemini AI', 'Figma', 'Procreate', 'CloudKit'].map((t) => (
                 <span key={t} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">{t}</span>
               ))}
@@ -138,7 +139,7 @@ export default function RewiredProject() {
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <video src="/videos/uxui/rewired-value-props-2a.mp4" autoPlay muted loop playsInline className="w-full block" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+            <video src="/videos/uxui/rewired-value-props-2a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
           </motion.div>
         </div>
       </section>
@@ -172,7 +173,7 @@ export default function RewiredProject() {
             <motion.div key={src} {...pop(i)} className="rounded-lg overflow-hidden cursor-pointer"
               onClick={() => { }}
             >
-              <video src={src} autoPlay muted loop playsInline className="w-full block"
+              <video src={src} autoPlay muted loop playsInline className="w-full block scale-[1.02]"
                 onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
             </motion.div>
           ))}
@@ -228,7 +229,7 @@ export default function RewiredProject() {
           </div>
           {/* Right: live video */}
           <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer">
-            <video src="/videos/uxui/ai-orb-6b.mp4" autoPlay muted loop playsInline className="w-full block"
+            <video src="/videos/uxui/ai-orb-6b.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]"
               onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
           </motion.div>
         </div>
@@ -244,68 +245,77 @@ export default function RewiredProject() {
         </p>
       </motion.div>
 
-      {/* ═══ DESIGN PROCESS ═══ */}
-      <Sect label="Design Process">
-        {/* 01 — Onboarding Animation */}
-        <div className="mb-20">
-          <motion.div {...fade(0)} className="mb-6">
-            <div className="flex items-baseline gap-3 mb-1.5">
-              <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">01</span>
-              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Onboarding Animation</h3>
-            </div>
-            <p className="font-body text-[0.85rem] text-[#777] leading-[1.6]">Hand-drawn frame-by-frame in Procreate, then composited in SwiftUI.</p>
+      {/* ═══ THE WEBSITE ═══ */}
+      <Sect label="The Website">
+        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr] gap-8 items-start">
+          <motion.div {...fade(0)} className="rounded-lg overflow-hidden">
+            <video src="/videos/uxui/rewired-website-scroll.mp4" autoPlay muted loop playsInline className="w-full block" />
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-3 items-start">
-            <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer">
-              <video src="/videos/rewired/animation-process.mp4" autoPlay muted loop playsInline className="w-full block"
-                onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
-            </motion.div>
-            <motion.div {...fade(0.05)} className="overflow-hidden rounded-lg">
-              <Img src="/images/rewired/line-artblack.jpg" alt="Line art" w={3936} h={984} onClick={open} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* 02 — The Ribbon */}
-        <div className="mb-20">
-          <motion.div {...fade(0)} className="mb-6">
-            <div className="flex items-baseline gap-3 mb-1.5">
-              <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">02</span>
-              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">The Ribbon</h3>
-            </div>
-            <p className="font-body text-[0.85rem] text-[#777] leading-[1.6]">A flowing gradient line that represents neural pathways rewiring &mdash; the core visual motif.</p>
-          </motion.div>
-          <motion.div {...fade(0)}>
-            <Img src="/images/rewired/branding/ribbon.png" alt="Ribbon" w={3897} h={974} onClick={open} />
+          <motion.div {...fade(0.1)}>
+            <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+              The marketing site for Rewired &mdash; a scrolling single-page experience
+              that introduces the product, explains the science, and converts visitors.
+            </p>
+            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-6">
+              Built with Next.js and Framer&nbsp;Motion. Every section uses scroll-triggered
+              animations to reveal content progressively as the user moves through the page.
+            </p>
+            <a
+              href="https://joinrewired.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-body text-sm text-accent hover:text-fg transition-colors"
+            >
+              Visit joinrewired.com
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h8v8M13 3 5 11" /></svg>
+            </a>
           </motion.div>
         </div>
-
       </Sect>
 
       {/* ═══ AVATARS ═══ */}
       <Sect label="Avatar System">
-        <motion.div {...fade(0)} className="max-w-[520px] mb-8">
-          <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
-            97 unique avatar illustrations &mdash; every character drawn with the
-            app&rsquo;s signature purple palette. Users pick their avatar during
-            onboarding and it becomes their identity throughout the experience.
-          </p>
-          <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
-            Diversity was a priority: different hairstyles, accessories, and
-            expressions. Generated with AI, then curated and color-graded to
-            maintain visual consistency.
-          </p>
-        </motion.div>
-        <div className="grid grid-cols-10 md:grid-cols-[repeat(20,1fr)] gap-1">
-          {Array.from({ length: 97 }, (_, i) => (
-            <motion.div key={i} {...pop(i)}>
-              <Img
-                src={`/images/rewired/avatars/avatar_${String(i + 1).padStart(3, '0')}.png`}
-                alt={`Avatar ${i + 1}`} w={376} h={435} onClick={open}
-                rounded="rounded-sm"
-              />
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 items-stretch">
+          {/* Left: avatar selection video */}
+          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer">
+            <video src="/videos/uxui/avatar-selection-6a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]"
+              onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+          </motion.div>
+          {/* Right: text + avatar grid */}
+          <div className="flex flex-col">
+            <motion.div {...fade(0)} className="mb-6">
+              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+                97 unique avatar illustrations &mdash; every character drawn with the
+                app&rsquo;s signature purple palette. Users pick their avatar during
+                onboarding and it becomes their identity throughout the experience.
+              </p>
+              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
+                Diversity was a priority: different hairstyles, accessories, and
+                expressions. Generated with AI, then curated and color-graded to
+                maintain visual consistency.
+              </p>
             </motion.div>
-          ))}
+            <div className="border-t border-[#2A2A2A] mb-4" />
+            <div className="grid grid-cols-9 gap-x-1.5 gap-y-3 mt-auto">
+              {Array.from({ length: 45 }, (_, i) => {
+                const skip = [61, 62, 63]; // oddly sized avatars
+                let idx = i + 9;
+                for (const s of skip) { if (idx >= s) idx++; }
+                return (
+                  <motion.div key={i} {...pop(i)}
+                    className="aspect-[4/5] overflow-hidden rounded-sm cursor-pointer"
+                    onClick={() => open(`/images/rewired/avatars/avatar_${String(idx).padStart(3, '0')}.png`)}
+                  >
+                    <Image
+                      src={`/images/rewired/avatars/avatar_${String(idx).padStart(3, '0')}.png`}
+                      alt={`Avatar ${idx}`} width={376} height={435} quality={85}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </Sect>
 
