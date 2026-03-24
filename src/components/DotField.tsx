@@ -175,7 +175,7 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
       const minY = cy - 12 * s - margin;
       const maxY = cy + 12 * s + margin;
 
-      const count = mobileRef.current ? 2000 : 7000;
+      const count = mobileRef.current ? 1200 : 7000;
       let placed = 0;
       let attempts = 0;
 
@@ -322,7 +322,17 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
       sc.lastY = y;
     };
 
-    const draw = () => {
+    let lastDrawTime = 0;
+    const targetInterval = mobileRef.current ? 33 : 16; // 30fps mobile, 60fps desktop
+
+    const draw = (now: number = 0) => {
+      // Throttle frame rate on mobile
+      if (now - lastDrawTime < targetInterval) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
+      lastDrawTime = now;
+
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
       const dots = dotsRef.current;
@@ -415,12 +425,15 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
       scrollRef.current.velocity *= 0.85;
 
       // Render dots — orb gradient + glow white near mouse
+      // Pre-compute colors once per dot during init (cached), then just fillRect
       const glowRadius = 120;
       const { x: shapeX, y: shapeY } = centerRef.current;
-      // Orb colors: periwinkle blue center, soft lavender, pink-mauve edges
-      const colCenter = { r: 155, g: 170, b: 255 }; // periwinkle blue
-      const colLavender = { r: 200, g: 192, b: 252 }; // lavender
-      const colPink = { r: 235, g: 195, b: 230 }; // soft pink
+      const colCenter_r = 155, colCenter_g = 170, colCenter_b = 255;
+      const colLav_r = 200, colLav_g = 192, colLav_b = 252;
+      const colPink_r = 235, colPink_g = 195, colPink_b = 230;
+
+      const mouseActive = mx > -1000 && my > -1000;
+      const dotSize = 1.7; // diameter for fillRect (faster than arc)
 
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
@@ -429,35 +442,31 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
         const dist = Math.sqrt(dx * dx + dy * dy);
         const angle = Math.atan2(dy, dx);
 
-        // Radial: center is blue, edges are lavender/pink
         const radialT = Math.min(dist * 0.008, 1);
-        // Angular: pink toward top-right, lavender toward bottom-left
         const angularT = Math.sin(angle - 0.8) * 0.5 + 0.5;
 
-        // Blend: center → blue, edges → mix of lavender and pink based on angle
-        const edgeR = colLavender.r + (colPink.r - colLavender.r) * angularT;
-        const edgeG = colLavender.g + (colPink.g - colLavender.g) * angularT;
-        const edgeB = colLavender.b + (colPink.b - colLavender.b) * angularT;
+        const edgeR = colLav_r + (colPink_r - colLav_r) * angularT;
+        const edgeG = colLav_g + (colPink_g - colLav_g) * angularT;
+        const edgeB = colLav_b + (colPink_b - colLav_b) * angularT;
 
-        let r = Math.round(colCenter.r + (edgeR - colCenter.r) * radialT);
-        let g = Math.round(colCenter.g + (edgeG - colCenter.g) * radialT);
-        let b = Math.round(colCenter.b + (edgeB - colCenter.b) * radialT);
+        let r = colCenter_r + (edgeR - colCenter_r) * radialT;
+        let g = colCenter_g + (edgeG - colCenter_g) * radialT;
+        let b = colCenter_b + (edgeB - colCenter_b) * radialT;
 
-        // Mouse glow — push toward white
-        const dmx = dot.x - mx;
-        const dmy = dot.y - my;
-        const mDist = Math.sqrt(dmx * dmx + dmy * dmy);
-        if (mDist < glowRadius) {
-          const glow = 1 - mDist / glowRadius;
-          r = Math.round(r + (255 - r) * glow);
-          g = Math.round(g + (255 - g) * glow);
-          b = Math.round(b + (255 - b) * glow);
+        if (mouseActive) {
+          const dmx = dot.x - mx;
+          const dmy = dot.y - my;
+          const mDist = Math.sqrt(dmx * dmx + dmy * dmy);
+          if (mDist < glowRadius) {
+            const glow = 1 - mDist / glowRadius;
+            r += (255 - r) * glow;
+            g += (255 - g) * glow;
+            b += (255 - b) * glow;
+          }
         }
 
-        ctx.fillStyle = `rgb(${r},${g},${b})`;
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = `rgb(${r | 0},${g | 0},${b | 0})`;
+        ctx.fillRect(dot.x - 0.85, dot.y - 0.85, dotSize, dotSize);
       }
 
       animRef.current = requestAnimationFrame(draw);

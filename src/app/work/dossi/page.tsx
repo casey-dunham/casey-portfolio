@@ -636,35 +636,33 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
             exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
             className="art-lightbox-content"
-            style={isGroup ? { flexDirection: 'column', alignItems: 'stretch', maxWidth: '85vw' } : m.w > m.h ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
+            style={isGroup ? { flexDirection: 'column', alignItems: 'stretch', maxWidth: '85vw' } : undefined}
             onClick={(e) => e.stopPropagation()}
           >
             {isGroup ? (
-              <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', maxHeight: '60vh', gap: '4px' }}>
+              <div className="art-lightbox-grid" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
                 {m.groupSrcs!.map((gp, i) => (
                   <motion.div
                     key={gp.src}
-                    initial={{ opacity: 0, x: (i - (m.groupSrcs!.length - 1) / 2) * 60, scale: 0.92 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    transition={{ duration: 0.9, delay: i * 0.08, ease: [0.25, 1, 0.5, 1] }}
-                    style={{ flex: `${gp.w / gp.h}`, minWidth: 0 }}
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
                   >
                     <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
-                      style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                      style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }} />
                   </motion.div>
                 ))}
               </div>
             ) : m.type === 'video' ? (
-              <video src={m.src} autoPlay controls playsInline className="art-lightbox-image"
-                style={{ borderRadius: '12px', ...(m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto' } : { height: '75vh', width: 'auto' }) }} />
+              <video src={m.src} autoPlay controls playsInline className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`}
+                style={{ borderRadius: '12px' }} />
             ) : (
-              <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
-                style={m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto', height: 'auto' } : { height: '75vh', width: 'auto' }} />
+              <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`} quality={90} />
             )}
             {(
               <motion.div
                 className="video-lightbox-detail"
-                style={isGroup || m.w > m.h ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}
+                style={isGroup ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: isGroup ? 0.4 : 0, ease: [0.25, 1, 0.5, 1] }}

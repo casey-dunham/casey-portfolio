@@ -31,7 +31,7 @@ const paragraphs: ParagraphData[] = [
   },
 ];
 
-const titleText = "Hi, I'm Casey. I love beautiful things.";
+const titleText = "Hi, I'm Casey. I love beautiful\u00a0things.";
 const titleWords = titleText.split(' ');
 
 function splitIntoWords(text: string, serifIndices: number[] = []) {
@@ -42,14 +42,14 @@ function splitIntoWords(text: string, serifIndices: number[] = []) {
 }
 
 const wordVariants = {
-  hidden: { opacity: 0, y: 30, filter: 'blur(4px)' },
+  hidden: { opacity: 0, y: 20, filter: 'blur(3px)' },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.6,
-      delay: 0.3 + i * 0.04,
+      duration: 0.5,
+      delay: 0.15 + i * 0.03,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   }),
@@ -107,7 +107,7 @@ export default function Hero() {
         animate="visible"
         className="min-h-[40vh] flex items-end pb-8 pt-28 relative z-[1]"
       >
-        <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight text-fg max-w-[700px]">
+        <h1 className="font-display font-bold leading-[1.08] tracking-tight text-fg max-w-[700px]" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.75rem)' }}>
           {titleWords.map((word, i) => (
             <motion.span
               key={i}

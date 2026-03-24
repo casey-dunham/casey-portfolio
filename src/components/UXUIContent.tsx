@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useEffect } from 'react';
+import { useCallback, useRef, useEffect, useState } from 'react';
 import { useGalleryContext } from './GalleryContext';
 
 export interface VideoProject {
@@ -116,10 +116,31 @@ function VideoCell({
   const videoRef = useRef<HTMLVideoElement>(null);
   const cellRef = useRef<HTMLDivElement>(null);
   const isVisibleRef = useRef(false);
+  const [loaded, setLoaded] = useState(false);
 
+  // Lazy load: only set src when near viewport
+  useEffect(() => {
+    const cell = cellRef.current;
+    if (!cell) return;
+
+    const loadObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoaded(true);
+          loadObserver.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' }
+    );
+
+    loadObserver.observe(cell);
+    return () => loadObserver.disconnect();
+  }, []);
+
+  // Play/pause based on visibility
   useEffect(() => {
     const el = videoRef.current;
-    if (!el) return;
+    if (!el || !loaded) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -130,12 +151,12 @@ function VideoCell({
           el.pause();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.15, rootMargin: '100px 0px' }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [paused]);
+  }, [paused, loaded]);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -156,14 +177,18 @@ function VideoCell({
 
   return (
     <div ref={cellRef} className="video-cell" onClick={handleClick}>
-      <video
-        ref={videoRef}
-        src={video.src}
-        loop
-        muted
-        playsInline
-        preload="metadata"
-      />
+      {loaded ? (
+        <video
+          ref={videoRef}
+          src={video.src}
+          loop
+          muted
+          playsInline
+          preload="auto"
+        />
+      ) : (
+        <div style={{ width: '100%', aspectRatio: '886 / 1920' }} />
+      )}
     </div>
   );
 }
