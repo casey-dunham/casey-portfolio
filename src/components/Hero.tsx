@@ -17,20 +17,20 @@ interface ParagraphData {
 
 const paragraphs: ParagraphData[] = [
   {
-    text: "I'm a designer and engineer who builds products that live at the intersection of health, technology, and human behavior. I care deeply about craft — the way an interface feels, the logic behind a flow, the moment something clicks for a user.",
+    text: "I believe that every interaction in our lives should feel intentional. Everything we touch, see, smell, and taste should be a thoughtful\u00a0experience.",
     serifWords: [],
   },
   {
-    text: "Most recently I've been building tools for people managing diabetes and exploring how AI can make health decisions feel less overwhelming. I believe the best digital products don't just function — they resonate.",
+    text: "There are hundreds of billions of products in the world, and we'll only ever interact with a tiny fraction of them. The ones we do should be meaningful and\u00a0beautiful.",
     serifWords: [],
   },
   {
-    text: "When I'm not designing or writing code, I'm probably sketching, making music, or thinking about neuroplasticity. I'm always looking for the next thing to learn, build, and share with the world.",
+    text: "I'm interested in creating things that meet that standard. I'm also curious how AI is expanding design beyond aesthetics into the full experience, redefining the role of the designer and opening new ways to shape how products are built and\u00a0experienced.",
     serifWords: [],
   },
 ];
 
-const titleText = "Hi, I'm Casey. I design and build products in Atlanta.";
+const titleText = "Hi, I'm Casey. I love beautiful things.";
 const titleWords = titleText.split(' ');
 
 function splitIntoWords(text: string, serifIndices: number[] = []) {

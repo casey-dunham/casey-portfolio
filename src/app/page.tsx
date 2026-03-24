@@ -30,28 +30,19 @@ export default function Home() {
 
       </div>
 
-      <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 border-t border-[var(--border)]">
+      <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 border-t border-border">
         <div className="flex flex-col md:flex-row md:justify-between gap-12">
           <div>
-            <h3 className="font-display text-xl font-bold text-fg mb-4">
-              Get in touch
-            </h3>
+            <h3 className="font-display text-xl font-bold text-fg mb-5">Get in touch</h3>
             <div className="flex flex-col gap-2 font-body text-sm text-fg-muted">
-              <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">
-                caseyedunham@gmail.com
-              </a>
-              <a href="tel:302-377-5638" className="hover:text-fg transition-colors">
-                302-377-5638
-              </a>
-              <a href="https://www.linkedin.com/in/casey-dunham/" target="_blank" rel="noopener noreferrer" className="hover:text-fg transition-colors">
-                LinkedIn
-              </a>
+              <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">caseyedunham@gmail.com</a>
+              <a href="tel:302-377-5638" className="hover:text-fg transition-colors">302-377-5638</a>
+              <a href="https://www.linkedin.com/in/casey-dunham/" target="_blank" rel="noopener noreferrer" className="hover:text-fg transition-colors">LinkedIn</a>
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="flex flex-col gap-2 font-body text-sm text-fg-dim">
+          <div className="md:self-end font-body text-sm text-fg-dim">
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
-            <span>Designed & built by hand</span>
           </div>
         </div>
       </footer>

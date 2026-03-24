@@ -190,12 +190,8 @@ export default function Work() {
         >
           Projects
         </motion.h1>
-        <motion.p
-          {...fade(0.35)}
-          className="font-body text-fg-muted text-[0.95rem] md:text-[1.1rem] leading-[1.7] max-w-[520px]"
-        >
-          Products at the intersection of health, technology, and human
-          behavior.
+        <motion.p {...fade(0.25)} className="font-body text-[#999] text-[0.95rem] leading-[1.6]">
+          A few things I&apos;ve been building.
         </motion.p>
       </section>
 
@@ -210,7 +206,7 @@ export default function Work() {
       <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 mt-20 border-t border-border">
         <div className="flex flex-col md:flex-row md:justify-between gap-12">
           <div>
-            <h3 className="font-display text-xl font-bold text-fg mb-4">Get in touch</h3>
+            <h3 className="font-display text-xl font-bold text-fg mb-5">Get in touch</h3>
             <div className="flex flex-col gap-2 font-body text-sm text-fg-muted">
               <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">caseyedunham@gmail.com</a>
               <a href="tel:302-377-5638" className="hover:text-fg transition-colors">302-377-5638</a>
@@ -218,9 +214,8 @@ export default function Work() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="flex flex-col gap-2 font-body text-sm text-fg-dim">
+          <div className="md:self-end font-body text-sm text-fg-dim">
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
-            <span>Designed &amp; built by hand</span>
           </div>
         </div>
       </footer>

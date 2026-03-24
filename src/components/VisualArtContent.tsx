@@ -6,6 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { GalleryContext, useGalleryContext } from './GalleryContext';
 import { allVideos, type VideoItem } from './UXUIContent';
+import { HIDDEN_PILL_TAGS } from '@/data/projects';
+
+const visibleTags = (tags: string[]) =>
+  tags.filter((t) => !HIDDEN_PILL_TAGS.includes(t as typeof HIDDEN_PILL_TAGS[number]));
 
 interface ArtDetail {
   title: string;
@@ -41,7 +45,7 @@ const birdPieces: ArtPiece[] = [
 const birdDetail: ArtDetail = {
   title: 'Brandywine Zoo Series',
   description: 'Charcoal and colored pencil on toned paper, 2022. Drawn for a volunteer project with the Brandywine Zoo in Delaware. Each piece in this series depicts an endangered bird species native to the state.',
-  tags: ['Charcoal', 'Colored Pencil'],
+  tags: ['Fine Art', 'Graphite'],
   groupPieces: birdPieces,
 };
 birdPieces.forEach((p) => { p.detail = birdDetail; });
@@ -58,20 +62,20 @@ const rows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Charcoal'] } },
-      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards. Drawn in tenth grade.', tags: ['Graphite'] } },
-      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Graphite'] } },
-      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Graphite'] } },
+      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards. Drawn in tenth grade.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Fine Art', 'Graphite'] } },
     ],
   },
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal and graphite', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal and graphite, 2023. A portrait lit only by candlelight, exploring extreme contrast and the way light dissolves into shadow.', tags: ['Charcoal', 'Graphite'] } },
-      { src: '/images/art/lemons-and-antlers.jpg', alt: 'Still Life with Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life with Antlers', description: 'Oil on canvas, 2023. A traditional still life pairing organic forms — shed antlers and lemons — against a richly patterned draped fabric. Focus on color temperature and reflected light within a muted palette.', tags: ['Oil'] } },
-      { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his confident brushwork and approach to rendering light on skin and fabric.', tags: ['Oil'] } },
-      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Procreate'] } },
+      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal and graphite', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal and graphite, 2023. A portrait lit only by candlelight, exploring extreme contrast and the way light dissolves into shadow.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/lemons-and-antlers.jpg', alt: 'Still Life with Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life with Antlers', description: 'Oil on canvas, 2023. A traditional still life pairing organic forms — shed antlers and lemons — against a richly patterned draped fabric. Focus on color temperature and reflected light within a muted palette.', tags: ['Fine Art', 'Paint'] } },
+      { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his confident brushwork and approach to rendering light on skin and fabric.', tags: ['Fine Art', 'Paint'] } },
+      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
     ],
   },
 ];
@@ -81,25 +85,25 @@ const photoRows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Orange — Kenya, 2024', width: 716, height: 1200, detail: { title: 'Orange', description: 'Kenya, 2024. A boy mid-sip in the afternoon sun, his orange polo echoing the warm tones of the soda bottle. Shot during a community gathering in the Rift Valley.' } },
-      { src: '/images/art/basket-of-mangos.jpeg', alt: 'The Harvest — Kenya, 2024', width: 675, height: 1200, detail: { title: 'The Harvest', description: 'Kenya, 2024. A child proudly holds a basin of freshly picked mangoes outside a school gate. The pink basin and red sweater cut against the muted stone and iron behind him.' } },
-      { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Water Carry', description: 'Kenya, 2024. A girl stands with a jerry can in the midday heat, smiling despite the weight. The harsh light flattens the scene into planes of white and warm shadow.' } },
-      { src: '/images/art/clothesline.jpg', alt: 'Drying Day — Kenya, 2024', width: 1600, height: 900, detail: { title: 'Drying Day', description: 'Kenya, 2024. Laundry dries on a balcony railing overlooking a schoolyard. The patterned fabrics and ochre walls create a layered composition of color and texture.' } },
+      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Orange — Kenya, 2024', width: 716, height: 1200, detail: { title: 'Orange', description: 'Kenya, 2024. A boy mid-sip in the afternoon sun, his orange polo echoing the warm tones of the soda bottle. Shot during a community gathering in the Rift Valley.', tags: ['Photography'] } },
+      { src: '/images/art/basket-of-mangos.jpeg', alt: 'The Harvest — Kenya, 2024', width: 675, height: 1200, detail: { title: 'The Harvest', description: 'Kenya, 2024. A child proudly holds a basin of freshly picked mangoes outside a school gate. The pink basin and red sweater cut against the muted stone and iron behind him.', tags: ['Photography'] } },
+      { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Water Carry', description: 'Kenya, 2024. A girl stands with a jerry can in the midday heat, smiling despite the weight. The harsh light flattens the scene into planes of white and warm shadow.', tags: ['Photography'] } },
+      { src: '/images/art/clothesline.jpg', alt: 'Drying Day — Kenya, 2024', width: 1600, height: 900, detail: { title: 'Drying Day', description: 'Kenya, 2024. Laundry dries on a balcony railing overlooking a schoolyard. The patterned fabrics and ochre walls create a layered composition of color and texture.', tags: ['Photography'] } },
     ],
   },
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/sink.jpeg', alt: 'Wash — Kenya, 2024', width: 737, height: 1200, detail: { title: 'Wash', description: 'Kenya, 2024. Two children at a hand-washing station at Happy Life Children\'s Home. Shot in black and white to draw attention to gesture and the geometry of the signs and tiles around them.' } },
-      { src: '/images/art/portrait.jpg', alt: 'Hands to Heart — Kenya, 2024', width: 719, height: 1200, detail: { title: 'Hands to Heart', description: 'Kenya, 2024. A quiet portrait — hands pressed to chest, eyes steady. The shallow depth of field dissolves the palm trees behind into soft light.' } },
-      { src: '/images/art/supersonic.jpg', alt: 'Window Seat — Kenya, 2024', width: 1067, height: 1200, detail: { title: 'Window Seat', description: 'Kenya, 2024. Reading by the glow of an airplane window on the flight over. The cabin darkness isolates the figure in a cocoon of blue light.' } },
+      { src: '/images/art/sink.jpeg', alt: 'Wash — Kenya, 2024', width: 737, height: 1200, detail: { title: 'Wash', description: 'Kenya, 2024. Two children at a hand-washing station at Happy Life Children\'s Home. Shot in black and white to draw attention to gesture and the geometry of the signs and tiles around them.', tags: ['Photography'] } },
+      { src: '/images/art/portrait.jpg', alt: 'Hands to Heart — Kenya, 2024', width: 719, height: 1200, detail: { title: 'Hands to Heart', description: 'Kenya, 2024. A quiet portrait — hands pressed to chest, eyes steady. The shallow depth of field dissolves the palm trees behind into soft light.', tags: ['Photography'] } },
+      { src: '/images/art/supersonic.jpg', alt: 'Window Seat — Kenya, 2024', width: 1067, height: 1200, detail: { title: 'Window Seat', description: 'Kenya, 2024. Reading by the glow of an airplane window on the flight over. The cabin darkness isolates the figure in a cocoon of blue light.', tags: ['Photography'] } },
     ],
   },
   {
     cols: 1,
     pieces: [
-      { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', width: 5884, height: 1533, detail: { title: 'The Herd', description: 'Kenya, 2024. A panoramic shot of zebras grazing on the Maasai Mara. The wide crop emphasizes the rhythm of stripes repeating across the grassland.' } },
+      { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', width: 5884, height: 1533, detail: { title: 'The Herd', description: 'Kenya, 2024. A panoramic shot of zebras grazing on the Maasai Mara. The wide crop emphasizes the rhythm of stripes repeating across the grassland.', tags: ['Photography'] } },
     ],
   },
 ];
@@ -114,7 +118,7 @@ const stoolPieces: ArtPiece[] = [
 const stoolDetail: ArtDetail = {
   title: 'Step Stool',
   description: 'A step stool designed for the laundry room, featuring a pull-out table for resting a basket while loading or unloading machines. CNC-cut from Baltic birch plywood with finger joint construction. Modeled in Fusion 360 and prototyped in laser-cut cardboard before final fabrication.',
-  tags: ['Fusion 360', 'CNC'],
+  tags: ['Product Design', 'Fusion 360'],
   groupPieces: stoolPieces,
 };
 stoolPieces.forEach((p) => { p.detail = stoolDetail; });
@@ -348,8 +352,8 @@ function UnifiedLightbox({
                     <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{item.video.detail.subtitle}</span>
                     <p className="video-lightbox-detail-desc">{item.video.detail.description}</p>
                     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                      {item.video.detail.tags.map((tag) => (
-                        <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                      {visibleTags(item.video.detail.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
                       ))}
                     </div>
                   </div>
@@ -393,8 +397,8 @@ function UnifiedLightbox({
                   <p className="video-lightbox-detail-desc">{item.piece.detail.description}</p>
                   {item.piece.detail.tags && (
                     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                      {item.piece.detail.tags.map((tag) => (
-                        <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                      {visibleTags(item.piece.detail.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
                       ))}
                     </div>
                   )}
@@ -422,8 +426,8 @@ function UnifiedLightbox({
                     )}
                     {item.piece.detail.tags && (
                       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                        {item.piece.detail.tags.map((tag) => (
-                          <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                        {visibleTags(item.piece.detail.tags).map((tag) => (
+                          <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
                         ))}
                       </div>
                     )}

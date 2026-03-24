@@ -57,6 +57,18 @@ export default function Navigation() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href="/skills"
+                className="flex items-center justify-center text-fg hover:text-white transition-colors duration-300"
+                aria-label="Search skills"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="7" cy="7" r="4.5" />
+                  <path d="M10.5 10.5L14 14" />
+                </svg>
+              </Link>
+            </li>
           </ul>
 
           <button
@@ -117,6 +129,23 @@ export default function Navigation() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 + navItems.length * 0.06 }}
+              >
+                <Link
+                  href="/skills"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="font-display text-5xl font-light text-fg hover:text-accent transition-colors flex items-center gap-4"
+                >
+                  <svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="7" cy="7" r="4.5" />
+                    <path d="M10.5 10.5L14 14" />
+                  </svg>
+                  Skills
+                </Link>
+              </motion.div>
             </motion.nav>
           </motion.div>
         )}

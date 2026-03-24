@@ -94,13 +94,13 @@ export default function DotField({ anchorRef }: DotFieldProps) {
       const dots: Dot[] = [];
 
       // Anchor to upper-right corner of the first paragraph, or fallback
-      let cx = w * 0.60;
+      let cx = w * 0.48;
       let cy = h * 0.40;
       if (anchorRef?.current && canvas.parentElement) {
         const parentRect = canvas.parentElement.getBoundingClientRect();
         const anchorRect = anchorRef.current.getBoundingClientRect();
         cx = anchorRect.right - parentRect.left;
-        cy = anchorRect.top - parentRect.top;
+        cy = anchorRect.top - parentRect.top + 20;
       }
       centerRef.current = { x: cx, y: cy };
       const s = Math.min(w, h) * 0.012;
@@ -330,7 +330,7 @@ export default function DotField({ anchorRef }: DotFieldProps) {
 
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
-      const mouseRadius = 70;
+      const mouseRadius = 80;
 
       // Build spatial grid
       grid.clear();
@@ -348,7 +348,7 @@ export default function DotField({ anchorRef }: DotFieldProps) {
         const mDist = Math.sqrt(dmx * dmx + dmy * dmy);
 
         if (mDist < mouseRadius && mDist > 0.1) {
-          const force = ((1 - mDist / mouseRadius) ** 1.5) * 5;
+          const force = ((1 - mDist / mouseRadius) ** 1.5) * 6.5;
           dot.vx += (dmx / mDist) * force;
           dot.vy += (dmy / mDist) * force;
         }
@@ -411,9 +411,9 @@ export default function DotField({ anchorRef }: DotFieldProps) {
       const glowRadius = 120;
       const { x: shapeX, y: shapeY } = centerRef.current;
       // Orb colors: periwinkle blue center, soft lavender, pink-mauve edges
-      const colCenter = { r: 165, g: 175, b: 255 }; // periwinkle
-      const colLavender = { r: 210, g: 198, b: 255 }; // lavender
-      const colPink = { r: 233, g: 203, b: 246 }; // pink-mauve
+      const colCenter = { r: 155, g: 170, b: 255 }; // periwinkle blue
+      const colLavender = { r: 200, g: 192, b: 252 }; // lavender
+      const colPink = { r: 235, g: 195, b: 230 }; // soft pink
 
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
@@ -423,7 +423,7 @@ export default function DotField({ anchorRef }: DotFieldProps) {
         const angle = Math.atan2(dy, dx);
 
         // Radial: center is blue, edges are lavender/pink
-        const radialT = Math.min(dist * 0.006, 1);
+        const radialT = Math.min(dist * 0.008, 1);
         // Angular: pink toward top-right, lavender toward bottom-left
         const angularT = Math.sin(angle - 0.8) * 0.5 + 0.5;
 

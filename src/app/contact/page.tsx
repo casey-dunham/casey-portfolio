@@ -21,7 +21,7 @@ export default function Contact() {
         {...fade(0.2)}
         className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-fg leading-[1.08] tracking-tight mb-8 md:mb-10 max-w-[600px]"
       >
-        Let&rsquo;s work together
+        Get in Touch
       </motion.h1>
 
       <motion.p

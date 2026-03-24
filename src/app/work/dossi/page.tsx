@@ -5,6 +5,10 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { HIDDEN_PILL_TAGS } from '@/data/projects';
+
+const visibleTags = (tags: string[]) =>
+  tags.filter((t) => !HIDDEN_PILL_TAGS.includes(t as typeof HIDDEN_PILL_TAGS[number]));
 
 /* ── Animation ── */
 const ease = [0.25, 1, 0.5, 1] as const;
@@ -650,7 +654,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
               </div>
             ) : m.type === 'video' ? (
               <video src={m.src} autoPlay controls playsInline className="art-lightbox-image"
-                style={m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto' } : { height: '75vh', width: 'auto' }} />
+                style={{ borderRadius: '12px', ...(m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto' } : { height: '75vh', width: 'auto' }) }} />
             ) : (
               <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
                 style={m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto', height: 'auto' } : { height: '75vh', width: 'auto' }} />
@@ -670,10 +674,10 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
                 <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
                 <p className="video-lightbox-detail-desc">{m.caption}</p>
-                {m.tags.length > 0 && (
+                {visibleTags(m.tags).length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                    {m.tags.map((tag) => (
-                      <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                    {visibleTags(m.tags).map((tag) => (
+                      <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
                     ))}
                   </div>
                 )}

@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const fade = (delay: number) => ({
   initial: { opacity: 0, y: 18 },
@@ -22,33 +23,36 @@ export default function About() {
     <main className="min-h-screen pb-0">
       {/* ── Hero ── */}
       <section className="pt-28 md:pt-36 pb-20 md:pb-28 px-4 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-12 md:gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-12 md:gap-16 items-start">
           <Portrait />
-
           <div>
             <motion.h1
               {...fade(0.2)}
-              className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-fg leading-[1.08] tracking-tight mb-14 md:mb-16"
+              className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-fg leading-[1.08] tracking-tight mb-6 md:mb-8"
             >
               Hi, I&rsquo;m Casey
             </motion.h1>
 
             <motion.div {...fade(0.35)}>
               <p className="font-body text-fg text-[1.15rem] md:text-[1.25rem] leading-[1.6] font-light mb-6">
-                I&rsquo;m a designer and engineer studying Industrial Design at
-                Georgia&nbsp;Tech. I build products at the intersection of health,
-                technology, and human behavior.
+                I&rsquo;m studying Industrial Design at Georgia&nbsp;Tech. I&rsquo;m
+                obsessed with building things, and making them&nbsp;beautiful.
               </p>
-              <p className="font-body text-fg-muted text-[0.95rem] leading-[1.7] mb-10">
-                I care deeply about craft &mdash; the way an interface feels, the
-                logic behind a flow, the moment something clicks for a user. Most
-                recently I&rsquo;ve been building tools for people managing diabetes
-                and exploring how AI can make health decisions feel less
-                overwhelming.
+              <p className="font-body text-fg-muted text-[0.95rem] leading-[1.7] mb-6">
+                I&rsquo;m fascinated by how designers can now participate in the full
+                creation of a product using tools like AI. I believe in a holistic
+                workflow&mdash;not just shaping the exterior, but understanding and
+                designing the interior. With AI, designers can contribute to both the
+                structure and the experience of a product in ways that weren&rsquo;t
+                possible&nbsp;before.
+              </p>
+              <p className="font-body text-fg-muted text-[0.95rem] leading-[1.7] mb-8">
+                I have explored this myself in web development, building and designing
+                full stack apps on my own, which you can learn more
+                about{' '}<a href="/work" className="text-fg-muted hover:text-fg transition-colors underline underline-offset-2">here</a>.
               </p>
               <motion.a
-                href="/Casey_Dunham_Resume.pdf"
-                download
+                href="/resume"
                 className="group inline-flex items-center gap-3 px-6 py-3 text-sm font-body font-medium text-fg border border-border-light rounded-full hover:border-accent hover:text-accent transition-all duration-300"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -64,9 +68,10 @@ export default function About() {
                   strokeLinejoin="round"
                   className="opacity-40 group-hover:opacity-100 transition-opacity"
                 >
-                  <path d="M8 2v9M4.5 7.5 8 11l3.5-3.5M3 14h10" />
+                  <rect x="2" y="1.5" width="12" height="13" rx="1.5" />
+                  <path d="M5 5h6M5 8h6M5 11h3" />
                 </svg>
-                Download Resume
+                View Resume
               </motion.a>
             </motion.div>
           </div>
@@ -102,20 +107,35 @@ export default function About() {
         <ResumeGroup label="Skills" groupIndex={3}>
           <div className="flex flex-wrap gap-2.5">
             {[
-              'Industrial Design', 'Product Design', 'UX / UI', 'Figma',
-              'Adobe Creative Suite', 'Fusion 360', 'Prototyping', 'Branding',
-              'Web Design', 'React', 'SwiftUI', 'English', 'Conversational German',
-            ].map((skill, i) => (
-              <motion.span
-                key={skill}
+              { label: 'Industrial Design', tag: 'Product Design' },
+              { label: 'UX / UI', tag: 'UX/UI' },
+              { label: 'Figma' },
+              { label: 'Illustrator' },
+              { label: 'InDesign' },
+              { label: 'Procreate' },
+              { label: 'Fusion 360' },
+              { label: 'Branding' },
+              { label: 'Web Design', tag: 'Framer' },
+              { label: 'SwiftUI' },
+              { label: 'Photography' },
+              { label: 'Fine Art' },
+              { label: 'Claude' },
+              { label: 'Codex', tag: 'Claude' },
+              { label: 'Gemini' },
+              { label: 'English' },
+              { label: 'Conversational German' },
+            ].map(({ label, tag }, i) => (
+              <motion.a
+                key={label}
+                href={`/skills?t=${encodeURIComponent(tag ?? label)}`}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
-                className="px-5 py-2.5 text-[0.82rem] font-body text-[#999] border border-[#2A2A2A] rounded-full hover:text-fg hover:border-[#555] transition-all duration-300 cursor-default"
+                className="px-5 py-2.5 text-[0.82rem] font-body text-[#999] border border-[#2A2A2A] rounded-full hover:text-fg hover:border-[#555] transition-all duration-300"
               >
-                {skill}
-              </motion.span>
+                {label}
+              </motion.a>
             ))}
           </div>
         </ResumeGroup>
@@ -125,7 +145,7 @@ export default function About() {
       <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 border-t border-border">
         <div className="flex flex-col md:flex-row md:justify-between gap-12">
           <div>
-            <h3 className="font-display text-xl font-bold text-fg mb-4">Get in touch</h3>
+            <h3 className="font-display text-xl font-bold text-fg mb-5">Get in touch</h3>
             <div className="flex flex-col gap-2 font-body text-sm text-fg-muted">
               <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">caseyedunham@gmail.com</a>
               <a href="tel:302-377-5638" className="hover:text-fg transition-colors">302-377-5638</a>
@@ -133,9 +153,8 @@ export default function About() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="flex flex-col gap-2 font-body text-sm text-fg-dim">
+          <div className="md:self-end font-body text-sm text-fg-dim">
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
-            <span>Designed & built by hand</span>
           </div>
         </div>
       </footer>
@@ -146,29 +165,22 @@ export default function About() {
 /* ── Components ── */
 
 function Portrait() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
-      className="rounded-lg overflow-hidden"
+      className="rounded-lg overflow-hidden md:self-stretch"
     >
-      <motion.div style={{ y }}>
-        <Image
-          src="/images/headshot/portrait.jpeg"
-          alt="Casey Dunham"
-          width={1909}
-          height={1909}
-          quality={90}
-          className="w-full block scale-110 transition-transform duration-500 ease-out hover:scale-[1.15]"
-          priority
-        />
-      </motion.div>
+      <Image
+        src="/images/headshot/portrait.jpeg"
+        alt="Casey Dunham"
+        width={1909}
+        height={1909}
+        quality={90}
+        className="w-full h-full object-cover block"
+        priority
+      />
     </motion.div>
   );
 }
