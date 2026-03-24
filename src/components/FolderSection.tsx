@@ -18,7 +18,7 @@ interface FolderSectionProps {
 export default function FolderSection({
   title,
   index,
-  startOpen = false,
+  startOpen = true,
   children,
 }: FolderSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);

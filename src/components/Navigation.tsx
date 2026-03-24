@@ -1,14 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-const navItems = [
+const leftItems = [
+  { name: 'Gallery', href: '/#gallery' },
+  { name: 'Projects', href: '/#projects' },
+];
+
+const rightItems = [
   { name: 'About + Resume', href: '/about' },
-  { name: 'Work', href: '/work' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -18,6 +22,15 @@ export default function Navigation() {
   const pathname = usePathname();
   const isHome = pathname === '/';
 
+  const handleSectionClick = useCallback((e: React.MouseEvent, hash: string) => {
+    if (isHome) {
+      e.preventDefault();
+      const hashOnly = hash.includes('#') ? '#' + hash.split('#')[1] : hash;
+      window.location.hash = hashOnly;
+      document.getElementById('section-tabs')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isHome]);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -25,6 +38,27 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const allItems = [...leftItems, ...rightItems];
+
+  const linkClass = "text-sm font-body font-medium text-fg hover:text-accent transition-colors duration-300 uppercase tracking-widest";
+
+  const renderLink = (item: { name: string; href: string }) => {
+    const isSection = item.name === 'Gallery' || item.name === 'Projects';
+    return isSection ? (
+      <a
+        href={item.href}
+        onClick={(e) => handleSectionClick(e, item.href)}
+        className={linkClass}
+      >
+        {item.name}
+      </a>
+    ) : (
+      <Link href={item.href} className={linkClass}>
+        {item.name}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -35,7 +69,7 @@ export default function Navigation() {
         className="fixed top-0 left-0 right-0 z-50"
         style={{ backgroundColor: 'var(--bg)' }}
       >
-        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-3 flex items-center justify-between">
+        <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-5 flex items-center justify-between">
           <Link
             href="/"
             className={`group transition-opacity duration-300 ${
@@ -48,15 +82,8 @@ export default function Navigation() {
           </Link>
 
           <ul className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className="text-sm font-body font-medium text-fg hover:text-accent transition-colors duration-300 uppercase tracking-widest"
-                >
-                  {item.name}
-                </Link>
-              </li>
+            {allItems.map((item) => (
+              <li key={item.name}>{renderLink(item)}</li>
             ))}
             <li>
               <Link
@@ -74,7 +101,7 @@ export default function Navigation() {
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative w-8 h-8 flex items-center justify-center"
+            className="md:hidden relative w-8 h-8 flex items-center justify-center ml-auto"
             aria-label="Toggle menu"
           >
             <div className="relative w-6 h-4">
@@ -114,26 +141,39 @@ export default function Navigation() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="flex flex-col items-center justify-center h-full gap-10"
             >
-              {navItems.map((item, index) => (
+              {allItems.map((item, index) => (
                 <motion.div
                   key={item.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.15 + index * 0.06 }}
                 >
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-display text-3xl sm:text-5xl font-light text-fg hover:text-accent transition-colors"
-                  >
-                    {item.name}
-                  </Link>
+                  {item.name === 'Gallery' || item.name === 'Projects' ? (
+                    <a
+                      href={item.href}
+                      onClick={(e) => {
+                        handleSectionClick(e, item.href);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="font-display text-3xl sm:text-5xl font-light text-fg hover:text-accent transition-colors"
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="font-display text-3xl sm:text-5xl font-light text-fg hover:text-accent transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.15 + navItems.length * 0.06 }}
+                transition={{ duration: 0.4, delay: 0.15 + allItems.length * 0.06 }}
               >
                 <Link
                   href="/skills"

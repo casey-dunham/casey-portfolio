@@ -82,22 +82,67 @@ const media: MediaItem[] = [
     title: 'Notifications', caption: 'Session reminders and check-in preferences — customizable to support habit formation.', tags: ['SwiftUI'] },
   { src: '/images/rewired/screenshots/screen1.png', alt: 'Onboarding', w: 1242, h: 2688, type: 'image',
     title: 'Onboarding', caption: 'First screen of the onboarding flow — setting expectations and building trust.', tags: ['SwiftUI', 'Figma'] },
-  // Illustrations — grouped
-  { src: '/images/rewired/illustrations/brain-tree.png', alt: 'Illustrations', w: 1024, h: 1024, type: 'image',
-    title: 'Illustration Library', caption: '60+ original illustrations used throughout lessons, onboarding, and coaching. Each drawn in Procreate with a textured, hand-crafted aesthetic.', tags: ['Procreate'],
-    groupSrcs: ['brain-tree', 'brain-door', 'brain-puzzle', 'knight', 'potted-plant', 'lightbulb', 'telescope', 'brain-heart', 'stone-cairn'].map((name) => ({
-      src: `/images/rewired/illustrations/${name}.png`, alt: name.replace(/-/g, ' '), w: 1024, h: 1024,
-    })),
-  },
+  // Illustrations — individual entries
+  ...([
+    ['brain-tree', 'Brain Tree', 'A tree growing from neural pathways — representing organic growth and neuroplasticity.'],
+    ['brain-door', 'Brain Door', 'An open door within the mind — symbolizing new mental pathways and possibilities.'],
+    ['brain-puzzle', 'Brain Puzzle', 'Puzzle pieces forming a brain — the process of understanding and restructuring thought patterns.'],
+    ['knight', 'Knight', 'A chess knight — strategic thinking and the courage to challenge limiting beliefs.'],
+    ['potted-plant', 'Potted Plant', 'A growing plant — nurturing new neural connections with patience and care.'],
+    ['lightbulb', 'Lightbulb', 'A glowing lightbulb — moments of insight during the rewiring process.'],
+    ['telescope', 'Telescope', 'A telescope — gaining perspective and seeing beyond current belief patterns.'],
+    ['brain-heart', 'Brain Heart', 'A brain intertwined with a heart — the connection between thought and emotion.'],
+    ['stone-cairn', 'Stone Cairn', 'Stacked stones — balance, mindfulness, and building progress one step at a time.'],
+    ['umbrella', 'Umbrella', 'An umbrella — protection and resilience against negative thought patterns.'],
+    ['star', 'Star', 'A guiding star — aspiration and the ideal self that drives transformation.'],
+    ['anvil-with-balloon', 'Anvil with Balloon', 'An anvil lifted by a balloon — lightening heavy mental burdens.'],
+    ['broken-ladder', 'Broken Ladder', 'A broken ladder — recognizing and rebuilding flawed belief structures.'],
+    ['brain-topographic', 'Topographic Brain', 'A brain rendered as a topographic map — exploring the landscape of the mind.'],
+    ['fingerprint', 'Fingerprint', 'A fingerprint — the uniqueness of each person\'s neural patterns.'],
+    ['hour-glass', 'Hourglass', 'An hourglass — patience in the neuroplasticity process.'],
+    ['key', 'Key', 'A key — unlocking new ways of thinking.'],
+    ['shield', 'Shield', 'A shield — building mental resilience and self-protection.'],
+    ['trophy', 'Trophy', 'A trophy — celebrating progress and growth milestones.'],
+    ['flame', 'Flame', 'A flame — the spark of motivation and transformation.'],
+    ['bird-head', 'Bird', 'A bird — freedom from limiting beliefs and mental constraints.'],
+    ['magnifying-glass', 'Magnifying Glass', 'A magnifying glass — examining thoughts and patterns with curiosity.'],
+    ['cracked-pot-with-sprout', 'Cracked Pot with Sprout', 'A cracked pot with a sprout growing through — beauty and growth from imperfection.'],
+    ['ladder-out-of-head', 'Ladder Out of Head', 'A ladder emerging from a head — climbing out of old thought patterns.'],
+    ['brain-wind-toy', 'Brain Wind Toy', 'A wind-up brain — the mechanics of habit formation and neural rewiring.'],
+    ['sad-illustration', 'Reflection', 'A contemplative figure — acknowledging difficult emotions as part of growth.'],
+    ['calendar', 'Calendar', 'A calendar — consistency and daily practice in building new pathways.'],
+    ['clock', 'Clock', 'A clock — the timing and rhythm of neural change.'],
+    ['notebook', 'Notebook', 'A notebook — journaling and self-reflection as tools for awareness.'],
+    ['neural-network', 'Neural Network', 'A neural network — the interconnected web of thoughts and beliefs.'],
+    ['knitting-brain', 'Knitting Brain', 'A brain being knitted — carefully constructing new neural patterns.'],
+    ['spark-brain', 'Spark Brain', 'A brain with sparks — the electricity of new neural connections forming.'],
+    ['book-stack', 'Book Stack', 'A stack of books — psychoeducation and learning as foundations for change.'],
+    ['statue-with-headphones', 'Statue with Headphones', 'A statue wearing headphones — combining timeless wisdom with modern approaches.'],
+    ['eraser', 'Eraser', 'An eraser — letting go of old beliefs that no longer serve you.'],
+    ['hand-with-thread', 'Hand with Thread', 'A hand holding thread — the delicate work of rewiring thought patterns.'],
+    ['tree-with-optic-roots', 'Tree with Roots', 'A tree with visible roots — deep-rooted beliefs and the foundation of change.'],
+    ['brain-cut-out', 'Brain Cutout', 'A brain cutout — examining the mind from a new angle.'],
+    ['closing-door', 'Closing Door', 'A closing door — leaving behind old patterns and moving forward.'],
+    ['cracked-bell', 'Cracked Bell', 'A cracked bell — imperfection and the beauty of being a work in progress.'],
+    ['ear', 'Ear', 'An ear — active listening and tuning into your inner voice.'],
+    ['gears', 'Gears', 'Interlocking gears — the mechanics of cognitive restructuring.'],
+    ['cracked-rook', 'Cracked Rook', 'A cracked chess rook — strategic defenses that need rebuilding.'],
+    ['check', 'Checkmark', 'A checkmark — completion, validation, and progress affirmation.'],
+    ['topographic-brain', 'Brain Landscape', 'A topographic brain landscape — mapping the terrain of personal growth.'],
+    ['knotted-rope', 'Knotted Rope', 'A knotted rope — untangling complex thought patterns.'],
+    ['wired-brain', 'Wired Brain', 'A brain with visible wiring — the literal rewiring of neural connections.'],
+    ['brain-map', 'Brain Map', 'A brain map — charting the journey of cognitive transformation.'],
+    ['brain-turtle', 'Brain Turtle', 'A brain turtle — slow, steady progress in building lasting change.'],
+  ] as const).map(([name, title, caption]) => ({
+    src: `/images/rewired/illustrations/${name}.png`, alt: title, w: 1024, h: 1024, type: 'image' as const,
+    title, caption, tags: ['AI Generation', 'Illustration', 'Illustrator'],
+  })),
   // Avatars — grouped
   { src: '/images/rewired/avatars/avatar_009.png', alt: 'Avatars', w: 376, h: 435, type: 'image',
     title: 'Avatar Library', caption: '97 unique avatar illustrations drawn in the app\'s signature purple palette. Users select one during onboarding to represent them throughout the experience.', tags: ['AI Generation', 'Procreate'],
-    groupSrcs: Array.from({ length: 18 }, (_, i) => {
-      let n = i + 9;
-      const skip = [61, 62, 63];
-      for (const s of skip) { if (n >= s) n++; }
-      return { src: `/images/rewired/avatars/avatar_${String(n).padStart(3, '0')}.png`, alt: `Avatar ${n}`, w: 376, h: 435 };
-    }),
+    groupSrcs: Array.from({ length: 97 }, (_, i) => ({
+      src: `/images/rewired/avatars/avatar_${String(i + 1).padStart(3, '0')}.png`, alt: `Avatar ${i + 1}`, w: 376, h: 435,
+    })),
   },
   // Animation process
   { src: '/videos/rewired/animation-process.mp4', alt: 'Animation process', w: 1920, h: 1080, type: 'video',
@@ -144,19 +189,13 @@ export default function RewiredProject() {
             <motion.p {...fade(0.2)} className="font-body text-fg text-[1.15rem] md:text-[1.3rem] leading-[1.55] font-light mb-5">
               Neuroplasticity, made personal.
             </motion.p>
-            <motion.p {...fade(0.25)} className="font-body text-[#999] text-[0.92rem] leading-[1.7] mb-5">
-              Rewired is a science-backed app that helps users transform limiting beliefs
-              through personalized daily sessions. It combines psychoeducation, therapeutic
-              exercises, and AI coaching. All grounded in neuroplasticity research.
-            </motion.p>
-            <motion.p {...fade(0.28)} className="font-body text-[#999] text-[0.92rem] leading-[1.7] mb-8">
-              Solo-designed and solo-built. Every illustration and interaction
-              crafted by hand.
+            <motion.p {...fade(0.25)} className="font-body text-[#999] text-[0.92rem] leading-[1.7] mb-8">
+              Rewired is a science-backed app that helps users transform limiting beliefs through personalized daily sessions. It combines psychoeducation, therapeutic exercises, and AI coaching. All grounded in neuroplasticity research. Solo-designed and solo-built. Awaiting App Store approval.
             </motion.p>
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
               <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#333] bg-[#ddd] rounded-full">Sep – Dec 2025</span>
               {['SwiftUI', 'SwiftData', 'Gemini AI', 'Figma', 'Procreate', 'CloudKit'].map((t) => (
-                <span key={t} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">{t}</span>
+                <Link key={t} href={`/skills?t=${encodeURIComponent(t)}`} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full hover:text-fg hover:border-[#555] transition-colors">{t}</Link>
               ))}
             </motion.div>
             <motion.a
@@ -276,7 +315,7 @@ export default function RewiredProject() {
         {...fade(0)}
         className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] py-16 md:py-20"
       >
-        <p className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-fg text-center leading-[1.25] tracking-tight mx-auto max-w-[600px]">
+        <p className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-fg text-center leading-[1.25] tracking-tight mx-auto max-w-[800px] whitespace-nowrap">
           Your brain isn&rsquo;t broken. It just needs <em className="font-serif italic text-accent">rewiring</em>.
         </p>
       </motion.div>
@@ -354,28 +393,6 @@ export default function RewiredProject() {
         </div>
       </Sect>
 
-      {/* ═══ KEY SCREENS ═══ */}
-      <Sect label="Key Screens">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          {([
-            ['/images/rewired/screenshots/welcome.png', 'Welcome'],
-            ['/images/rewired/screenshots/npi.png', 'Assessment'],
-            ['/images/rewired/screenshots/results.png', 'Results'],
-            ['/images/rewired/screenshots/dashboard.png', 'Dashboard'],
-            ['/images/rewired/screenshots/profile.png', 'Neuroprofile'],
-            ['/images/rewired/screenshots/lessonintro.png', 'Lesson Intro'],
-            ['/images/rewired/screenshots/lesson.png', 'Lesson'],
-            ['/images/rewired/screenshots/aichattext.png', 'AI Coach'],
-            ['/images/rewired/screenshots/notifications.png', 'Notifications'],
-            ['/images/rewired/screenshots/screen1.png', 'Onboarding'],
-          ] as const).map(([src, alt], i) => (
-            <motion.div key={src} {...pop(i)}>
-              <Img src={src} alt={alt} w={1242} h={2688} onClick={open} />
-            </motion.div>
-          ))}
-        </div>
-      </Sect>
-
       {/* ═══ ILLUSTRATION GALLERY ═══ */}
       <Sect label="Illustration Library">
         <motion.p {...fade(0)} className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-8">
@@ -393,10 +410,10 @@ export default function RewiredProject() {
           ].map((name, i) => (
             <motion.div key={name} {...pop(i)}
               className="aspect-square w-full overflow-hidden cursor-pointer relative"
-              onClick={() => open('/images/rewired/illustrations/brain-tree.png')}
+              onClick={() => open(`/images/rewired/illustrations/${name}.png`)}
             >
               <motion.div
-                className="w-full h-full flex items-center justify-center"
+                className="w-full h-full flex items-center justify-center p-2"
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
               >
@@ -409,6 +426,28 @@ export default function RewiredProject() {
                   className="max-w-full max-h-full w-auto h-auto object-contain"
                 />
               </motion.div>
+            </motion.div>
+          ))}
+        </div>
+      </Sect>
+
+      {/* ═══ KEY SCREENS ═══ */}
+      <Sect label="Key Screens">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          {([
+            ['/images/rewired/screenshots/welcome.png', 'Welcome'],
+            ['/images/rewired/screenshots/npi.png', 'Assessment'],
+            ['/images/rewired/screenshots/results.png', 'Results'],
+            ['/images/rewired/screenshots/dashboard.png', 'Dashboard'],
+            ['/images/rewired/screenshots/profile.png', 'Neuroprofile'],
+            ['/images/rewired/screenshots/lessonintro.png', 'Lesson Intro'],
+            ['/images/rewired/screenshots/lesson.png', 'Lesson'],
+            ['/images/rewired/screenshots/aichattext.png', 'AI Coach'],
+            ['/images/rewired/screenshots/notifications.png', 'Notifications'],
+            ['/images/rewired/screenshots/screen1.png', 'Onboarding'],
+          ] as const).map(([src, alt], i) => (
+            <motion.div key={src} {...pop(i)}>
+              <Img src={src} alt={alt} w={1242} h={2688} onClick={open} />
             </motion.div>
           ))}
         </div>
@@ -487,6 +526,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   const dirRef = useRef(direction);
   dirRef.current = direction;
   const isGroup = !!m.groupSrcs;
+  const isVideo = m.type === 'video';
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -498,13 +538,32 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
     return () => window.removeEventListener('keydown', h);
   }, [onClose, onPrev, onNext, hasPrev, hasNext]);
 
-  const init = () => direction === 0 ? { opacity: 0, scale: 0.9 } : { x: direction > 0 ? 600 : -600, opacity: 0 };
+  const getInitial = () => {
+    if (direction !== 0) return { x: direction > 0 ? 600 : -600, opacity: 0 };
+    return { opacity: 0, scale: 0.9 };
+  };
+
+  const getOrientationClass = () => {
+    if (isVideo || isGroup) return '';
+    const ar = m.w / m.h;
+    if (ar > 2) return ' art-lightbox-ultrawide';
+    if (ar >= 1) return ' art-lightbox-landscape';
+    return ' art-lightbox-portrait';
+  };
+
+  const getContentStyle = () => {
+    if (isGroup) return { flexDirection: 'column' as const, alignItems: 'stretch' as const, maxWidth: '80vw' };
+    return undefined;
+  };
+
+  const backdropClass = isVideo ? 'video-lightbox-backdrop' : 'art-lightbox-backdrop';
+  const contentClass = isVideo ? 'video-lightbox-content' : `art-lightbox-content${getOrientationClass()}`;
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease }}
-      className="art-lightbox-backdrop" onClick={onClose}
+      transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+      className={backdropClass} onClick={onClose}
     >
       <motion.button className="video-lightbox-close" onClick={onClose}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
@@ -513,7 +572,8 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
 
       {hasPrev && (
         <motion.button className="video-lightbox-nav video-lightbox-prev"
-          onClick={(e) => { e.stopPropagation(); onPrev(); }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          onClick={(e) => { e.stopPropagation(); onPrev(); }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
         </motion.button>
       )}
@@ -521,56 +581,95 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <AnimatePresence initial={false}>
           <motion.div
-            key={m.src} initial={init()} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            key={m.src} initial={getInitial()} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
-            className="art-lightbox-content"
-            style={isGroup ? { flexDirection: 'column', alignItems: 'stretch', maxWidth: '85vw' } : undefined}
+            className={contentClass}
+            style={getContentStyle()}
             onClick={(e) => e.stopPropagation()}
           >
-            {isGroup ? (
-              <div className="art-lightbox-grid" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-                {m.groupSrcs!.map((gp, i) => (
-                  <motion.div
-                    key={gp.src}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
-                  >
-                    <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
-                      style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }} />
-                  </motion.div>
-                ))}
-              </div>
-            ) : m.type === 'video' ? (
-              <video src={m.src} autoPlay controls playsInline className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`}
-                style={{ borderRadius: '12px' }} />
+            {isVideo ? (
+              <>
+                <div className="video-lightbox-video-wrap" onClick={(e) => {
+                  const vid = e.currentTarget.querySelector('video');
+                  if (vid) vid.paused ? vid.play() : vid.pause();
+                }}>
+                  <video src={m.src} autoPlay loop muted playsInline className="video-lightbox-video" style={{ cursor: 'pointer' }} />
+                </div>
+                <div className="video-lightbox-detail">
+                  <a href="/work/rewired" className="video-lightbox-detail-header">
+                    <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
+                    <span className="video-lightbox-detail-name">Rewired</span>
+                    <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                  </a>
+                  <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : isGroup ? (
+              <>
+                <div className={`art-lightbox-grid ${m.alt === 'Avatars' ? 'art-lightbox-grid--avatars' : ''}`} style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                  {m.groupSrcs!.map((gp, i) => (
+                    <motion.div
+                      key={gp.src}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
+                      className={m.alt === 'Avatars' ? 'aspect-[4/5] overflow-hidden rounded-sm' : ''}
+                    >
+                      <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
+                        style={{ width: '100%', height: m.alt === 'Avatars' ? '100%' : 'auto', objectFit: m.alt === 'Avatars' ? 'cover' : 'contain', borderRadius: m.alt === 'Avatars' ? '2px' : '6px' }} />
+                    </motion.div>
+                  ))}
+                </div>
+                <motion.div
+                  className="video-lightbox-detail"
+                  style={{ maxWidth: 'none', paddingTop: '1rem' }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                >
+                  <span className="video-lightbox-detail-name">{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              </>
             ) : (
-              <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`} quality={90} />
-            )}
-            {(
-              <motion.div
-                className="video-lightbox-detail"
-                style={isGroup ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: isGroup ? 0.4 : 0, ease: [0.25, 1, 0.5, 1] }}
-              >
-                <a href="/work/rewired" className="video-lightbox-detail-header">
-                  <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
-                  <span className="video-lightbox-detail-name">Rewired</span>
-                </a>
-                <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
-                <p className="video-lightbox-detail-desc">{m.caption}</p>
-                {visibleTags(m.tags).length > 0 && (
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                    {visibleTags(m.tags).map((tag) => (
-                      <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
+              <>
+                <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
+                  style={m.w / m.h > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined} />
+                <div className="video-lightbox-detail" style={m.w / m.h > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
+                  <a href="/work/rewired" className="video-lightbox-detail-header">
+                    <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
+                    <span className="video-lightbox-detail-name">Rewired</span>
+                    <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                  </a>
+                  <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </motion.div>
         </AnimatePresence>
@@ -578,7 +677,8 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
 
       {hasNext && (
         <motion.button className="video-lightbox-nav video-lightbox-next"
-          onClick={(e) => { e.stopPropagation(); onNext(); }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          onClick={(e) => { e.stopPropagation(); onNext(); }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
         </motion.button>
       )}

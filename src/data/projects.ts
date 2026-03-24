@@ -31,6 +31,8 @@ export const ALL_TAGS = [
   'Photography',
   'Branding',
   'InDesign',
+  'Illustration',
+  'AI Generation',
   'Claude',
   'Gemini',
   'Video',
@@ -198,8 +200,8 @@ export const media: MediaItem[] = [
     title: 'Orb Animation Frames', caption: '36 individually created frames with hue rotation and shifting light.',
     tags: ['Procreate', 'Branding', 'Photo'], project: 'Rewired', projectSlug: 'rewired' },
   { src: '/images/rewired/illustrations/brain-tree.png', alt: 'Illustrations', w: 1024, h: 1024, type: 'image',
-    title: 'Illustration Library', caption: '60+ original illustrations drawn in Procreate.',
-    tags: ['Procreate', 'Branding', 'Photo'], project: 'Rewired', projectSlug: 'rewired' },
+    title: 'Illustration Library', caption: '60+ original AI-generated illustrations refined in Illustrator.',
+    tags: ['AI Generation', 'Illustration', 'Illustrator', 'Photo'], project: 'Rewired', projectSlug: 'rewired' },
   { src: '/images/rewired/avatars/avatar_009.png', alt: 'Avatars', w: 376, h: 435, type: 'image',
     title: 'Avatar Library', caption: '97 unique avatar illustrations in the app\'s signature purple palette.',
     tags: ['Procreate', 'Branding', 'Photo'], project: 'Rewired', projectSlug: 'rewired' },
@@ -241,9 +243,6 @@ export const media: MediaItem[] = [
   { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone', w: 4513, h: 2957, type: 'image',
     title: 'Hold the Phone', caption: 'Graphite, 2023. A study in soft light, fabric texture, and quiet intimacy.',
     tags: ['Fine Art', 'Graphite', 'Photo'] },
-  { src: '/images/art/midnight.jpg', alt: 'Midnight', w: 1200, h: 1801, type: 'image',
-    title: 'Midnight', caption: 'Charcoal and graphite, 2023. A portrait lit only by candlelight.',
-    tags: ['Fine Art', 'Graphite', 'Photo'] },
 
   // ═══════════════════════════════════════
   // FINE ART — Oil paintings
@@ -265,17 +264,14 @@ export const media: MediaItem[] = [
   // ═══════════════════════════════════════
   // PHOTOGRAPHY
   // ═══════════════════════════════════════
-  { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Orange — Kenya, 2024', w: 716, h: 1200, type: 'image',
-    title: 'Orange', caption: 'Kenya, 2024. A boy mid-sip in the afternoon sun.',
+  { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Fanta Break — Kenya, 2024', w: 716, h: 1200, type: 'image',
+    title: 'Fanta Break', caption: 'Kenya, 2024. A boy mid-sip in the afternoon sun.',
     tags: ['Photography', 'Photo'] },
   { src: '/images/art/basket-of-mangos.jpeg', alt: 'The Harvest — Kenya, 2024', w: 675, h: 1200, type: 'image',
-    title: 'The Harvest', caption: 'Kenya, 2024. A child holds a basin of freshly picked mangoes.',
+    title: 'The Harvest', caption: 'Kenya, 2024. A child holds a basin of freshly picked mangoes outside a school gate.',
     tags: ['Photography', 'Photo'] },
   { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', w: 675, h: 1200, type: 'image',
     title: 'Water Carry', caption: 'Kenya, 2024. A girl stands with a jerry can in the midday heat.',
-    tags: ['Photography', 'Photo'] },
-  { src: '/images/art/clothesline.jpg', alt: 'Drying Day — Kenya, 2024', w: 1600, h: 900, type: 'image',
-    title: 'Drying Day', caption: 'Kenya, 2024. Laundry dries on a balcony overlooking a schoolyard.',
     tags: ['Photography', 'Photo'] },
   { src: '/images/art/sink.jpeg', alt: 'Wash — Kenya, 2024', w: 737, h: 1200, type: 'image',
     title: 'Wash', caption: 'Kenya, 2024. Two children at a hand-washing station.',
@@ -284,10 +280,10 @@ export const media: MediaItem[] = [
     title: 'Hands to Heart', caption: 'Kenya, 2024. Hands pressed to chest, eyes steady.',
     tags: ['Photography', 'Photo'] },
   { src: '/images/art/supersonic.jpg', alt: 'Window Seat — Kenya, 2024', w: 1067, h: 1200, type: 'image',
-    title: 'Window Seat', caption: 'Kenya, 2024. Reading by airplane window glow.',
+    title: 'Window Seat', caption: 'Kenya, 2024. Reading by the glow of an airplane window.',
     tags: ['Photography', 'Photo'] },
   { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', w: 5884, h: 1533, type: 'image',
-    title: 'The Herd', caption: 'Kenya, 2024. Panoramic shot of zebras on the Maasai Mara.',
+    title: 'The Herd', caption: 'Kenya, 2024. Zebras grazing on the Maasai Mara.',
     tags: ['Photography', 'Photo'] },
 ];
 

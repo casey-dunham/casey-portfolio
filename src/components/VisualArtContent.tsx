@@ -132,6 +132,46 @@ const productRows: ArtRow[] = [
   },
 ];
 
+/* ── Illustration pieces ── */
+
+interface IllustrationPiece {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  bg: string;
+  featured?: boolean;
+  span?: number;
+  noFrame?: boolean;
+  detail?: ArtDetail;
+}
+
+// Helper to build illustration detail
+const illDetail = (title: string, desc: string): ArtDetail => ({
+  title, description: desc, href: '/work/rewired', tags: ['Illustration', 'Procreate'],
+});
+
+// Masonry (CSS columns) fills top-to-bottom per column.
+// Ordered to balance tall/short and cluster brains at the bottom.
+const illustrationPieces: IllustrationPiece[] = [
+  { src: '/images/illustrations/eyes-watching.png', alt: 'Eyes Watching', width: 1024, height: 1536, bg: 'none', noFrame: true, detail: illDetail('Eyes Watching', 'Digital illustration created for Rewired, a neuroscience education platform.') },
+  { src: '/images/illustrations/sad-illustration.png', alt: 'Sad Illustration', width: 820, height: 1024, bg: 'none', detail: illDetail('Sad Illustration', 'A figure in quiet distress — exploring emotional states.') },
+  { src: '/images/illustrations/telescope.png', alt: 'Telescope', width: 1024, height: 400, bg: 'none', detail: illDetail('Telescope', 'A telescope — exploring the unknown.') },
+  { src: '/images/illustrations/bird-head.png', alt: 'Bird Head', width: 1507, height: 1850, bg: 'none', detail: illDetail('Bird Head', 'A surreal figure with a bird for a head.') },
+  { src: '/images/illustrations/umbrella.png', alt: 'Umbrella', width: 769, height: 1024, bg: 'none', detail: illDetail('Umbrella', 'An umbrella — protection and coping.') },
+  { src: '/images/illustrations/statue-with-headphones.png', alt: 'Statue with Headphones', width: 587, height: 1024, bg: 'none', detail: illDetail('Statue with Headphones', 'A classical statue wearing headphones.') },
+  { src: '/images/illustrations/knitting-brain.png', alt: 'Knitting Brain', width: 945, height: 860, bg: 'none', detail: illDetail('Knitting Brain', 'A brain being knitted together — representing neuroplasticity.') },
+  { src: '/images/illustrations/tree-with-optic-roots.png', alt: 'Tree with Optic Roots', width: 1400, height: 2096, bg: 'none', detail: illDetail('Tree with Optic Roots', 'A tree with optic-nerve roots.') },
+  { src: '/images/illustrations/brain-turtle.png', alt: 'Brain Turtle', width: 1024, height: 805, bg: 'none', detail: illDetail('Brain Turtle', 'A turtle carrying a brain.') },
+  { src: '/images/illustrations/brain-cut-out.png', alt: 'Brain Cut-Out', width: 820, height: 1024, bg: 'none', detail: illDetail('Brain Cut-Out', 'A brain silhouette cut from a head.') },
+  { src: '/images/illustrations/brain-tree.png', alt: 'Brain Tree', width: 801, height: 1024, bg: 'none', detail: illDetail('Brain Tree', 'A tree growing from a brain.') },
+  { src: '/images/illustrations/anvil-with-balloon.png', alt: 'Anvil with Balloon', width: 677, height: 1024, bg: 'none', detail: illDetail('Anvil with Balloon', 'An anvil suspended by a balloon — tension between weight and lightness.') },
+];
+
+const illustrationArtPieces: ArtPiece[] = illustrationPieces.map(p => ({
+  src: p.src, alt: p.alt, width: p.width, height: p.height, detail: p.detail,
+}));
+
 /* ── Unified lightbox items ── */
 
 type LightboxItem =
@@ -145,10 +185,11 @@ function collapseArtRows(artRows: ArtRow[]): ArtPiece[] {
   });
 }
 
-// Page order: UX/UI → Products → Fine Art → Photography
+// Page order: UX/UI → Products → Illustrations → Fine Art → Photography
 const allItems: LightboxItem[] = [
   ...allVideos.map(v => ({ type: 'video' as const, video: v })),
   ...collapseArtRows(productRows).map(p => ({ type: 'art' as const, piece: p })),
+  ...illustrationArtPieces.map(p => ({ type: 'art' as const, piece: p })),
   ...collapseArtRows(rows).map(p => ({ type: 'art' as const, piece: p })),
   ...collapseArtRows(photoRows).map(p => ({ type: 'art' as const, piece: p })),
 ];
@@ -272,14 +313,21 @@ function UnifiedLightbox({
     return { opacity: 0, scale: 0.9 };
   };
 
+  const getOrientationClass = () => {
+    if (item.type !== 'art') return '';
+    const piece = item.piece;
+    if (piece.detail?.groupPieces) return '';
+    const ar = piece.width / piece.height;
+    if (ar > 2) return ' art-lightbox-ultrawide';
+    if (ar >= 1) return ' art-lightbox-landscape';
+    return ' art-lightbox-portrait';
+  };
+
   const getContentStyle = () => {
     if (item.type === 'art') {
       const piece = item.piece;
       if (piece.detail?.groupPieces) {
         return { flexDirection: 'column' as const, alignItems: 'stretch' as const, maxWidth: '80vw' };
-      }
-      if (piece.width / piece.height > 2) {
-        return { flexDirection: 'column' as const, alignItems: 'flex-start' as const };
       }
     }
     return undefined;
@@ -330,7 +378,7 @@ function UnifiedLightbox({
             animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
-            className={isVideo ? 'video-lightbox-content' : 'art-lightbox-content'}
+            className={isVideo ? 'video-lightbox-content' : `art-lightbox-content${getOrientationClass()}`}
             style={getContentStyle()}
             onClick={(e) => e.stopPropagation()}
           >
@@ -347,6 +395,7 @@ function UnifiedLightbox({
                     <a href={item.video.detail.project.href} className="video-lightbox-detail-header">
                       <img src={item.video.detail.project.icon} alt={item.video.detail.project.name} className="video-lightbox-detail-icon" />
                       <span className="video-lightbox-detail-name">{item.video.detail.project.name}</span>
+                      <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
                     </a>
                     <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
                     <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{item.video.detail.subtitle}</span>
@@ -417,11 +466,30 @@ function UnifiedLightbox({
                 />
                 {item.piece.detail && (
                   <div className="video-lightbox-detail" style={item.piece.width / item.piece.height > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
-                    <span className="video-lightbox-detail-name">{item.piece.detail.title}</span>
+                    {item.piece.detail.href === '/work/rewired' ? (
+                      <>
+                        <a href="/work/rewired" className="video-lightbox-detail-header">
+                          <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
+                          <span className="video-lightbox-detail-name">Rewired</span>
+                          <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                        </a>
+                        <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                      </>
+                    ) : item.piece.detail.href === '/work/dossi' ? (
+                      <>
+                        <a href="/work/dossi" className="video-lightbox-detail-header">
+                          <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
+                          <span className="video-lightbox-detail-name">Dossi</span>
+                          <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                        </a>
+                        <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                      </>
+                    ) : null}
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{item.piece.detail.title}</span>
                     <p className="video-lightbox-detail-desc">{item.piece.detail.description}</p>
-                    {item.piece.detail.href && (
+                    {item.piece.detail.href && !item.piece.detail.href.startsWith('/work/') && (
                       <a href={item.piece.detail.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--fg-muted)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                        View in AP Art & Design Exhibit →
+                        View in AP Art &amp; Design Exhibit →
                       </a>
                     )}
                     {item.piece.detail.tags && (
@@ -686,4 +754,71 @@ export function ProductContent() {
 export function PhotographyContent() {
   const { openLightbox } = useGalleryContext();
   return <ArtGallery galleryRows={photoRows} handleClick={(piece) => openLightbox(piece.src)} />;
+}
+
+function AnimatedIllustrationCell({
+  piece,
+  delay,
+  onClick,
+}: {
+  piece: IllustrationPiece;
+  delay: number;
+  onClick: () => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.05, rootMargin: '50px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      ref={ref}
+      className={`${piece.noFrame ? 'illustration-item-noframe' : 'illustration-item'}${piece.span === 2 ? ' span-2' : ''}${piece.featured ? ' featured' : ''}`}
+      style={!piece.noFrame ? { aspectRatio: `${piece.width} / ${piece.height}` } : undefined}
+      onClick={onClick}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileHover={{ scale: 1.04, transition: { duration: 0.25, ease: 'easeOut' } }}
+      transition={{ duration: 0.4, delay, ease: [0.25, 1, 0.5, 1] }}
+    >
+      <Image
+        src={piece.src}
+        alt={piece.alt}
+        width={piece.width}
+        height={piece.height}
+        quality={85}
+        style={{ width: '100%', height: 'auto' }}
+      />
+    </motion.div>
+  );
+}
+
+export function IllustrationContent() {
+  const { openLightbox } = useGalleryContext();
+  return (
+    <div className="illustration-grid">
+      {illustrationPieces.map((piece, i) => (
+        <AnimatedIllustrationCell
+          key={piece.src}
+          piece={piece}
+          delay={(i % 5) * 0.06}
+          onClick={() => openLightbox(piece.src)}
+        />
+      ))}
+    </div>
+  );
 }

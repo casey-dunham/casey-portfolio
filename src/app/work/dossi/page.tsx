@@ -160,7 +160,7 @@ export default function DossiProject() {
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
               <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#333] bg-[#ddd] rounded-full">Jan – Mar 2026</span>
               {['SwiftUI', 'SwiftData', 'Bluetooth LE', 'Bayesian ML', 'HealthKit', 'Gemini AI', 'Figma', 'Claude Code'].map((t) => (
-                <span key={t} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">{t}</span>
+                <Link key={t} href={`/skills?t=${encodeURIComponent(t)}`} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full hover:text-fg hover:border-[#555] transition-colors">{t}</Link>
               ))}
             </motion.div>
             <motion.a
@@ -532,7 +532,7 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
           {/* New phones — overlay that slides up */}
           <motion.div
             className="absolute inset-x-0 bottom-0 p-3 md:p-4"
-            style={{ y: slideY }}
+            style={{ y: slideY, x: '-2%' }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
               {(['1', '2', '3', '4'] as const).map((n, i) => (
@@ -609,6 +609,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   const dirRef = useRef(direction);
   dirRef.current = direction;
   const isGroup = !!m.groupSrcs;
+  const isVideo = m.type === 'video';
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -620,13 +621,32 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
     return () => window.removeEventListener('keydown', h);
   }, [onClose, onPrev, onNext, hasPrev, hasNext]);
 
-  const init = () => direction === 0 ? { opacity: 0, scale: 0.9 } : { x: direction > 0 ? 600 : -600, opacity: 0 };
+  const getInitial = () => {
+    if (direction !== 0) return { x: direction > 0 ? 600 : -600, opacity: 0 };
+    return { opacity: 0, scale: 0.9 };
+  };
+
+  const getOrientationClass = () => {
+    if (isVideo || isGroup) return '';
+    const ar = m.w / m.h;
+    if (ar > 2) return ' art-lightbox-ultrawide';
+    if (ar >= 1) return ' art-lightbox-landscape';
+    return ' art-lightbox-portrait';
+  };
+
+  const getContentStyle = () => {
+    if (isGroup) return { flexDirection: 'column' as const, alignItems: 'stretch' as const, maxWidth: '80vw' };
+    return undefined;
+  };
+
+  const backdropClass = isVideo ? 'video-lightbox-backdrop' : 'art-lightbox-backdrop';
+  const contentClass = isVideo ? 'video-lightbox-content' : `art-lightbox-content${getOrientationClass()}`;
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease }}
-      className="art-lightbox-backdrop" onClick={onClose}
+      transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+      className={backdropClass} onClick={onClose}
     >
       <motion.button className="video-lightbox-close" onClick={onClose}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
@@ -635,7 +655,8 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
 
       {hasPrev && (
         <motion.button className="video-lightbox-nav video-lightbox-prev"
-          onClick={(e) => { e.stopPropagation(); onPrev(); }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          onClick={(e) => { e.stopPropagation(); onPrev(); }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
         </motion.button>
       )}
@@ -643,56 +664,94 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <AnimatePresence initial={false}>
           <motion.div
-            key={m.src} initial={init()} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            key={m.src} initial={getInitial()} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
-            className="art-lightbox-content"
-            style={isGroup ? { flexDirection: 'column', alignItems: 'stretch', maxWidth: '85vw' } : undefined}
+            className={contentClass}
+            style={getContentStyle()}
             onClick={(e) => e.stopPropagation()}
           >
-            {isGroup ? (
-              <div className="art-lightbox-grid" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-                {m.groupSrcs!.map((gp, i) => (
-                  <motion.div
-                    key={gp.src}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
-                  >
-                    <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
-                      style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }} />
-                  </motion.div>
-                ))}
-              </div>
-            ) : m.type === 'video' ? (
-              <video src={m.src} autoPlay controls playsInline className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`}
-                style={{ borderRadius: '12px' }} />
+            {isVideo ? (
+              <>
+                <div className="video-lightbox-video-wrap" onClick={(e) => {
+                  const vid = e.currentTarget.querySelector('video');
+                  if (vid) vid.paused ? vid.play() : vid.pause();
+                }}>
+                  <video src={m.src} autoPlay loop muted playsInline className="video-lightbox-video" style={{ cursor: 'pointer' }} />
+                </div>
+                <div className="video-lightbox-detail">
+                  <a href="/work/dossi" className="video-lightbox-detail-header">
+                    <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
+                    <span className="video-lightbox-detail-name">Dossi</span>
+                    <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                  </a>
+                  <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : isGroup ? (
+              <>
+                <div className="art-lightbox-grid" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                  {m.groupSrcs!.map((gp, i) => (
+                    <motion.div
+                      key={gp.src}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
+                    >
+                      <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
+                        style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }} />
+                    </motion.div>
+                  ))}
+                </div>
+                <motion.div
+                  className="video-lightbox-detail"
+                  style={{ maxWidth: 'none', paddingTop: '1rem' }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                >
+                  <span className="video-lightbox-detail-name">{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              </>
             ) : (
-              <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className={`art-lightbox-image ${m.w > m.h ? 'landscape' : ''}`} quality={90} />
-            )}
-            {(
-              <motion.div
-                className="video-lightbox-detail"
-                style={isGroup ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: isGroup ? 0.4 : 0, ease: [0.25, 1, 0.5, 1] }}
-              >
-                <a href="/work/dossi" className="video-lightbox-detail-header">
-                  <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
-                  <span className="video-lightbox-detail-name">Dossi</span>
-                </a>
-                <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
-                <p className="video-lightbox-detail-desc">{m.caption}</p>
-                {visibleTags(m.tags).length > 0 && (
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                    {visibleTags(m.tags).map((tag) => (
-                      <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
+              <>
+                <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
+                  style={m.w / m.h > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined} />
+                <div className="video-lightbox-detail" style={m.w / m.h > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
+                  <a href="/work/dossi" className="video-lightbox-detail-header">
+                    <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
+                    <span className="video-lightbox-detail-name">Dossi</span>
+                    <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                  </a>
+                  <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
+                  <p className="video-lightbox-detail-desc">{m.caption}</p>
+                  {visibleTags(m.tags).length > 0 && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {visibleTags(m.tags).map((tag) => (
+                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </motion.div>
         </AnimatePresence>
@@ -700,7 +759,8 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
 
       {hasNext && (
         <motion.button className="video-lightbox-nav video-lightbox-next"
-          onClick={(e) => { e.stopPropagation(); onNext(); }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          onClick={(e) => { e.stopPropagation(); onNext(); }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
         </motion.button>
       )}

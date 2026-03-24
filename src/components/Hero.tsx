@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DotField from './DotField';
+import ScrollArrow from './ScrollArrow';
 import useIsMobile from '@/hooks/useIsMobile';
 
 if (typeof window !== 'undefined') {
@@ -121,6 +122,8 @@ export default function Hero() {
         </h1>
       </motion.div>
 
+
+      <ScrollArrow />
 
       {/* Scroll-highlight paragraphs */}
       <div ref={highlightRef} className="scroll-highlight-section relative z-[1]">
