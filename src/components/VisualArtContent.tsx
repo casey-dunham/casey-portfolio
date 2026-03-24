@@ -231,7 +231,6 @@ function AnimatedArtCell({
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)', transition: { duration: 0.3, ease: 'easeOut' } }}
       transition={{ duration: 0.4, delay, ease: [0.25, 1, 0.5, 1] }}
     >
       <Image
@@ -782,7 +781,6 @@ function AnimatedIllustrationCell({
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)', transition: { duration: 0.3, ease: 'easeOut' } }}
       transition={{ duration: 0.4, delay, ease: [0.25, 1, 0.5, 1] }}
     >
       <Image
