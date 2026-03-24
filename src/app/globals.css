@@ -232,17 +232,11 @@ body {
 }
 
 .video-grid.cols-2 {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .video-grid.cols-3 {
   grid-template-columns: 1fr 1fr 1fr;
-}
-
-@media (min-width: 480px) {
-  .video-grid.cols-2 {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .video-cell {
