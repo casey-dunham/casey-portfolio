@@ -19,9 +19,32 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.caseydunham.design'
+  ),
   title: 'Casey Dunham — Designer & Builder',
   description:
     'Portfolio of Casey Dunham. Product design, UX/UI, visual art, and engineering.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'Casey Dunham — Designer & Builder',
+    description:
+      'Product design, UX/UI, visual art, and engineering.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Casey Dunham — Designer & Builder',
+    description:
+      'Product design, UX/UI, visual art, and engineering.',
+  },
 };
 
 export default function RootLayout({
