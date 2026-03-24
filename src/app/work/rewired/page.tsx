@@ -116,7 +116,7 @@ export default function RewiredProject() {
               crafted by hand.
             </motion.p>
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">Sep – Dec 2025</span>
+              <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#333] bg-[#ddd] rounded-full">Sep – Dec 2025</span>
               {['SwiftUI', 'SwiftData', 'Gemini AI', 'Figma', 'Procreate', 'CloudKit'].map((t) => (
                 <span key={t} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">{t}</span>
               ))}

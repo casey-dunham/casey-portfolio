@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -66,6 +66,11 @@ const media: MediaItem[] = [
   { src: '/images/dossi/screens/omnipod.png', alt: 'Omnipod', w: 1170, h: 2532, type: 'image', caption: 'Omnipod management — pod status and controls.' },
   { src: '/images/dossi/screens/settings.png', alt: 'Settings', w: 1170, h: 2532, type: 'image', caption: 'Settings and configuration.' },
   { src: '/images/dossi/screens/aichat.jpg', alt: 'AI Chat', w: 1170, h: 2532, type: 'image', caption: 'AI chat — natural language meal logging and guidance.' },
+  // Before & after pairs
+  ...(['1', '2', '3', '4'] as const).flatMap((n) => [
+    { src: `/images/dossi/screens/${n}a.png`, alt: `Screen ${n} before`, w: 892, h: 1639, type: 'image' as const, caption: `Screen ${n} — before redesign.` },
+    { src: `/images/dossi/screens/${n}b.png`, alt: `Screen ${n} after`, w: 870, h: 1603, type: 'image' as const, caption: `Screen ${n} — after redesign.` },
+  ]),
 ];
 
 function idx(src: string) { return media.findIndex((m) => m.src === src); }
@@ -115,6 +120,7 @@ export default function DossiProject() {
               and delivering insulin on my phone daily.
             </motion.p>
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="px-4 py-1.5 text-[0.75rem] font-body text-[#333] bg-[#ddd] rounded-full">Jan – Mar 2026</span>
               {['SwiftUI', 'SwiftData', 'Bluetooth LE', 'Bayesian ML', 'HealthKit', 'Gemini AI', 'Figma', 'Claude Code'].map((t) => (
                 <span key={t} className="px-4 py-1.5 text-[0.75rem] font-body text-[#888] border border-[#2A2A2A] rounded-full">{t}</span>
               ))}
@@ -171,37 +177,11 @@ export default function DossiProject() {
       </motion.section>
 
       {/* ═══ BEFORE & AFTER ═══ */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.6 }}
-        className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] py-14 md:py-20"
-      >
-        <h2 className="font-display text-xs uppercase tracking-[0.2em] text-[#555] font-medium mb-3">Before &amp; After</h2>
-        <p className="font-body text-fg text-[0.92rem] leading-[1.7] mb-2 max-w-[520px]">
-          A complete redesign of an earlier prototype. Every screen rethought to feel
-          approachable rather than clinical.
-        </p>
-        <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-8 max-w-[520px]">
-          Soft purple gradients and organic orb shapes. Data density increased while
-          perceived complexity went down.
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-            {([
-              ['/images/dossi/frame-7.jpg', 'Sign-in redesign'],
-              ['/images/dossi/frame-8.jpg', 'Dashboard redesign'],
-              ['/images/dossi/frame-9.jpg', 'Analytics redesign'],
-              ['/images/dossi/frame-10.jpg', 'Nutrition redesign'],
-            ] as const).map(([src, alt], i) => (
-              <motion.div key={src} {...fade(i * 0.04)}>
-                <Img src={src} alt={alt} w={2000} h={2000} onClick={open} />
-              </motion.div>
-            ))}
-          </div>
+      <BeforeAfter open={open} />
 
-        {/* Landscape + AI Chat side by side */}
-        <div className="flex gap-3 h-[280px] md:h-[340px] mt-8">
+      {/* Landscape + AI Chat side by side */}
+      <div className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto pt-3 pb-6">
+        <div className="flex gap-3 h-[280px] md:h-[340px]">
           <motion.div {...fade(0)} className="flex-1 rounded-lg overflow-hidden cursor-pointer min-w-0">
             <video src="/videos/dossi/landscape.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover block" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
           </motion.div>
@@ -209,7 +189,7 @@ export default function DossiProject() {
             <video src="/videos/dossi/11a.mov" autoPlay muted loop playsInline className="h-full w-auto block" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
           </motion.div>
         </div>
-      </motion.section>
+      </div>
 
       {/* ═══ DESIGN ═══ */}
       <Sect label="Design Process">
@@ -240,7 +220,7 @@ export default function DossiProject() {
                     <path
                       d="M25 3 L30 19 L47 19 L33 29 L39 46 L25 35 L11 46 L17 29 L3 19 L20 19 Z"
                       transform="rotate(12, 25, 25)"
-                      stroke="#8B8FC7"
+                      stroke="var(--accent)"
                       strokeWidth="2.2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -350,16 +330,16 @@ export default function DossiProject() {
 
       {/* ═══ KEY SCREENS ═══ */}
       <Sect label="Key Screens">
-        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
           {([
             ['/images/dossi/screens/welcome.png', 'Welcome'],
-            ['/images/dossi/screens/dash.png', 'Dashboard'],
-            ['/images/dossi/screens/insights.png', 'Insights'],
+            ['/images/dossi/screens/aichat.jpg', 'AI Chat'],
             ['/images/dossi/screens/nutrition.png', 'Nutrition'],
+            ['/images/dossi/screens/insights.png', 'Insights'],
             ['/images/dossi/screens/quickaction.png', 'Quick Action'],
             ['/images/dossi/screens/omnipod.png', 'Omnipod'],
             ['/images/dossi/screens/settings.png', 'Settings'],
-            ['/images/dossi/screens/aichat.jpg', 'AI Chat'],
+            ['/images/dossi/screens/dash.png', 'Dashboard'],
           ] as const).map(([src, alt], i) => (
             <motion.div key={src} {...pop(i)}>
               <Img src={src} alt={alt} w={1170} h={2532} onClick={open} />
@@ -403,15 +383,15 @@ export default function DossiProject() {
 
       {/* ═══ CONTEXT ═══ */}
       <Sect label="Context">
-        {/* Lead text + link */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 items-start mb-16">
+        {/* Lead + photos */}
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-6 items-start mb-6">
           <motion.div {...fade(0)}>
-            <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+            <p className="font-body text-fg text-[0.92rem] leading-[1.7] mb-3">
               I have Type&nbsp;1 Diabetes. I was diagnosed at age 10 and have been
               managing insulin delivery every day since. I&rsquo;ve advocated to
               Congress through Breakthrough&nbsp;T1D and mentored younger diabetics.
             </p>
-            <p className="font-body text-[#888] text-[0.9rem] leading-[1.7] mb-6">
+            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-4">
               The app is fully functional and I have been using it for insulin
               delivery for the past several weeks. Every line of code, every pixel,
               every interaction was designed and built by me alone.
@@ -426,42 +406,31 @@ export default function DossiProject() {
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h8v8M13 3 5 11" /></svg>
             </a>
           </motion.div>
-          <div className="grid grid-cols-2 gap-3">
-            <motion.div {...pop(0)} className="rounded-lg overflow-hidden">
+          <div className="grid grid-cols-2 gap-2">
+            <motion.div {...pop(0)}>
               <Img src="/images/dossi/jdrf-group.jpg" alt="JDRF group" w={2806} h={2764} onClick={open} />
             </motion.div>
-            <motion.div {...pop(1)} className="rounded-lg overflow-hidden">
+            <motion.div {...pop(1)}>
               <Img src="/images/dossi/jdrf-selfie.jpg" alt="JDRF selfie" w={2268} h={2279} onClick={open} />
             </motion.div>
           </div>
         </div>
 
-        {/* Programs + Research — editorial row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-[#2A2A2A] pt-12">
-          <motion.div {...fade(0)}>
-            <motion.div {...pop(0)} className="rounded-lg overflow-hidden mb-5">
-              <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
+        {/* Programs + Research */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#2A2A2A] pt-6">
+          {[
+            { t: 'Programs', d: <>Built through Georgia Tech&rsquo;s <span className="text-fg font-medium">InVenture Prize</span> and <span className="text-fg font-medium">Startup Exchange</span>. Mentored by Rosa Arriaga, Senior Research Scientist in Interactive Computing (Harvard PhD).</>, img: '/images/dossi/startup-exchange.png', alt: 'Startup Exchange', w: 3420, h: 1897 },
+            { t: 'Research', d: <>Distributed flyers through Georgia Tech Disability Services to survey T1D students. The most consistent feedback: people wanted to understand <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.</>, img: '/images/dossi/t1d-flyer.jpg', alt: 'Research flyer', w: 5009, h: 6667 },
+          ].map((item, i) => (
+            <motion.div key={item.t} {...fade(i * 0.04)} className="py-4">
+              <div className="flex items-baseline gap-3 mb-1.5">
+                <span className="font-display text-[1.1rem] font-light text-accent/40 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">{item.t}</h3>
+              </div>
+              <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-4">{item.d}</p>
+              <Img src={item.img} alt={item.alt} w={item.w} h={item.h} onClick={open} />
             </motion.div>
-            <p className="font-display text-xs uppercase tracking-[0.15em] text-[#666] font-medium mb-2">Programs</p>
-            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
-              Built through Georgia Tech&rsquo;s{' '}
-              <span className="text-fg font-medium">InVenture Prize</span> and{' '}
-              <span className="text-fg font-medium">Startup Exchange</span>.
-              Mentored by Rosa Arriaga, Senior Research Scientist
-              in Interactive Computing (Harvard PhD).
-            </p>
-          </motion.div>
-          <motion.div {...fade(0.06)}>
-            <motion.div {...pop(1)} className="rounded-lg overflow-hidden mb-5">
-              <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} />
-            </motion.div>
-            <p className="font-display text-xs uppercase tracking-[0.15em] text-[#666] font-medium mb-2">Research</p>
-            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
-              Distributed flyers through Georgia Tech Disability Services to survey
-              T1D students. The most consistent feedback: people wanted to understand{' '}
-              <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.
-            </p>
-          </motion.div>
+          ))}
         </div>
       </Sect>
 
@@ -498,6 +467,83 @@ export default function DossiProject() {
 /* ═══════════════════════════════════════════
    COMPONENTS
    ═══════════════════════════════════════════ */
+
+const BA_LABELS = ['Sign-in', 'Dashboard', 'Insights', 'Nutrition'] as const;
+
+function BeforeAfter({ open }: { open: (src: string) => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const slideY = useTransform(scrollYProgress, [0.3, 0.55], ['55%', '4%']);
+  const oldOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0.65]);
+
+  return (
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6 }}
+      className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] pt-14 md:pt-20 pb-3"
+    >
+      <h2 className="font-display text-xs uppercase tracking-[0.2em] text-[#555] font-medium mb-8">Before &amp; After</h2>
+      <div>
+        <p className="font-body text-fg text-[0.92rem] leading-[1.7] mb-2 max-w-[520px]">
+          A complete redesign of an earlier prototype. Every screen rethought to feel
+          approachable rather than clinical.
+        </p>
+        <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-10 max-w-[520px]">
+          Soft purple gradients and organic orb shapes. Data density increased while
+          perceived complexity went down.
+        </p>
+
+        <div ref={containerRef} className="relative rounded-lg overflow-hidden bg-[#B0ABFF] p-3 md:p-4">
+          {/* Old phones row */}
+          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-1" style={{ opacity: oldOpacity }}>
+            {(['1', '2', '3', '4'] as const).map((n, i) => (
+              <div
+                key={n}
+                className="cursor-pointer"
+                onClick={() => open(`/images/dossi/screens/${n}a.png`)}
+              >
+                <Image
+                  src={`/images/dossi/screens/${n}a.png`}
+                  alt={`${BA_LABELS[i]} before`}
+                  width={892} height={1639} quality={85}
+                  className="w-full h-auto"
+                />
+              </div>
+            ))}
+          </motion.div>
+          {/* New phones — overlay that slides up */}
+          <motion.div
+            className="absolute inset-x-0 bottom-0 p-3 md:p-4"
+            style={{ y: slideY, x: '-2%' }}
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {(['1', '2', '3', '4'] as const).map((n, i) => (
+                <div
+                  key={n}
+                  className="cursor-pointer"
+                  onClick={() => open(`/images/dossi/screens/${n}b.png`)}
+                >
+                  <Image
+                    src={`/images/dossi/screens/${n}b.png`}
+                    alt={`${BA_LABELS[i]} after`}
+                    width={870} height={1603} quality={85}
+                    className="w-full h-auto"
+                  />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
 
 function Sect({ label, children }: { label: string; children: React.ReactNode }) {
   return (
