@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useTheme } from '@/components/ThemeProvider';
 import './resume-print.css';
 
 const fade = (delay: number) => ({
@@ -90,7 +90,7 @@ const themes: Record<'dark' | 'light', Theme> = {
 
 
 export default function ResumePage() {
-  const [mode, setMode] = useState<'dark' | 'light'>('dark');
+  const { theme: mode, setTheme: setMode } = useTheme();
   const t = themes[mode];
 
   return (
@@ -98,8 +98,8 @@ export default function ResumePage() {
         className={`resume-page-${mode} min-h-screen pt-20 md:pt-24 pb-16 px-4 md:px-8`}
         style={{ background: t.pageBg, transition: 'background 0.4s ease' }}
       >
-        {/* Back link + theme toggle */}
-        <motion.div {...fade(0)} className="resume-back-link max-w-[820px] mx-auto mb-6 flex items-center justify-between">
+        {/* Back link */}
+        <motion.div {...fade(0)} className="resume-back-link max-w-[820px] mx-auto mb-6">
           <Link
             href="/about"
             className="inline-flex items-center gap-2 text-sm tracking-wide hover:opacity-60 transition-opacity"
@@ -110,31 +110,6 @@ export default function ResumePage() {
             </svg>
             Back
           </Link>
-
-          <button
-            onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
-            className="resume-theme-toggle flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer transition-all duration-300"
-            style={{
-              fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)',
-              fontSize: '12px',
-              color: t.date,
-              border: `1px solid ${t.paperBorder}`,
-              background: t.paperBg,
-            }}
-            aria-label={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {mode === 'dark' ? (
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="8" cy="8" r="3.5" />
-                <path d="M8 1.5v1M8 13.5v1M2.87 2.87l.71.71M12.42 12.42l.71.71M1.5 8h1M13.5 8h1M2.87 13.13l.71-.71M12.42 3.58l.71-.71" />
-              </svg>
-            ) : (
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13.5 8.5a5.5 5.5 0 0 1-7.5-7.5 6 6 0 1 0 7.5 7.5z" />
-              </svg>
-            )}
-            {mode === 'dark' ? 'Light' : 'Dark'}
-          </button>
         </motion.div>
 
         {/* Paper */}
@@ -301,7 +276,13 @@ export default function ResumePage() {
         <motion.div {...fade(0.55)} className="resume-print-btn max-w-[820px] mx-auto mt-6 flex justify-center">
           <button
             onClick={() => {
+              const prev = mode;
               setMode('light');
+              const restore = () => {
+                setMode(prev);
+                window.removeEventListener('afterprint', restore);
+              };
+              window.addEventListener('afterprint', restore);
               setTimeout(() => window.print(), 100);
             }}
             className="group inline-flex items-center gap-2.5 px-6 py-2.5 text-sm font-medium rounded-full transition-all duration-300 cursor-pointer"

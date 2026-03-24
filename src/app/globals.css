@@ -12,15 +12,27 @@
   --folder-tab-height: 72px;
 }
 
+[data-theme="light"] {
+  --bg: #FAFAFA;
+  --bg-raised: #FFFFFF;
+  --fg: #1A1A1A;
+  --fg-muted: #666666;
+  --fg-dim: #999999;
+  --accent: #7B83E8;
+  --border: #E5E5E5;
+  --border-light: #D0D0D0;
+  color-scheme: light;
+}
+
 @theme inline {
-  --color-bg: #181818;
-  --color-bg-raised: #1E1E1E;
-  --color-fg: #EDEDED;
-  --color-fg-muted: #8A8A8A;
-  --color-fg-dim: #555555;
-  --color-accent: #9CA5FF;
-  --color-border: #2A2A2A;
-  --color-border-light: #333333;
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-dim: var(--fg-dim);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
   --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-serif: "DM Serif Display", "Georgia", "Times New Roman", serif;
@@ -29,6 +41,7 @@
 body {
   background: var(--bg);
   color: var(--fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: var(--font-dm-sans), "DM Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -284,7 +297,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #181818;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -554,7 +567,7 @@ body:has(.video-lightbox-backdrop) header {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #181818;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;

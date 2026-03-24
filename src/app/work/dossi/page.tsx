@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image';
 import Link from 'next/link';
 import { HIDDEN_PILL_TAGS } from '@/data/projects';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const visibleTags = (tags: string[]) =>
   tags.filter((t) => !HIDDEN_PILL_TAGS.includes(t as typeof HIDDEN_PILL_TAGS[number]));
@@ -452,7 +453,8 @@ export default function DossiProject() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="md:self-end font-body text-sm text-fg-dim">
+          <div className="md:self-end flex flex-col items-start md:items-end gap-3 font-body text-sm text-fg-dim">
+            <ThemeToggle />
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
           </div>
         </div>

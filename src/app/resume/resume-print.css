@@ -1,21 +1,3 @@
-/* Light mode nav override */
-body:has(.resume-page-light) {
-  background: #FCFCFC !important;
-}
-body:has(.resume-page-light) header {
-  background: #FCFCFC !important;
-}
-body:has(.resume-page-light) header span,
-body:has(.resume-page-light) header a {
-  color: #1A1A1A !important;
-}
-body:has(.resume-page-light) header .text-fg {
-  color: #1A1A1A !important;
-}
-body:has(.resume-page-light) header button span {
-  background: #1A1A1A !important;
-}
-
 @media print {
   /* Zero page margin removes browser header/footer (date, title, URL) */
   @page {

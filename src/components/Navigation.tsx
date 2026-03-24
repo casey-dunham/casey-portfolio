@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 const navItems = [
   { name: 'About + Resume', href: '/about' },
   { name: 'Work', href: '/work' },
@@ -32,7 +33,7 @@ export default function Navigation() {
         animate={{ y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ backgroundColor: '#181818' }}
+        style={{ backgroundColor: 'var(--bg)' }}
       >
         <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-3 flex items-center justify-between">
           <Link
@@ -51,7 +52,7 @@ export default function Navigation() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className="text-sm font-body font-medium text-fg hover:text-white transition-colors duration-300 uppercase tracking-widest"
+                  className="text-sm font-body font-medium text-fg hover:text-accent transition-colors duration-300 uppercase tracking-widest"
                 >
                   {item.name}
                 </Link>
@@ -60,7 +61,7 @@ export default function Navigation() {
             <li>
               <Link
                 href="/skills"
-                className="flex items-center justify-center text-fg hover:text-white transition-colors duration-300"
+                className="flex items-center justify-center text-fg hover:text-accent transition-colors duration-300"
                 aria-label="Search skills"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

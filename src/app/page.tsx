@@ -3,6 +3,7 @@ import FolderSection from '@/components/FolderSection';
 import UXUIContent from '@/components/UXUIContent';
 import VisualArtContent, { ProductContent, PhotographyContent, ArtGalleryProvider } from '@/components/VisualArtContent';
 import ScrollToTop from '@/components/ScrollToTop';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   return (
@@ -41,7 +42,8 @@ export default function Home() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="md:self-end font-body text-sm text-fg-dim">
+          <div className="md:self-end flex flex-col items-start md:items-end gap-3 font-body text-sm text-fg-dim">
+            <ThemeToggle />
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
           </div>
         </div>

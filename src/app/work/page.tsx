@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const fade = (delay: number) => ({
   initial: { opacity: 0, y: 18 },
@@ -214,7 +215,8 @@ export default function Work() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="md:self-end font-body text-sm text-fg-dim">
+          <div className="md:self-end flex flex-col items-start md:items-end gap-3 font-body text-sm text-fg-dim">
+            <ThemeToggle />
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
           </div>
         </div>

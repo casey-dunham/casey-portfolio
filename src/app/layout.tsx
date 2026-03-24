@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Sans, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/Navigation';
+import ThemeProvider from '@/components/ThemeProvider';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -32,8 +33,10 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <body>
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = 'manual'; window.scrollTo(0, 0);` }} />
-        <Navigation />
-        {children}
+        <ThemeProvider>
+          <Navigation />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

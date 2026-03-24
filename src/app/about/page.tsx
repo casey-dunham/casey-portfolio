@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const fade = (delay: number) => ({
   initial: { opacity: 0, y: 18 },
@@ -132,7 +133,7 @@ export default function About() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: i * 0.03, ease: [0.25, 1, 0.5, 1] }}
-                className="px-5 py-2.5 text-[0.82rem] font-body text-[#999] border border-[#2A2A2A] rounded-full hover:text-fg hover:border-[#555] transition-all duration-300"
+                className="px-5 py-2.5 text-[0.82rem] font-body text-fg-dim border border-border rounded-full hover:text-fg hover:border-border-light transition-all duration-300"
               >
                 {label}
               </motion.a>
@@ -153,7 +154,8 @@ export default function About() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="md:self-end font-body text-sm text-fg-dim">
+          <div className="md:self-end flex flex-col items-start md:items-end gap-3 font-body text-sm text-fg-dim">
+            <ThemeToggle />
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
           </div>
         </div>
@@ -192,11 +194,11 @@ function ResumeGroup({ label, groupIndex, children }: { label: string; groupInde
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, delay: groupIndex * 0.05, ease: [0.25, 1, 0.5, 1] }}
-      className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-0 md:gap-12 border-t border-[#2A2A2A] py-10 md:py-14"
+      className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-0 md:gap-12 border-t border-border py-10 md:py-14"
     >
       {/* Left label */}
       <div className="self-start mb-4 md:mb-0">
-        <h2 className="font-display text-xs uppercase tracking-[0.2em] text-[#666] font-medium">{label}</h2>
+        <h2 className="font-display text-xs uppercase tracking-[0.2em] text-fg-dim font-medium">{label}</h2>
       </div>
 
       {/* Right content */}
@@ -224,18 +226,18 @@ function ResumeItem({
       className="group flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-8 py-4 first:pt-0 last:pb-0"
     >
       <div className="flex-1 min-w-0">
-        <h3 className="font-display text-base md:text-[1.1rem] font-semibold text-[#e0e0e0] leading-snug tracking-[-0.005em]">
+        <h3 className="font-display text-base md:text-[1.1rem] font-semibold text-fg leading-snug tracking-[-0.005em]">
           {name}
         </h3>
         {role && (
-          <p className="font-body text-sm text-[#777] mt-1 leading-relaxed">{role}</p>
+          <p className="font-body text-sm text-fg-muted mt-1 leading-relaxed">{role}</p>
         )}
         {desc && (
-          <p className="font-body text-[0.84rem] text-[#666] leading-[1.75] mt-2.5 max-w-[520px]">{desc}</p>
+          <p className="font-body text-[0.84rem] text-fg-dim leading-[1.75] mt-2.5 max-w-[520px]">{desc}</p>
         )}
       </div>
       {date && (
-        <span className="font-body text-xs text-[#555] tabular-nums whitespace-nowrap sm:mt-[3px] tracking-wide">{date}</span>
+        <span className="font-body text-xs text-fg-dim tabular-nums whitespace-nowrap sm:mt-[3px] tracking-wide">{date}</span>
       )}
     </motion.div>
   );

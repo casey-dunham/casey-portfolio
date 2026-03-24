@@ -72,7 +72,7 @@ function SkillsContent() {
                 className={`px-5 py-2.5 text-[0.82rem] font-body border rounded-full transition-all duration-300 ${
                   isActive
                     ? 'text-fg border-fg bg-fg/10'
-                    : 'text-[#999] border-[#2A2A2A] hover:text-fg hover:border-[#555]'
+                    : 'text-fg-dim border-border hover:text-fg hover:border-border-light'
                 }`}
               >
                 {tag}
@@ -118,7 +118,7 @@ function SkillsContent() {
                   >
                     <Link href={`/work/${item.projectSlug}`} className="group block">
                       <div className="bg-bg-raised rounded-lg border border-border overflow-hidden transition-all duration-300 hover:border-border-light">
-                        <div className="overflow-hidden bg-[#111]">
+                        <div className="overflow-hidden bg-bg">
                           {item.type === 'image' ? (
                             <Image
                               src={item.src}
