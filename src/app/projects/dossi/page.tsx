@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HIDDEN_PILL_TAGS } from '@/data/projects';
 import ThemeToggle from '@/components/ThemeToggle';
+import LazyVideo from '@/components/LazyVideo';
 
 const visibleTags = (tags: string[]) =>
   tags.filter((t) => !HIDDEN_PILL_TAGS.includes(t as typeof HIDDEN_PILL_TAGS[number]));
@@ -393,7 +394,7 @@ export default function DossiProject() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => open('/videos/dossi/dossi-welcome-flow-1a.mp4')}
           >
-            <video src="/videos/dossi/dossi-welcome-flow-1a.mp4" autoPlay muted loop playsInline className="w-[108%] max-w-none ml-[-4%] block" />
+            <LazyVideo src="/videos/dossi/dossi-welcome-flow-1a.mp4" className="w-[108%] max-w-none ml-[-4%] block" loadMargin="0px" />
           </motion.div>
         </div>
       </section>
@@ -414,7 +415,7 @@ export default function DossiProject() {
             onClick={() => open('/videos/dossi/dossi-slide-deck-recording.mov')}
           >
             <div className="rounded-lg overflow-hidden relative">
-              <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline className="block w-[110%] max-w-none ml-[-5%] mt-[3.5%]" />
+              <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline preload="none" className="block w-[110%] max-w-none ml-[-5%] mt-[3.5%]" />
               <div className="absolute inset-0 rounded-lg pointer-events-none" style={{ boxShadow: 'inset 0 0 12px 6px #E8E8E8' }} />
             </div>
           </motion.div>
@@ -434,7 +435,7 @@ export default function DossiProject() {
               transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={() => open('/videos/dossi/dossi-11b.mov')}
             >
-              <video src="/videos/dossi/dossi-11b.mov" autoPlay muted loop playsInline className="block w-full rounded-lg" />
+              <LazyVideo src="/videos/dossi/dossi-11b.mov" className="block w-full rounded-lg" />
             </motion.div>
           </div>
         </div>
@@ -451,14 +452,14 @@ export default function DossiProject() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => open('/videos/dossi/landscape.mp4')}
           >
-            <video src="/videos/dossi/landscape.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover block" />
+            <LazyVideo src="/videos/dossi/landscape.mp4" className="w-full h-full object-cover block" />
           </motion.div>
           <motion.div {...fade(0.04)} className="rounded-lg overflow-hidden cursor-pointer h-full"
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => open('/videos/dossi/11a.mov')}
           >
-            <video src="/videos/dossi/11a.mov" autoPlay muted loop playsInline className="h-full w-auto block" />
+            <LazyVideo src="/videos/dossi/11a.mov" className="h-full w-auto block" />
           </motion.div>
         </div>
       </div>
@@ -830,18 +831,14 @@ function Img({ src, alt, w, h, onClick, rounded = 'rounded-lg', maxH, fit }: {
 }
 
 function Vid({ src, onClick }: { src: string; onClick: (s: string) => void }) {
-  const ref = useRef<HTMLVideoElement>(null);
   return (
     <motion.div
       className="rounded-lg overflow-hidden cursor-pointer"
-      onClick={() => {
-        const v = ref.current;
-        if (v) { v.paused ? v.play() : v.pause(); }
-      }}
+      onClick={() => onClick(src)}
       whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <video ref={ref} src={src} autoPlay muted loop playsInline className="w-full block" />
+      <LazyVideo src={src} className="w-full block" />
     </motion.div>
   );
 }

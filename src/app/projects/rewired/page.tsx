@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HIDDEN_PILL_TAGS } from '@/data/projects';
 import ThemeToggle from '@/components/ThemeToggle';
+import LazyVideo from '@/components/LazyVideo';
 
 const visibleTags = (tags: string[]) =>
   tags.filter((t) => !HIDDEN_PILL_TAGS.includes(t as typeof HIDDEN_PILL_TAGS[number]));
@@ -216,7 +217,7 @@ export default function RewiredProject() {
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <video src="/videos/uxui/rewired-value-props-2a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" onClick={() => open('/videos/uxui/rewired-value-props-2a.mp4')} />
+            <LazyVideo src="/videos/uxui/rewired-value-props-2a.mp4" className="w-full block scale-[1.02]" onClick={() => open('/videos/uxui/rewired-value-props-2a.mp4')} loadMargin="0px" />
           </motion.div>
         </div>
       </section>
@@ -250,7 +251,7 @@ export default function RewiredProject() {
             <motion.div key={src} {...pop(i)} className="rounded-lg overflow-hidden cursor-pointer"
               onClick={() => open(src)}
             >
-              <video src={src} autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
+              <LazyVideo src={src} className="w-full block scale-[1.02]" />
             </motion.div>
           ))}
         </div>
@@ -305,7 +306,7 @@ export default function RewiredProject() {
           </div>
           {/* Right: live video */}
           <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/ai-orb-6b.mp4')}>
-            <video src="/videos/uxui/ai-orb-6b.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
+            <LazyVideo src="/videos/uxui/ai-orb-6b.mp4" className="w-full block scale-[1.02]" />
           </motion.div>
         </div>
       </Sect>
@@ -324,7 +325,7 @@ export default function RewiredProject() {
       <Sect label="The Website">
         <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr] gap-8 items-start">
           <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/rewired-website-scroll.mp4')}>
-            <video src="/videos/uxui/rewired-website-scroll.mp4" autoPlay muted loop playsInline className="w-full block" />
+            <LazyVideo src="/videos/uxui/rewired-website-scroll.mp4" className="w-full block" />
           </motion.div>
           <motion.div {...fade(0.1)}>
             <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
@@ -353,7 +354,7 @@ export default function RewiredProject() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 items-stretch">
           {/* Left: avatar selection video */}
           <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/avatar-selection-6a.mp4')}>
-            <video src="/videos/uxui/avatar-selection-6a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
+            <LazyVideo src="/videos/uxui/avatar-selection-6a.mp4" className="w-full block scale-[1.02]" />
           </motion.div>
           {/* Right: text + avatar grid */}
           <div className="flex flex-col">
