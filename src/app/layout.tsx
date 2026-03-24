@@ -38,12 +38,21 @@ export const metadata: Metadata = {
     description:
       'Portfolio of Casey Dunham. Product design, UX/UI, & AI.',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Casey Dunham — Product Designer',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Casey Dunham',
     description:
       'Portfolio of Casey Dunham. Product design, UX/UI, & AI.',
+    images: ['/og-image.png'],
   },
 };
 
