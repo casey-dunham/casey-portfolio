@@ -76,7 +76,8 @@ body {
 }
 
 @media (min-width: 1100px) {
-  .scroll-highlight-section {
+  .scroll-highlight-section,
+  .hero-title {
     padding-left: calc((1400px - 1100px) / 2);
   }
 }
