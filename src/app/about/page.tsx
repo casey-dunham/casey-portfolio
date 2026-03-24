@@ -172,7 +172,7 @@ function Portrait() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
-      className="aspect-[2/3] md:aspect-auto rounded-lg overflow-hidden md:self-stretch"
+      className="aspect-[3/4] rounded-lg overflow-hidden"
     >
       <Image
         src="/images/headshot/portrait.jpeg"
@@ -180,7 +180,7 @@ function Portrait() {
         width={1909}
         height={1909}
         quality={90}
-        className="w-full h-full object-cover block"
+        className="w-full h-full object-cover object-top scale-[1.5] origin-[65%_0%] block"
         priority
       />
     </motion.div>
