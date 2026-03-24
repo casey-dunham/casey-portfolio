@@ -105,7 +105,7 @@ export default function Hero() {
       <motion.div
         initial="hidden"
         animate="visible"
-        className="hero-title min-h-[40vh] flex items-end pb-8 pt-28 relative z-[1]"
+        className="min-h-[40vh] flex items-end pb-8 pt-28 relative z-[1]"
       >
         <h1 className="font-display font-bold leading-[1.08] tracking-tight text-fg max-w-[700px]" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.75rem)' }}>
           {titleWords.map((word, i) => (
