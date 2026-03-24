@@ -24,15 +24,20 @@ export default function SectionTabs({
 }) {
   const [active, setActive] = useState<Tab>('gallery');
 
-  // Read hash on mount and on hash change
+  // Read hash on mount, on hash change, and on custom nav event
   useEffect(() => {
     const sync = () => {
       if (window.location.hash === '#projects') setActive('projects');
       else if (window.location.hash === '#gallery') setActive('gallery');
     };
     sync();
+    // Browser native hash scroll handles initial scroll via #gallery/#projects anchors
     window.addEventListener('hashchange', sync);
-    return () => window.removeEventListener('hashchange', sync);
+    window.addEventListener('nav-section', sync);
+    return () => {
+      window.removeEventListener('hashchange', sync);
+      window.removeEventListener('nav-section', sync);
+    };
   }, []);
 
   const switchTab = (tab: Tab) => {
@@ -45,6 +50,9 @@ export default function SectionTabs({
   return (
     <>
       <div id="section-tabs" className="px-4 md:px-8 lg:px-12 pt-16 pb-8">
+        {/* Hidden anchors so browser native hash scroll lands here */}
+        <span id="gallery" style={{ position: 'absolute', scrollMarginTop: '114px' }} />
+        <span id="projects" style={{ position: 'absolute', scrollMarginTop: '114px' }} />
         <div className="inline-flex items-center gap-1 rounded-full bg-surface border border-border p-1 -ml-1">
           <button
             onClick={() => switchTab('gallery')}

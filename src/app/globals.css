@@ -55,8 +55,8 @@ body {
 }
 
 .nav-link:hover {
-  transform: scale(1.08);
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  transform: scale(1.03);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 ::selection {
@@ -877,9 +877,16 @@ body:has(.art-lightbox-backdrop) header {
 .illustration-grid {
   display: flex;
   gap: 16px;
-  padding: 0 0 2rem;
+  padding: 0 1rem 2rem;
   align-items: flex-start;
   justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+  .illustration-grid { padding: 0 2rem 3rem; }
+}
+@media (min-width: 1024px) {
+  .illustration-grid { padding: 0 3rem 4rem; }
 }
 
 .illustration-grid .illustration-item.no-frame {

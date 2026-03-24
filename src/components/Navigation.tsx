@@ -23,19 +23,17 @@ export default function Navigation() {
   const isHome = pathname === '/';
 
   const handleSectionClick = useCallback((e: React.MouseEvent, hash: string) => {
-    if (isHome) {
-      e.preventDefault();
-      const hashOnly = hash.includes('#') ? '#' + hash.split('#')[1] : hash;
-      // Clear hash first so re-setting it always fires hashchange
-      window.location.hash = '';
-      requestAnimationFrame(() => {
-        window.location.hash = hashOnly;
-        const el = document.getElementById('section-tabs');
-        if (el) {
-          const y = el.getBoundingClientRect().top + window.scrollY - 100;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-      });
+    if (!isHome) return; // let normal navigation happen to /#gallery or /#projects
+    e.preventDefault();
+    const hashOnly = hash.includes('#') ? '#' + hash.split('#')[1] : hash;
+    const id = hashOnly.replace('#', '');
+    window.history.replaceState(null, '', `/${hashOnly}`);
+    window.dispatchEvent(new Event('nav-section'));
+    // Scroll to section tabs
+    const el = document.getElementById('section-tabs');
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 50;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }, [isHome]);
 
