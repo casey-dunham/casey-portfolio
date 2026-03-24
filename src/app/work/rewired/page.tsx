@@ -22,55 +22,88 @@ const pop = (i: number) => ({
 });
 
 /* ── Lightbox media registry ── */
-interface MediaItem { src: string; alt: string; w: number; h: number; type: 'image' | 'video'; caption?: string }
+interface MediaItem {
+  src: string; alt: string; w: number; h: number; type: 'image' | 'video';
+  title: string; caption: string; tags: string[];
+  groupSrcs?: { src: string; alt: string; w: number; h: number }[];
+}
 const media: MediaItem[] = [
-  // Screenshots
-  { src: '/images/rewired/screenshots/welcome.png', alt: 'Welcome', w: 1242, h: 2688, type: 'image', caption: 'Welcome screen — the rewired brain hero illustration.' },
-  { src: '/images/rewired/screenshots/dashboard.png', alt: 'Dashboard', w: 1242, h: 2688, type: 'image', caption: 'Daily dashboard — today\'s session, current focus, and streak.' },
-  { src: '/images/rewired/screenshots/npi.png', alt: 'Assessment', w: 1242, h: 2688, type: 'image', caption: 'Neuroplasticity assessment — behavioral pattern questions.' },
-  { src: '/images/rewired/screenshots/results.png', alt: 'Results', w: 1242, h: 2688, type: 'image', caption: 'Preparing your results — AI analysis of core themes and belief patterns.' },
-  { src: '/images/rewired/screenshots/profile.png', alt: 'Neuroprofile', w: 1242, h: 2688, type: 'image', caption: 'Your Neuroprofile — ideal self, core traits, and growth tracking.' },
-  { src: '/images/rewired/screenshots/lesson.png', alt: 'Lesson', w: 1242, h: 2688, type: 'image', caption: 'Psychoeducation lesson — awareness, practice, integration.' },
-  { src: '/images/rewired/screenshots/lessonintro.png', alt: 'Lesson intro', w: 1242, h: 2688, type: 'image', caption: 'Lesson introduction with progress tracking.' },
-  { src: '/images/rewired/screenshots/aichattext.png', alt: 'AI Coach', w: 1242, h: 2688, type: 'image', caption: 'AI coaching — the orb responds with personalized guidance.' },
-  { src: '/images/rewired/screenshots/notifications.png', alt: 'Notifications', w: 1242, h: 2688, type: 'image', caption: 'Notification preferences — session reminders and check-ins.' },
-  { src: '/images/rewired/screenshots/screen1.png', alt: 'Screen 1', w: 1242, h: 2688, type: 'image' },
-  // Videos
-  { src: '/videos/uxui/rewired-value-props-2a.mp4', alt: 'Value props', w: 886, h: 1920, type: 'video', caption: 'Onboarding — animated value propositions.' },
-  { src: '/videos/uxui/rewired-onboarding-2b.mp4', alt: 'Onboarding', w: 886, h: 1920, type: 'video', caption: 'Onboarding flow — personalization questions.' },
-  { src: '/videos/uxui/rewired-questions-7a.mp4', alt: 'Questions', w: 886, h: 1920, type: 'video', caption: 'Assessment — behavioral pattern questionnaire.' },
-  { src: '/videos/uxui/rewired-finished-7b.mp4', alt: 'Finished', w: 886, h: 1920, type: 'video', caption: 'Results — AI-generated neuroprofile.' },
-  { src: '/videos/uxui/rewired-lesson-7c.mp4', alt: 'Lesson flow', w: 886, h: 1920, type: 'video', caption: 'Daily session — lesson and therapeutic exercise.' },
-  { src: '/videos/rewired/animation-process.mp4', alt: 'Animation process', w: 1920, h: 1080, type: 'video', caption: 'Creating the onboarding animation in Procreate.' },
-  // Branding
-  { src: '/images/rewired/branding/primary-orb.png', alt: 'AI Orb', w: 497, h: 497, type: 'image', caption: 'The AI orb — gradient sphere representing the coaching presence.' },
-  { src: '/images/rewired/branding/ribbon.png', alt: 'Ribbon', w: 3897, h: 974, type: 'image', caption: 'The ribbon — a flowing gradient line that runs through the app.' },
-  { src: '/images/rewired/branding/logo.png', alt: 'Logo', w: 922, h: 765, type: 'image', caption: 'Rewired brain logo — neural pathways as gradient lines.' },
-  { src: '/images/rewired/branding/app-icon-1024.png', alt: 'App icon', w: 1024, h: 1024, type: 'image', caption: 'App icon — brain with gradient neural pathways.' },
-  { src: '/images/rewired/branding/app-icon-charcoal-1024.png', alt: 'App icon dark', w: 1024, h: 1024, type: 'image', caption: 'App icon — dark variant.' },
-  { src: '/images/rewired/rewired-app.jpg', alt: 'App overview', w: 6856, h: 3306, type: 'image', caption: 'Rewired — app icon explorations and branding.' },
-  { src: '/images/rewired/line-artblack.jpg', alt: 'Line art', w: 3936, h: 984, type: 'image', caption: 'The ribbon as continuous line art.' },
-  // Orb frames
-  ...Array.from({ length: 36 }, (_, i) => ({
-    src: `/images/rewired/orbs/orb-${String(i + 1).padStart(2, '0')}.png`,
-    alt: `Orb frame ${i + 1}`, w: 350, h: 350, type: 'image' as const,
-    caption: `Orb animation frame ${i + 1} of 36.`,
-  })),
-  // Avatars
-  ...Array.from({ length: 97 }, (_, i) => ({
-    src: `/images/rewired/avatars/avatar_${String(i + 1).padStart(3, '0')}.png`,
-    alt: `Avatar ${i + 1}`, w: 376, h: 435, type: 'image' as const,
-    caption: `Avatar ${i + 1} of 97.`,
-  })),
-  // Illustrations (selection)
-  ...['brain-tree', 'brain-door', 'brain-puzzle', 'knight', 'potted-plant', 'lightbulb', 'telescope', 'brain-heart', 'stone-cairn', 'umbrella', 'star', 'anvil-with-balloon', 'broken-ladder', 'brain-topographic', 'fingerprint', 'hour-glass', 'key', 'shield', 'trophy', 'flame', 'bird-head', 'magnifying-glass', 'cracked-pot-with-sprout', 'ladder-out-of-head', 'brain-wind-toy', 'sad-illustration', 'calendar', 'clock', 'notebook', 'neural-network', 'knitting-brain', 'spark-brain', 'book-stack', 'statue-with-headphones', 'eraser', 'hand-with-thread', 'tree-with-optic-roots', 'closing-door', 'cracked-bell', 'ear', 'brain-cut-out', 'brain-map', 'cracked-rook', 'topographic-brain', 'wired-brain', 'brain-turtle', 'check', 'knotted-rope', 'gears'].map((name) => ({
-    src: `/images/rewired/illustrations/${name}.png`,
-    alt: name.replace(/-/g, ' '), w: 1024, h: 1024, type: 'image' as const,
-    caption: `Illustration — ${name.replace(/-/g, ' ')}.`,
-  })),
+  // Hero video
+  { src: '/videos/uxui/rewired-value-props-2a.mp4', alt: 'Value props', w: 886, h: 1920, type: 'video',
+    title: 'Value Propositions', caption: 'Animated onboarding sequence introducing Rewired\'s core promise — personalized neuroplasticity sessions, AI coaching, and growth tracking.', tags: ['SwiftUI', 'Figma'] },
+  // Walkthrough videos
+  { src: '/videos/uxui/rewired-onboarding-2b.mp4', alt: 'Onboarding', w: 886, h: 1920, type: 'video',
+    title: 'Onboarding Flow', caption: 'Personalization questions that collect user goals, preferences, and current mindset to tailor the experience.', tags: ['SwiftUI', 'Figma'] },
+  { src: '/videos/uxui/rewired-questions-7a.mp4', alt: 'Questions', w: 886, h: 1920, type: 'video',
+    title: 'Assessment', caption: '8-question behavioral assessment that identifies core limiting beliefs and builds a neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+  { src: '/videos/uxui/rewired-finished-7b.mp4', alt: 'Finished', w: 886, h: 1920, type: 'video',
+    title: 'Results', caption: 'AI reads your story, finds themes, and detects belief patterns to generate your personalized neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+  { src: '/videos/uxui/rewired-lesson-7c.mp4', alt: 'Lesson flow', w: 886, h: 1920, type: 'video',
+    title: 'Daily Session', caption: '8-minute session combining psychoeducation and therapeutic exercises. Each targets a specific belief pattern.', tags: ['SwiftUI'] },
+  // AI Orb video
+  { src: '/videos/uxui/ai-orb-6b.mp4', alt: 'AI Orb', w: 886, h: 1920, type: 'video',
+    title: 'AI Orb', caption: 'The animated orb coaching interaction — it pulses, breathes, and shifts color in response to conversation state.', tags: ['SwiftUI', 'Gemini AI'] },
+  // Orb frames — grouped
+  { src: '/images/rewired/orbs/orb-01.png', alt: 'Orb frames', w: 350, h: 350, type: 'image',
+    title: 'Orb Animation Frames', caption: '36 individually created frames. Hue rotation and light source shifted frame by frame to create a seamless looping animation.', tags: ['Procreate'],
+    groupSrcs: Array.from({ length: 36 }, (_, i) => ({
+      src: `/images/rewired/orbs/orb-${String(i + 1).padStart(2, '0')}.png`, alt: `Orb ${i + 1}`, w: 350, h: 350,
+    })),
+  },
+  // Website video
+  { src: '/videos/uxui/rewired-website-scroll.mp4', alt: 'Website', w: 1920, h: 1080, type: 'video',
+    title: 'Marketing Website', caption: 'Scrolling single-page experience built with Next.js and Framer Motion. Scroll-triggered animations reveal content progressively.', tags: ['Next.js', 'Framer Motion'] },
+  // Avatar selection video
+  { src: '/videos/uxui/avatar-selection-6a.mp4', alt: 'Avatar selection', w: 886, h: 1920, type: 'video',
+    title: 'Avatar Selection', caption: 'Personalization screen where users choose from 97 unique avatars to represent them throughout the experience.', tags: ['SwiftUI'] },
+  // Key screens
+  { src: '/images/rewired/screenshots/welcome.png', alt: 'Welcome', w: 1242, h: 2688, type: 'image',
+    title: 'Welcome Screen', caption: 'The rewired brain hero illustration sets the tone — warm, approachable, and grounded in neuroscience.', tags: ['SwiftUI', 'Procreate'] },
+  { src: '/images/rewired/screenshots/npi.png', alt: 'Assessment', w: 1242, h: 2688, type: 'image',
+    title: 'Assessment', caption: 'Neuroplasticity assessment — behavioral pattern questions that surface core limiting beliefs.', tags: ['SwiftUI', 'Gemini AI'] },
+  { src: '/images/rewired/screenshots/results.png', alt: 'Results', w: 1242, h: 2688, type: 'image',
+    title: 'Results', caption: 'AI analysis of core themes and belief patterns — generating a personalized neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+  { src: '/images/rewired/screenshots/dashboard.png', alt: 'Dashboard', w: 1242, h: 2688, type: 'image',
+    title: 'Dashboard', caption: 'Daily dashboard — today\'s session, current belief focus, streak tracking, and progress.', tags: ['SwiftUI', 'SwiftData'] },
+  { src: '/images/rewired/screenshots/profile.png', alt: 'Neuroprofile', w: 1242, h: 2688, type: 'image',
+    title: 'Neuroprofile', caption: 'Your ideal self, core traits, and growth tracking — the central view of your progress.', tags: ['SwiftUI', 'SwiftData'] },
+  { src: '/images/rewired/screenshots/lessonintro.png', alt: 'Lesson intro', w: 1242, h: 2688, type: 'image',
+    title: 'Lesson Intro', caption: 'Session introduction with progress tracking and the day\'s belief focus.', tags: ['SwiftUI'] },
+  { src: '/images/rewired/screenshots/lesson.png', alt: 'Lesson', w: 1242, h: 2688, type: 'image',
+    title: 'Lesson', caption: 'Psychoeducation content — awareness, practice, and integration phases for each session.', tags: ['SwiftUI'] },
+  { src: '/images/rewired/screenshots/aichattext.png', alt: 'AI Coach', w: 1242, h: 2688, type: 'image',
+    title: 'AI Coach', caption: 'The orb responds with personalized guidance grounded in CBT and neuroplasticity principles.', tags: ['SwiftUI', 'Gemini AI'] },
+  { src: '/images/rewired/screenshots/notifications.png', alt: 'Notifications', w: 1242, h: 2688, type: 'image',
+    title: 'Notifications', caption: 'Session reminders and check-in preferences — customizable to support habit formation.', tags: ['SwiftUI'] },
+  { src: '/images/rewired/screenshots/screen1.png', alt: 'Onboarding', w: 1242, h: 2688, type: 'image',
+    title: 'Onboarding', caption: 'First screen of the onboarding flow — setting expectations and building trust.', tags: ['SwiftUI', 'Figma'] },
+  // Illustrations — grouped
+  { src: '/images/rewired/illustrations/brain-tree.png', alt: 'Illustrations', w: 1024, h: 1024, type: 'image',
+    title: 'Illustration Library', caption: '60+ original illustrations used throughout lessons, onboarding, and coaching. Each drawn in Procreate with a textured, hand-crafted aesthetic.', tags: ['Procreate'],
+    groupSrcs: ['brain-tree', 'brain-door', 'brain-puzzle', 'knight', 'potted-plant', 'lightbulb', 'telescope', 'brain-heart', 'stone-cairn'].map((name) => ({
+      src: `/images/rewired/illustrations/${name}.png`, alt: name.replace(/-/g, ' '), w: 1024, h: 1024,
+    })),
+  },
+  // Avatars — grouped
+  { src: '/images/rewired/avatars/avatar_009.png', alt: 'Avatars', w: 376, h: 435, type: 'image',
+    title: 'Avatar Library', caption: '97 unique avatar illustrations drawn in the app\'s signature purple palette. Users select one during onboarding to represent them throughout the experience.', tags: ['AI Generation', 'Procreate'],
+    groupSrcs: Array.from({ length: 18 }, (_, i) => {
+      let n = i + 9;
+      const skip = [61, 62, 63];
+      for (const s of skip) { if (n >= s) n++; }
+      return { src: `/images/rewired/avatars/avatar_${String(n).padStart(3, '0')}.png`, alt: `Avatar ${n}`, w: 376, h: 435 };
+    }),
+  },
+  // Animation process
+  { src: '/videos/rewired/animation-process.mp4', alt: 'Animation process', w: 1920, h: 1080, type: 'video',
+    title: 'Animation Process', caption: 'Creating the onboarding illustrations frame by frame in Procreate.', tags: ['Procreate'] },
 ];
 
-function idx(src: string) { return media.findIndex((m) => m.src === src); }
+function idx(src: string) {
+  const direct = media.findIndex((m) => m.src === src);
+  if (direct !== -1) return direct;
+  return media.findIndex((m) => m.groupSrcs?.some((g) => g.src === src));
+}
 
 /* ═══════════════════════════════════════════
    PAGE
@@ -109,10 +142,10 @@ export default function RewiredProject() {
             <motion.p {...fade(0.25)} className="font-body text-[#999] text-[0.92rem] leading-[1.7] mb-5">
               Rewired is a science-backed app that helps users transform limiting beliefs
               through personalized daily sessions. It combines psychoeducation, therapeutic
-              exercises, and AI coaching &mdash; all grounded in neuroplasticity research.
+              exercises, and AI coaching. All grounded in neuroplasticity research.
             </motion.p>
             <motion.p {...fade(0.28)} className="font-body text-[#999] text-[0.92rem] leading-[1.7] mb-8">
-              Solo-designed and solo-built. Every illustration, animation, and interaction
+              Solo-designed and solo-built. Every illustration and interaction
               crafted by hand.
             </motion.p>
             <motion.div {...fade(0.32)} className="flex flex-wrap items-center gap-3 mb-6">
@@ -139,7 +172,7 @@ export default function RewiredProject() {
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <video src="/videos/uxui/rewired-value-props-2a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+            <video src="/videos/uxui/rewired-value-props-2a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" onClick={() => open('/videos/uxui/rewired-value-props-2a.mp4')} />
           </motion.div>
         </div>
       </section>
@@ -148,10 +181,10 @@ export default function RewiredProject() {
       <Sect label="What It Does">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 mb-14">
           {[
-            { n: '01', t: 'Neuroplasticity Assessment', d: 'An 8-question behavioral assessment that identifies your core limiting beliefs. AI reads your story, finds themes, and detects belief patterns to build your neuroprofile.' },
-            { n: '02', t: 'Personalized Sessions', d: 'Daily 8-minute sessions combining psychoeducation and therapeutic exercises. Each session targets your specific belief pattern through awareness, practice, and integration.' },
-            { n: '03', t: 'AI Coaching', d: 'A conversational AI coach (the orb) that responds with personalized guidance. Text or voice — it knows your patterns, your progress, and your goals.' },
-            { n: '04', t: 'Growth Tracking', d: 'Neuroprofile with core traits, ideal self vision, streak tracking, and progress insights. Watch your neural pathways actually rewire over time.' },
+            { n: '01.', t: 'Neuroplasticity Assessment', d: 'An 8-question behavioral assessment that identifies your core limiting beliefs. AI reads your story, finds themes, and detects belief patterns to build your neuroprofile.' },
+            { n: '02.', t: 'Personalized Sessions', d: 'Daily 8-minute sessions combining psychoeducation and therapeutic exercises. Each session targets your specific belief pattern through awareness, practice, and integration.' },
+            { n: '03.', t: 'AI Coaching', d: 'A conversational AI coach (the orb) that responds with personalized guidance. Text or voice — it knows your patterns, your progress, and your goals.' },
+            { n: '04.', t: 'Growth Tracking', d: 'Neuroprofile with core traits, ideal self vision, streak tracking, and progress insights. Watch your neural pathways actually rewire over time.' },
           ].map((item, i) => (
             <motion.div key={item.n} {...fade(i * 0.05)}>
               <span className="font-body text-[0.6rem] text-accent tracking-[0.2em] tabular-nums">{item.n}</span>
@@ -171,10 +204,9 @@ export default function RewiredProject() {
             ['/videos/uxui/rewired-value-props-2a.mp4', 'Value Props'],
           ] as const).map(([src, label], i) => (
             <motion.div key={src} {...pop(i)} className="rounded-lg overflow-hidden cursor-pointer"
-              onClick={() => { }}
+              onClick={() => open(src)}
             >
-              <video src={src} autoPlay muted loop playsInline className="w-full block scale-[1.02]"
-                onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+              <video src={src} autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
             </motion.div>
           ))}
         </div>
@@ -186,24 +218,24 @@ export default function RewiredProject() {
           {/* Left: text + orb frames */}
           <div className="flex flex-col justify-between">
             <motion.div {...fade(0)} className="mb-3">
-              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
                 The orb is Rewired&rsquo;s AI coaching presence &mdash; a softly animated gradient
                 sphere that listens, responds, and guides. It&rsquo;s designed to feel warm and
                 approachable rather than robotic.
               </p>
-              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-4">
+              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-5">
                 Users can speak or type to the orb. It knows their neuroprofile, their current
                 belief focus, and their session history. Responses are grounded in CBT and
                 neuroplasticity principles.
               </p>
-              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-4">
-                Each of the 36 frames was individually painted in Procreate &mdash; layering
-                soft airbrush gradients, adjusting hue rotation, and shifting the light source
-                frame by frame to create a seamless looping animation. The frames were exported
-                as a sprite sheet and driven by a SwiftUI timer that interpolates between them.
+              <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-5">
+                Each of the 36 frames were individually created. Adjusting hue rotation
+                and shifted the light source frame by frame to create a seamless looping
+                animation. The frames were exported as a sprite sheet and driven by a SwiftUI
+                timer that interpolates between them.
               </p>
               <p className="font-body text-[#888] text-[0.85rem] leading-[1.7]">
-                The result feels alive &mdash; the orb pulses, breathes, and shifts color
+                The result feels alive. The orb pulses, breathes, and shifts color
                 in response to conversation state. Purple for listening, gold for warmth,
                 blue for calm.
               </p>
@@ -216,7 +248,7 @@ export default function RewiredProject() {
                   whileHover={{ scale: 1.35, zIndex: 10 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                   className="cursor-pointer"
-                  onClick={() => open(`/images/rewired/orbs/orb-${String(i + 1).padStart(2, '0')}.png`)}
+                  onClick={() => open('/images/rewired/orbs/orb-01.png')}
                 >
                   <Image
                     src={`/images/rewired/orbs/orb-${String(i + 1).padStart(2, '0')}.png`}
@@ -228,9 +260,8 @@ export default function RewiredProject() {
             </div>
           </div>
           {/* Right: live video */}
-          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer">
-            <video src="/videos/uxui/ai-orb-6b.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]"
-              onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/ai-orb-6b.mp4')}>
+            <video src="/videos/uxui/ai-orb-6b.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
           </motion.div>
         </div>
       </Sect>
@@ -248,15 +279,15 @@ export default function RewiredProject() {
       {/* ═══ THE WEBSITE ═══ */}
       <Sect label="The Website">
         <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr] gap-8 items-start">
-          <motion.div {...fade(0)} className="rounded-lg overflow-hidden">
+          <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/rewired-website-scroll.mp4')}>
             <video src="/videos/uxui/rewired-website-scroll.mp4" autoPlay muted loop playsInline className="w-full block" />
           </motion.div>
           <motion.div {...fade(0.1)}>
-            <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+            <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
               The marketing site for Rewired &mdash; a scrolling single-page experience
               that introduces the product, explains the science, and converts visitors.
             </p>
-            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-6">
+            <p className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-5">
               Built with Next.js and Framer&nbsp;Motion. Every section uses scroll-triggered
               animations to reveal content progressively as the user moves through the page.
             </p>
@@ -277,14 +308,13 @@ export default function RewiredProject() {
       <Sect label="Avatar System">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 items-stretch">
           {/* Left: avatar selection video */}
-          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer">
-            <video src="/videos/uxui/avatar-selection-6a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]"
-              onClick={(e) => { const v = e.currentTarget; v.paused ? v.play() : v.pause(); }} />
+          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/avatar-selection-6a.mp4')}>
+            <video src="/videos/uxui/avatar-selection-6a.mp4" autoPlay muted loop playsInline className="w-full block scale-[1.02]" />
           </motion.div>
           {/* Right: text + avatar grid */}
           <div className="flex flex-col">
             <motion.div {...fade(0)} className="mb-6">
-              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-4">
+              <p className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
                 97 unique avatar illustrations &mdash; every character drawn with the
                 app&rsquo;s signature purple palette. Users pick their avatar during
                 onboarding and it becomes their identity throughout the experience.
@@ -304,7 +334,7 @@ export default function RewiredProject() {
                 return (
                   <motion.div key={i} {...pop(i)}
                     className="aspect-[4/5] overflow-hidden rounded-sm cursor-pointer"
-                    onClick={() => open(`/images/rewired/avatars/avatar_${String(idx).padStart(3, '0')}.png`)}
+                    onClick={() => open('/images/rewired/avatars/avatar_009.png')}
                   >
                     <Image
                       src={`/images/rewired/avatars/avatar_${String(idx).padStart(3, '0')}.png`}
@@ -343,9 +373,8 @@ export default function RewiredProject() {
 
       {/* ═══ ILLUSTRATION GALLERY ═══ */}
       <Sect label="Illustration Library">
-        <motion.p {...fade(0)} className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-8 max-w-[520px]">
-          60+ original illustrations used throughout lessons, onboarding, and the coaching
-          experience. Each drawn in Procreate with the app&rsquo;s textured, hand-crafted aesthetic.
+        <motion.p {...fade(0)} className="font-body text-[#888] text-[0.85rem] leading-[1.7] mb-8">
+          60+ original illustrations used throughout lessons, onboarding, and the coaching experience.
         </motion.p>
         <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-x-1.5 gap-y-6">
           {[
@@ -359,7 +388,7 @@ export default function RewiredProject() {
           ].map((name, i) => (
             <motion.div key={name} {...pop(i)}
               className="aspect-square w-full overflow-hidden cursor-pointer relative"
-              onClick={() => open(`/images/rewired/illustrations/${name}.png`)}
+              onClick={() => open('/images/rewired/illustrations/brain-tree.png')}
             >
               <motion.div
                 className="w-full h-full flex items-center justify-center"
@@ -384,7 +413,7 @@ export default function RewiredProject() {
       <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 border-t border-border">
         <div className="flex flex-col md:flex-row md:justify-between gap-12">
           <div>
-            <h3 className="font-display text-xl font-bold text-fg mb-4">Get in touch</h3>
+            <h3 className="font-display text-xl font-bold text-fg mb-5">Get in touch</h3>
             <div className="flex flex-col gap-2 font-body text-sm text-fg-muted">
               <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">caseyedunham@gmail.com</a>
               <a href="tel:302-377-5638" className="hover:text-fg transition-colors">302-377-5638</a>
@@ -392,9 +421,8 @@ export default function RewiredProject() {
               <span>Atlanta, GA</span>
             </div>
           </div>
-          <div className="flex flex-col gap-2 font-body text-sm text-fg-dim">
+          <div className="md:self-end md:text-right font-body text-sm text-fg-dim">
             <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
-            <span>Designed & built by hand</span>
           </div>
         </div>
       </footer>
@@ -452,6 +480,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   const hasNext = index < media.length - 1;
   const dirRef = useRef(direction);
   dirRef.current = direction;
+  const isGroup = !!m.groupSrcs;
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -490,20 +519,54 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
             exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
             className="art-lightbox-content"
-            style={m.w / m.h > 2 ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
+            style={isGroup ? { flexDirection: 'column', alignItems: 'stretch', maxWidth: '85vw' } : m.w > m.h ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
             onClick={(e) => e.stopPropagation()}
           >
-            {m.type === 'video' ? (
+            {isGroup ? (
+              <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', maxHeight: '60vh', gap: '4px' }}>
+                {m.groupSrcs!.map((gp, i) => (
+                  <motion.div
+                    key={gp.src}
+                    initial={{ opacity: 0, x: (i - (m.groupSrcs!.length - 1) / 2) * 60, scale: 0.92 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    transition={{ duration: 0.9, delay: i * 0.08, ease: [0.25, 1, 0.5, 1] }}
+                    style={{ flex: `${gp.w / gp.h}`, minWidth: 0 }}
+                  >
+                    <Image src={gp.src} alt={gp.alt} width={gp.w} height={gp.h} quality={90}
+                      style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                  </motion.div>
+                ))}
+              </div>
+            ) : m.type === 'video' ? (
               <video src={m.src} autoPlay controls playsInline className="art-lightbox-image"
-                style={m.w > m.h ? { maxWidth: '80vw', width: '80vw' } : { maxHeight: '85vh' }} />
+                style={{ borderRadius: '12px', ...(m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto' } : { height: '75vh', width: 'auto' }) }} />
             ) : (
               <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
-                style={m.w / m.h > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined} />
+                style={m.w > m.h ? { maxWidth: '80vw', maxHeight: '65vh', width: 'auto', height: 'auto' } : { height: '75vh', width: 'auto' }} />
             )}
-            {m.caption && (
-              <div className="video-lightbox-detail" style={m.w / m.h > 1.5 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
+            {(
+              <motion.div
+                className="video-lightbox-detail"
+                style={isGroup || m.w > m.h ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: isGroup ? 0.4 : 0, ease: [0.25, 1, 0.5, 1] }}
+              >
+                <a href="/work/rewired" className="video-lightbox-detail-header">
+                  <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
+                  <span className="video-lightbox-detail-name">Rewired</span>
+                </a>
+                <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
                 <p className="video-lightbox-detail-desc">{m.caption}</p>
-              </div>
+                {m.tags.length > 0 && (
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                    {m.tags.map((tag) => (
+                      <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
             )}
           </motion.div>
         </AnimatePresence>
