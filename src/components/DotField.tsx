@@ -13,6 +13,7 @@ interface Dot {
   opacity: number;
   depth: number; // 0..1, affects mouse reactivity
   isSpot: boolean;
+  cluster: 0 | 1 | 2; // 0 = main, 1 = bridge, 2 = second cluster
 }
 
 // Spatial hash grid for efficient neighbor lookups
@@ -76,6 +77,7 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
   const dotsRef = useRef<Dot[]>([]);
   const gridRef = useRef(new SpatialGrid(20));
   const animRef = useRef<number>(0);
+  const cluster2OpacityRef = useRef(0); // animated 0→1
   const mobileRef = useRef(mobile);
   mobileRef.current = mobile;
 
@@ -99,11 +101,11 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
       // Anchor to upper-right corner of the first paragraph, or fallback
       let cx = w * 0.48;
       let cy = h * 0.40;
-      if (anchorRef?.current && canvas.parentElement) {
-        const parentRect = canvas.parentElement.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      if (anchorRef?.current) {
         const anchorRect = anchorRef.current.getBoundingClientRect();
-        cx = anchorRect.right - parentRect.left;
-        cy = anchorRect.top - parentRect.top + 20;
+        cx = anchorRect.right - canvasRect.left;
+        cy = anchorRect.top - canvasRect.top + 20;
       }
       centerRef.current = { x: cx, y: cy };
       const s = Math.min(w, h) * 0.012;
@@ -141,6 +143,28 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
       allPetals.push({ cx: cx + 11 * s, cy: cy + 0 * s, r: 1.4 * s });
       allCenters.push({ cx: cx + 10 * s, cy: cy + 1 * s, r: 1.0 * s });
 
+      const viewportW = window.innerWidth;
+
+      // Track petal count before second cluster for dot classification
+      const mainPetalCount = allPetals.length;
+
+      // Second cluster — bottom-right, wide screens only
+      if (viewportW >= 1500) {
+        const cx2 = w * 0.78;
+        const cy2 = h * 0.72;
+        const s2 = s * 0.65;
+
+        // Bloom E — main bloom of second cluster
+        addBloom(cx2, cy2, 4, 3.5 * s2, 3 * s2, 2 * s2, 0.6);
+        // Bloom F — offset companion
+        addBloom(cx2 + 5 * s2, cy2 - 3 * s2, 3, 2.5 * s2, 2.2 * s2, 1.5 * s2, 1.2);
+        // Small trailing pocket
+        allPetals.push({ cx: cx2 + 8 * s2, cy: cy2 + 2 * s2, r: 1.8 * s2 });
+        allPetals.push({ cx: cx2 - 4 * s2, cy: cy2 + 4 * s2, r: 1.5 * s2 });
+        allCenters.push({ cx: cx2 + 1 * s2, cy: cy2 - 1 * s2, r: 1.2 * s2 });
+        allCenters.push({ cx: cx2 + 5 * s2, cy: cy2 - 2 * s2, r: 1.0 * s2 });
+      }
+
       // Center voids
       const extraVoids = [
         { cx: cx - 1 * s, cy: cy - 2 * s, r: 1.8 * s },
@@ -168,14 +192,26 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
         return n1 + n2 + n3;
       };
 
-      // Bounding box for rejection sampling (wide enough for isolated pocket)
+      // Bounding box for rejection sampling (wide enough for all clusters)
       const margin = 8 * s;
-      const minX = cx - 12 * s - margin;
-      const maxX = cx + 14 * s + margin;
-      const minY = cy - 12 * s - margin;
-      const maxY = cy + 12 * s + margin;
+      let minX = cx - 12 * s - margin;
+      let maxX = cx + 14 * s + margin;
+      let minY = cy - 12 * s - margin;
+      let maxY = cy + 12 * s + margin;
 
-      const count = mobileRef.current ? 1200 : 7000;
+      // Expand bounding box if second cluster is present
+      if (viewportW >= 1500) {
+        const cx2 = w * 0.78;
+        const cy2 = h * 0.72;
+        const s2 = s * 0.65;
+        maxX = Math.max(maxX, cx2 + 12 * s2 + margin);
+        maxY = Math.max(maxY, cy2 + 8 * s2 + margin);
+        minX = Math.min(minX, cx2 - 8 * s2 - margin);
+        minY = Math.min(minY, cy2 - 8 * s2 - margin);
+      }
+
+      const baseCount = mobileRef.current ? 1200 : 7000;
+      const count = viewportW >= 1500 ? baseCount + 2000 : baseCount;
       let placed = 0;
       let attempts = 0;
 
@@ -285,6 +321,25 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
           : (Math.random() - 0.5) * 2.0;
         const scatterAngle = Math.random() * Math.PI * 2;
 
+        // Classify: check if this dot was placed by a second-cluster petal
+        let dotCluster: 0 | 1 | 2 = 0;
+        if (viewportW >= 1500) {
+          // Check if nearest petal is from the second cluster
+          let nearestPetalIdx = 0;
+          let nearestDist = Infinity;
+          for (let pi = 0; pi < allPetals.length; pi++) {
+            const p = allPetals[pi];
+            const ddx = px - p.cx;
+            const ddy = py - p.cy;
+            const d = ddx * ddx + ddy * ddy;
+            if (d < nearestDist) {
+              nearestDist = d;
+              nearestPetalIdx = pi;
+            }
+          }
+          if (nearestPetalIdx >= mainPetalCount) dotCluster = 2;
+        }
+
         dots.push({
           x: gx + Math.cos(scatterAngle) * scatter,
           y: gy + Math.sin(scatterAngle) * scatter,
@@ -295,6 +350,7 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
           opacity: 1,
           depth: Math.random(),
           isSpot: false,
+          cluster: dotCluster,
         });
         placed++;
       }
@@ -332,6 +388,12 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
         return;
       }
       lastDrawTime = now;
+
+      // Smoothly animate second cluster opacity based on viewport width
+      const hasCluster2 = window.innerWidth >= 1500;
+      const target = hasCluster2 ? 1 : 0;
+      const c2o = cluster2OpacityRef.current;
+      cluster2OpacityRef.current += (target - c2o) * 0.04; // smooth ease
 
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -465,7 +527,15 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
           }
         }
 
-        ctx.fillStyle = `rgb(${r | 0},${g | 0},${b | 0})`;
+        // Apply dissolve for second cluster dots
+        const alpha = dot.cluster === 2 ? cluster2OpacityRef.current : 1;
+        if (alpha < 0.01) continue; // skip invisible dots
+
+        if (alpha < 0.99) {
+          ctx.fillStyle = `rgba(${r | 0},${g | 0},${b | 0},${alpha})`;
+        } else {
+          ctx.fillStyle = `rgb(${r | 0},${g | 0},${b | 0})`;
+        }
         ctx.fillRect(dot.x - 0.85, dot.y - 0.85, dotSize, dotSize);
       }
 
@@ -488,8 +558,13 @@ export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full"
-      style={{ zIndex: 0 }}
+      className="absolute top-0 h-full"
+      style={{
+        zIndex: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100vw',
+      }}
     />
   );
 }
