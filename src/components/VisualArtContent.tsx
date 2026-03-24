@@ -395,7 +395,7 @@ function UnifiedLightbox({
               </>
             ) : item.piece.detail?.groupPieces ? (
               <>
-                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', maxHeight: '55vh' }}>
+                <div style={{ display: 'flex', borderRadius: '14px', overflow: 'hidden', maxHeight: '55vh' }}>
                   {item.piece.detail.groupPieces.map((gp, i) => {
                     const count = item.piece.detail!.groupPieces!.length;
                     const mid = (count - 1) / 2;
@@ -782,7 +782,7 @@ function AnimatedIllustrationCell({
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      whileHover={{ scale: 1.04, transition: { duration: 0.25, ease: 'easeOut' } }}
+      whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)', transition: { duration: 0.3, ease: 'easeOut' } }}
       transition={{ duration: 0.4, delay, ease: [0.25, 1, 0.5, 1] }}
     >
       <Image

@@ -832,7 +832,7 @@ body:has(.art-lightbox-backdrop) header {
 
 /* Wrapper to ensure rounded corners clip the image */
 .art-lightbox-image-wrap {
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   flex-shrink: 0;
   line-height: 0;
@@ -840,24 +840,12 @@ body:has(.art-lightbox-backdrop) header {
   height: fit-content;
 }
 
-@media (min-width: 768px) {
-  .art-lightbox-image-wrap {
-    border-radius: 14px;
-  }
-}
-
 /* Base image styles */
 .art-lightbox-image {
   display: block;
   max-width: 100%;
   max-height: 80vh;
-  border-radius: 12px;
-}
-
-@media (min-width: 768px) {
-  .art-lightbox-image {
-    border-radius: 14px;
-  }
+  border-radius: 14px;
 }
 
 
@@ -872,7 +860,7 @@ body:has(.art-lightbox-backdrop) header {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
   gap: 4px;
-  border-radius: 8px;
+  border-radius: 14px;
   overflow-y: auto;
   max-height: 45vh;
 }
