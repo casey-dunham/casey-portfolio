@@ -172,7 +172,7 @@ function Portrait() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
-      className="rounded-lg overflow-hidden md:self-stretch"
+      className="aspect-[2/3] md:aspect-auto rounded-lg overflow-hidden md:self-stretch"
     >
       <Image
         src="/images/headshot/portrait.jpeg"

@@ -484,8 +484,8 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
     offset: ['start end', 'end start'],
   });
 
-  const slideY = useTransform(scrollYProgress, [0.3, 0.55], ['55%', '4%']);
-  const oldOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0.8]);
+  const slideY = useTransform(scrollYProgress, [0.12, 0.58], ['55%', '4%']);
+  const oldOpacity = useTransform(scrollYProgress, [0.12, 0.5], [1, 0.8]);
 
   return (
     <motion.section
@@ -521,7 +521,7 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
           {/* New phones — overlay that slides up */}
           <motion.div
             className="absolute inset-x-0 bottom-0 p-3 md:p-4"
-            style={{ y: slideY, x: '-2%' }}
+            style={{ y: slideY }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
               {(['1', '2', '3', '4'] as const).map((n, i) => (

@@ -138,12 +138,8 @@ export default function Navigation() {
                 <Link
                   href="/skills"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display text-3xl sm:text-5xl font-light text-fg hover:text-accent transition-colors flex items-center gap-4"
+                  className="font-display text-3xl sm:text-5xl font-light text-fg hover:text-accent transition-colors"
                 >
-                  <svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="7" cy="7" r="4.5" />
-                    <path d="M10.5 10.5L14 14" />
-                  </svg>
                   Skills
                 </Link>
               </motion.div>
