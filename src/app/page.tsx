@@ -10,11 +10,11 @@ export default function Home() {
       <Hero />
 
       <div className="max-w-[1400px] mx-auto">
-        <FolderSection title="UX / UI" index={0} startOpen>
-          <UXUIContent />
-        </FolderSection>
-
         <ArtGalleryProvider>
+          <FolderSection title="UX / UI" index={0} startOpen>
+            <UXUIContent />
+          </FolderSection>
+
           <FolderSection title="Products" index={1}>
             <ProductContent />
           </FolderSection>

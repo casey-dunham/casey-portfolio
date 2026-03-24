@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { GalleryContext, useGalleryContext } from './GalleryContext';
+import { allVideos, type VideoItem } from './UXUIContent';
 
 interface ArtDetail {
   title: string;
@@ -11,6 +13,7 @@ interface ArtDetail {
   href?: string;
   tags?: string[];
   processImages?: { src: string; alt: string; width: number; height: number }[];
+  groupPieces?: ArtPiece[];
 }
 
 interface ArtPiece {
@@ -29,16 +32,27 @@ interface ArtRow {
   groupLabel?: string;
 }
 
+const birdPieces: ArtPiece[] = [
+  { src: '/images/art/bird1.jpeg', alt: 'American Kestrel — Charcoal on toned paper', width: 989, height: 1200 },
+  { src: '/images/art/bird2.jpeg', alt: 'Black-crowned Night-Heron — Charcoal on toned paper', width: 933, height: 1200 },
+  { src: '/images/art/bird3.jpeg', alt: 'Red Knot — Charcoal on toned paper', width: 1200, height: 981 },
+];
+
+const birdDetail: ArtDetail = {
+  title: 'Brandywine Zoo Series',
+  description: 'Charcoal and colored pencil on toned paper, 2022. Drawn for a volunteer project with the Brandywine Zoo in Delaware. Each piece in this series depicts an endangered bird species native to the state.',
+  tags: ['Charcoal', 'Colored Pencil'],
+  groupPieces: birdPieces,
+};
+birdPieces.forEach((p) => { p.detail = birdDetail; });
+
 const rows: ArtRow[] = [
   // Bird triptych — charcoal on toned paper
   {
     cols: 3,
     equalHeight: true,
-    pieces: [
-      { src: '/images/art/bird1.jpeg', alt: 'American Kestrel — Charcoal on toned paper', width: 989, height: 1200, detail: { title: 'American Kestrel', description: 'Charcoal on toned paper, 2022. Drawn for a volunteer project with the Brandywine Zoo in Delaware. Each piece in this series depicts an endangered bird species native to the state.', tags: ['Charcoal', 'Colored Pencil'] } },
-      { src: '/images/art/bird2.jpeg', alt: 'Black-crowned Night-Heron — Charcoal on toned paper', width: 933, height: 1200, detail: { title: 'Black-crowned Night-Heron', description: 'Charcoal and colored pencil on toned paper, 2022. Part of the Brandywine Zoo endangered species series. The juvenile night-heron is one of Delaware\'s most at-risk wading birds.', tags: ['Charcoal', 'Colored Pencil'] } },
-      { src: '/images/art/bird3.jpeg', alt: 'Red Knot — Charcoal on toned paper', width: 1200, height: 981, detail: { title: 'Red Knot', description: 'Charcoal and colored pencil on toned paper, 2022. The red knot migrates through Delaware Bay each spring and is federally listed as threatened. Drawn for the Brandywine Zoo endangered species series.', tags: ['Charcoal', 'Colored Pencil'] } },
-    ],
+    groupLabel: 'Brandywine Zoo Series',
+    pieces: birdPieces,
   },
   {
     cols: 2,
@@ -90,25 +104,65 @@ const photoRows: ArtRow[] = [
   },
 ];
 
-const stoolProcessImages = [
-  { src: '/images/product/cardboard.png', alt: 'Cardboard Prototype', width: 1024, height: 1024 },
-  { src: '/images/product/cnc.png', alt: 'CNC-cut Parts', width: 2824, height: 1532 },
+const stoolPieces: ArtPiece[] = [
+  { src: '/images/product/2.jpg', alt: 'Step Stool — In Context', width: 795, height: 1200 },
+  { src: '/images/product/Studio_3.jpeg', alt: 'Step Stool — Studio', width: 900, height: 1200 },
+  { src: '/images/product/Detail_1.jpeg', alt: 'Step Stool — Detail', width: 900, height: 1200 },
 ];
+
+// Attach shared detail with groupPieces to each stool piece
+const stoolDetail: ArtDetail = {
+  title: 'Step Stool',
+  description: 'A step stool designed for the laundry room, featuring a pull-out table for resting a basket while loading or unloading machines. CNC-cut from Baltic birch plywood with finger joint construction. Modeled in Fusion 360 and prototyped in laser-cut cardboard before final fabrication.',
+  tags: ['Fusion 360', 'CNC'],
+  groupPieces: stoolPieces,
+};
+stoolPieces.forEach((p) => { p.detail = stoolDetail; });
 
 const productRows: ArtRow[] = [
   {
     cols: 3,
     equalHeight: true,
     groupLabel: 'Step Stool',
-    pieces: [
-      { src: '/images/product/2.jpg', alt: 'Step Stool — In Context', width: 795, height: 1200, detail: { title: 'Step Stool — In Context', description: 'A step stool designed for the laundry room, featuring a pull-out table for resting a basket while loading or unloading machines. CNC-cut from Baltic birch plywood with finger joint construction. Modeled in Fusion 360 and prototyped in laser-cut cardboard before final fabrication.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
-      { src: '/images/product/Studio_3.jpeg', alt: 'Step Stool — Studio', width: 900, height: 1200, detail: { title: 'Step Stool — Studio', description: 'Studio shot showing the two-tier step stool with the pull-out table extended. The slatted surface allows airflow and adds visual lightness to the form.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
-      { src: '/images/product/Detail_1.jpeg', alt: 'Step Stool — Detail', width: 900, height: 1200, detail: { title: 'Step Stool — Detail', description: 'Joinery detail showing the finger joints and sliding table mechanism. The arched cutouts reduce weight while adding a subtle design element.', tags: ['Fusion 360', 'CNC'], processImages: stoolProcessImages } },
-    ],
+    pieces: stoolPieces,
   },
 ];
 
-const allPieces = [...rows, ...photoRows, ...productRows].flatMap((r) => r.pieces);
+/* ── Unified lightbox items ── */
+
+type LightboxItem =
+  | { type: 'video'; video: VideoItem }
+  | { type: 'art'; piece: ArtPiece };
+
+function collapseArtRows(artRows: ArtRow[]): ArtPiece[] {
+  return artRows.flatMap(r => {
+    if (r.pieces.length > 0 && r.pieces[0].detail?.groupPieces) return [r.pieces[0]];
+    return r.pieces;
+  });
+}
+
+// Page order: UX/UI → Products → Fine Art → Photography
+const allItems: LightboxItem[] = [
+  ...allVideos.map(v => ({ type: 'video' as const, video: v })),
+  ...collapseArtRows(productRows).map(p => ({ type: 'art' as const, piece: p })),
+  ...collapseArtRows(rows).map(p => ({ type: 'art' as const, piece: p })),
+  ...collapseArtRows(photoRows).map(p => ({ type: 'art' as const, piece: p })),
+];
+
+// Lookup: any src (including group member srcs) → index in allItems
+const srcToIndex = new Map<string, number>();
+allItems.forEach((item, i) => {
+  if (item.type === 'video') {
+    srcToIndex.set(item.video.src, i);
+  } else {
+    srcToIndex.set(item.piece.src, i);
+    if (item.piece.detail?.groupPieces) {
+      item.piece.detail.groupPieces.forEach(gp => srcToIndex.set(gp.src, i));
+    }
+  }
+});
+
+/* ── Components ── */
 
 function AnimatedArtCell({
   piece,
@@ -164,22 +218,26 @@ function AnimatedArtCell({
   );
 }
 
-function ArtLightbox({
-  pieceIndex,
+function UnifiedLightbox({
+  itemIndex,
   direction,
+  originRect,
   onClose,
   onPrev,
   onNext,
 }: {
-  pieceIndex: number;
+  itemIndex: number;
   direction: number;
+  originRect: DOMRect | null;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) {
-  const piece = allPieces[pieceIndex];
-  const hasPrev = pieceIndex > 0;
-  const hasNext = pieceIndex < allPieces.length - 1;
+  const item = allItems[itemIndex];
+  const hasPrev = itemIndex > 0;
+  const hasNext = itemIndex < allItems.length - 1;
+  const isVideo = item.type === 'video';
+  const itemKey = isVideo ? item.video.src : item.piece.src;
   const dirRef = useRef(direction);
   dirRef.current = direction;
 
@@ -194,8 +252,33 @@ function ArtLightbox({
   }, [onClose, onPrev, onNext, hasPrev, hasNext]);
 
   const getInitial = () => {
-    if (direction === 0) return { opacity: 0, scale: 0.9 };
-    return { x: direction > 0 ? 600 : -600, opacity: 0 };
+    if (direction !== 0) {
+      return { x: direction > 0 ? 600 : -600, opacity: 0 };
+    }
+    if (isVideo && originRect) {
+      const centerX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
+      const centerY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+      return {
+        opacity: 0,
+        scale: originRect.width / 500,
+        x: originRect.x + originRect.width / 2 - centerX,
+        y: originRect.y + originRect.height / 2 - centerY,
+      };
+    }
+    return { opacity: 0, scale: 0.9 };
+  };
+
+  const getContentStyle = () => {
+    if (item.type === 'art') {
+      const piece = item.piece;
+      if (piece.detail?.groupPieces) {
+        return { flexDirection: 'column' as const, alignItems: 'stretch' as const, maxWidth: '80vw' };
+      }
+      if (piece.width / piece.height > 2) {
+        return { flexDirection: 'column' as const, alignItems: 'flex-start' as const };
+      }
+    }
+    return undefined;
   };
 
   return (
@@ -204,7 +287,7 @@ function ArtLightbox({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-      className="art-lightbox-backdrop"
+      className={isVideo ? 'video-lightbox-backdrop' : 'art-lightbox-backdrop'}
       onClick={onClose}
     >
       <motion.button
@@ -227,6 +310,7 @@ function ArtLightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.15 }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 18l-6-6 6-6" />
@@ -235,53 +319,127 @@ function ArtLightbox({
       )}
 
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={piece.src}
-          initial={getInitial()}
-          animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
-          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
-          className="art-lightbox-content"
-          style={piece.width / piece.height > 2 ? { flexDirection: 'column', alignItems: 'flex-start' } : undefined}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Image
-            src={piece.src}
-            alt={piece.alt}
-            width={piece.width}
-            height={piece.height}
-            className="art-lightbox-image"
-            quality={90}
-            style={piece.width / piece.height > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined}
-          />
-          {piece.detail && (
-            <div className="video-lightbox-detail" style={piece.width / piece.height > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
-              <span className="video-lightbox-detail-name">{piece.detail.title}</span>
-              <p className="video-lightbox-detail-desc">{piece.detail.description}</p>
-              {piece.detail.href && (
-                <a href={piece.detail.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--fg-muted)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                  View in AP Art & Design Exhibit →
-                </a>
-              )}
-              {piece.detail.tags && (
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                  {piece.detail.tags.map((tag) => (
-                    <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
-                  ))}
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={itemKey}
+            initial={direction === 0 ? getInitial() : { x: direction > 0 ? 600 : -600, opacity: 0 }}
+            animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            exit={{ x: dirRef.current > 0 ? -600 : 600, opacity: 0, position: 'absolute' as const }}
+            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] as const }}
+            className={isVideo ? 'video-lightbox-content' : 'art-lightbox-content'}
+            style={getContentStyle()}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {isVideo ? (
+              <>
+                <div className="video-lightbox-video-wrap" onClick={(e) => {
+                  const vid = e.currentTarget.querySelector('video');
+                  if (vid) vid.paused ? vid.play() : vid.pause();
+                }}>
+                  <video src={item.video.src} autoPlay loop muted playsInline className="video-lightbox-video" style={{ cursor: 'pointer' }} />
                 </div>
-              )}
-              {piece.detail.processImages && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '1rem' }}>
-                  {piece.detail.processImages.map((img) => (
-                    <Image key={img.src} src={img.src} alt={img.alt} width={img.width} height={img.height} quality={80} style={{ width: '100%', height: 'auto', borderRadius: '6px' }} />
-                  ))}
+                {item.video.detail && (
+                  <div className="video-lightbox-detail">
+                    <a href={item.video.detail.project.href} className="video-lightbox-detail-header">
+                      <img src={item.video.detail.project.icon} alt={item.video.detail.project.name} className="video-lightbox-detail-icon" />
+                      <span className="video-lightbox-detail-name">{item.video.detail.project.name}</span>
+                    </a>
+                    <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{item.video.detail.subtitle}</span>
+                    <p className="video-lightbox-detail-desc">{item.video.detail.description}</p>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {item.video.detail.tags.map((tag) => (
+                        <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : item.piece.detail?.groupPieces ? (
+              <>
+                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', maxHeight: '55vh' }}>
+                  {item.piece.detail.groupPieces.map((gp, i) => {
+                    const count = item.piece.detail!.groupPieces!.length;
+                    const mid = (count - 1) / 2;
+                    const offsetX = (i - mid) * 80;
+                    return (
+                      <motion.div
+                        key={gp.src}
+                        initial={{ opacity: 0, x: offsetX, scale: 0.92 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ duration: 0.9, delay: i * 0.12, ease: [0.25, 1, 0.5, 1] }}
+                        style={{ flex: `${gp.width / gp.height}`, minWidth: 0 }}
+                      >
+                        <Image
+                          src={gp.src}
+                          alt={gp.alt}
+                          width={gp.width}
+                          height={gp.height}
+                          quality={90}
+                          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                        />
+                      </motion.div>
+                    );
+                  })}
                 </div>
-              )}
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+                <motion.div
+                  className="video-lightbox-detail"
+                  style={{ maxWidth: 'none', paddingTop: '1rem' }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                >
+                  <span className="video-lightbox-detail-name">{item.piece.detail.title}</span>
+                  <p className="video-lightbox-detail-desc">{item.piece.detail.description}</p>
+                  {item.piece.detail.tags && (
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {item.piece.detail.tags.map((tag) => (
+                        <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <Image
+                  src={item.piece.src}
+                  alt={item.piece.alt}
+                  width={item.piece.width}
+                  height={item.piece.height}
+                  className="art-lightbox-image"
+                  quality={90}
+                  style={item.piece.width / item.piece.height > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined}
+                />
+                {item.piece.detail && (
+                  <div className="video-lightbox-detail" style={item.piece.width / item.piece.height > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
+                    <span className="video-lightbox-detail-name">{item.piece.detail.title}</span>
+                    <p className="video-lightbox-detail-desc">{item.piece.detail.description}</p>
+                    {item.piece.detail.href && (
+                      <a href={item.piece.detail.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--fg-muted)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                        View in AP Art & Design Exhibit →
+                      </a>
+                    )}
+                    {item.piece.detail.tags && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                        {item.piece.detail.tags.map((tag) => (
+                          <span key={tag} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}>{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                    {item.piece.detail.processImages && (
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '1rem' }}>
+                        {item.piece.detail.processImages.map((img) => (
+                          <Image key={img.src} src={img.src} alt={img.alt} width={img.width} height={img.height} quality={80} style={{ width: '100%', height: 'auto', borderRadius: '6px' }} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {hasNext && (
@@ -291,6 +449,7 @@ function ArtLightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.15 }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 18l6-6-6-6" />
@@ -354,10 +513,6 @@ function ArtGallery({ galleryRows, handleClick }: { galleryRows: ArtRow[]; handl
           const tr1AR = topRight1.width / topRight1.height;
           const tr2AR = topRight2.width / topRight2.height;
           const brAR = bottomRight.width / bottomRight.height;
-          // Right col: top row has 2 images side by side, bottom has 1
-          // Top row height = Wr / (tr1AR + tr2AR + gap), bottom = Wr / brAR
-          // Left height = Wl / leftAR = Wr * (1/(tr1AR + tr2AR) + 1/brAR)
-          // Wl/Wr = leftAR * (1/min(tr1AR,tr2AR) + 1/brAR) — approximate
           const rightTopCombinedAR = tr1AR + tr2AR;
           const leftFr = leftAR * (1 / rightTopCombinedAR + 1 / brAR);
           globalIndex += 4;
@@ -410,7 +565,6 @@ function ArtGallery({ galleryRows, handleClick }: { galleryRows: ArtRow[]; handl
           const tr2AR = tr2.width / tr2.height;
           const br1AR = br1.width / br1.height;
           const br2AR = br2.width / br2.height;
-          // Left height = right height: Wl/leftAR = Wr * (1/(tr1AR+tr2AR) + 1/(br1AR+br2AR))
           const leftFr = leftAR * (1 / (tr1AR + tr2AR) + 1 / (br1AR + br2AR));
           globalIndex += 5;
           return (
@@ -470,37 +624,39 @@ function ArtGallery({ galleryRows, handleClick }: { galleryRows: ArtRow[]; handl
   );
 }
 
-import { createContext, useContext } from 'react';
-
-interface GalleryContextValue {
-  openLightbox: (piece: ArtPiece) => void;
-}
-
-const GalleryContext = createContext<GalleryContextValue>({ openLightbox: () => {} });
-
 export function ArtGalleryProvider({ children }: { children: React.ReactNode }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
+  const [originRect, setOriginRect] = useState<DOMRect | null>(null);
 
-  const closeLightbox = useCallback(() => { setActiveIndex(null); setDirection(0); }, []);
+  const closeLightbox = useCallback(() => { setActiveIndex(null); setDirection(0); setOriginRect(null); }, []);
   const goPrev = useCallback(() => { setDirection(-1); setActiveIndex((i) => (i !== null && i > 0 ? i - 1 : i)); }, []);
-  const goNext = useCallback(() => { setDirection(1); setActiveIndex((i) => (i !== null && i < allPieces.length - 1 ? i + 1 : i)); }, []);
+  const goNext = useCallback(() => { setDirection(1); setActiveIndex((i) => (i !== null && i < allItems.length - 1 ? i + 1 : i)); }, []);
 
-  const openLightbox = useCallback((piece: ArtPiece) => {
-    const idx = allPieces.findIndex((p) => p.src === piece.src);
-    setDirection(0);
-    setActiveIndex(idx);
+  const openLightbox = useCallback((src: string, rect?: DOMRect) => {
+    const idx = srcToIndex.get(src);
+    if (idx !== undefined) {
+      setOriginRect(rect ?? null);
+      setDirection(0);
+      setActiveIndex(idx);
+    }
   }, []);
 
+  const contextValue = useMemo(() => ({
+    openLightbox,
+    isLightboxOpen: activeIndex !== null,
+  }), [openLightbox, activeIndex]);
+
   return (
-    <GalleryContext.Provider value={{ openLightbox }}>
+    <GalleryContext.Provider value={contextValue}>
       {children}
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {activeIndex !== null && (
-            <ArtLightbox
-              pieceIndex={activeIndex}
+            <UnifiedLightbox
+              itemIndex={activeIndex}
               direction={direction}
+              originRect={originRect}
               onClose={closeLightbox}
               onPrev={goPrev}
               onNext={goNext}
@@ -514,16 +670,16 @@ export function ArtGalleryProvider({ children }: { children: React.ReactNode }) 
 }
 
 export default function VisualArtContent() {
-  const { openLightbox } = useContext(GalleryContext);
-  return <ArtGallery galleryRows={rows} handleClick={openLightbox} />;
+  const { openLightbox } = useGalleryContext();
+  return <ArtGallery galleryRows={rows} handleClick={(piece) => openLightbox(piece.src)} />;
 }
 
 export function ProductContent() {
-  const { openLightbox } = useContext(GalleryContext);
-  return <ArtGallery galleryRows={productRows} handleClick={openLightbox} />;
+  const { openLightbox } = useGalleryContext();
+  return <ArtGallery galleryRows={productRows} handleClick={(piece) => openLightbox(piece.src)} />;
 }
 
 export function PhotographyContent() {
-  const { openLightbox } = useContext(GalleryContext);
-  return <ArtGallery galleryRows={photoRows} handleClick={openLightbox} />;
+  const { openLightbox } = useGalleryContext();
+  return <ArtGallery galleryRows={photoRows} handleClick={(piece) => openLightbox(piece.src)} />;
 }

@@ -210,12 +210,14 @@ export default function DossiProject() {
                   alt={`Onboarding ${i + 3}`} w={1280} h={2778} onClick={open}
                 />
                 {i === 4 && (
-                  <svg
+                  <motion.svg
                     viewBox="0 0 50 50"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className="absolute pointer-events-none"
                     style={{ top: '-7%', right: '-12%', width: '40%', height: 'auto' }}
+                    animate={{ rotate: [-6, 6, -6] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     <path
                       d="M25 3 L30 19 L47 19 L33 29 L39 46 L25 35 L11 46 L17 29 L3 19 L20 19 Z"
@@ -234,7 +236,7 @@ export default function DossiProject() {
                         <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
                       </filter>
                     </defs>
-                  </svg>
+                  </motion.svg>
                 )}
               </motion.div>
             ))}
@@ -478,7 +480,7 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
   });
 
   const slideY = useTransform(scrollYProgress, [0.3, 0.55], ['55%', '4%']);
-  const oldOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0.65]);
+  const oldOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0.8]);
 
   return (
     <motion.section
