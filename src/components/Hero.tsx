@@ -57,6 +57,7 @@ const wordVariants = {
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
+  const firstParaRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const section = highlightRef.current;
@@ -97,7 +98,7 @@ export default function Hero() {
 
   return (
     <section ref={heroRef} className="relative px-[1rem] md:px-[2rem] lg:px-[3rem] max-w-[1400px] mx-auto overflow-visible">
-      <DotField />
+      <DotField anchorRef={firstParaRef} />
       {/* Title — word-by-word stagger */}
       <motion.div
         initial="hidden"
@@ -124,7 +125,7 @@ export default function Hero() {
         {paragraphs.map((para, pIndex) => {
           const words = splitIntoWords(para.text, para.serifWords);
           return (
-            <p key={pIndex} className="scroll-highlight-paragraph">
+            <p key={pIndex} ref={pIndex === 0 ? firstParaRef : undefined} className="scroll-highlight-paragraph">
               {words.map((w, wIndex) => (
                 <span
                   key={wIndex}
