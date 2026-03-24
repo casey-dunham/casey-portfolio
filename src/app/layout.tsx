@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.caseydunham.design'
   ),
-  title: 'Casey Dunham — Designer & Builder',
+  title: 'Casey Dunham',
   description:
-    'Portfolio of Casey Dunham. Product design, UX/UI, visual art, and engineering.',
+    'Portfolio of Casey Dunham. Product design, UX/UI, & AI.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },
@@ -34,16 +34,16 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   openGraph: {
-    title: 'Casey Dunham — Designer & Builder',
+    title: 'Casey Dunham',
     description:
-      'Product design, UX/UI, visual art, and engineering.',
+      'Portfolio of Casey Dunham. Product design, UX/UI, & AI.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Casey Dunham — Designer & Builder',
+    title: 'Casey Dunham',
     description:
-      'Product design, UX/UI, visual art, and engineering.',
+      'Portfolio of Casey Dunham. Product design, UX/UI, & AI.',
   },
 };
 
