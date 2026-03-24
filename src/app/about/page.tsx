@@ -24,7 +24,7 @@ export default function About() {
     <main className="min-h-screen pb-0">
       {/* ── Hero ── */}
       <section className="pt-28 md:pt-36 pb-20 md:pb-28 px-4 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-12 md:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[360px_1fr] gap-10 md:gap-12 lg:gap-16 items-start">
           <Portrait />
           <div>
             <motion.h1

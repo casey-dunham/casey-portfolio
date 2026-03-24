@@ -3,6 +3,7 @@ import { DM_Sans, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 import ThemeProvider from '@/components/ThemeProvider';
+import { Analytics } from '@vercel/analytics/next';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -69,6 +70,7 @@ export default function RootLayout({
           <Navigation />
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

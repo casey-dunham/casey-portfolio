@@ -115,7 +115,7 @@ export default function ResumePage() {
         {/* Paper */}
         <motion.div
           {...fade(0.1)}
-          className="resume-paper max-w-[820px] mx-auto rounded-lg px-10 md:px-14 py-10 md:py-12"
+          className="resume-paper max-w-[820px] mx-auto rounded-lg px-5 sm:px-10 md:px-14 py-8 sm:py-10 md:py-12"
           style={{
             background: t.paperBg,
             boxShadow: t.paperShadow,

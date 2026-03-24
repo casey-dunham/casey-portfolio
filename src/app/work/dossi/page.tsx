@@ -213,7 +213,7 @@ export default function DossiProject() {
 
       {/* Landscape + AI Chat side by side */}
       <div className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto pt-3 pb-6">
-        <div className="flex gap-3 h-[280px] md:h-[340px]">
+        <div className="flex gap-2 sm:gap-3 h-[200px] sm:h-[280px] md:h-[340px]">
           <motion.div {...fade(0)} className="flex-1 rounded-lg overflow-hidden cursor-pointer min-w-0"
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -242,7 +242,7 @@ export default function DossiProject() {
             </div>
             <p className="font-body text-[0.85rem] text-[#777] leading-[1.6] ">Five directions exploring tone, hierarchy, and how to balance warmth with medical credibility.</p>
           </motion.div>
-          <div className="grid grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-2.5">
             {Array.from({ length: 5 }, (_, i) => (
               <motion.div key={i} {...pop(i)} className="relative">
                 <Img
@@ -305,7 +305,7 @@ export default function DossiProject() {
               <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">App Icon</h3>
             </div>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-[320px_1px_1fr] gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-[260px_1px_1fr] lg:grid-cols-[320px_1px_1fr] gap-6 md:gap-8 items-start">
             <div className="grid grid-cols-4 gap-2">
               <motion.div {...pop(0)} className="col-span-2 row-span-2">
                 <Img src="/images/dossi/icons/icon-01.jpg" alt="Final icon" w={4267} h={4267} onClick={() => open('/images/dossi/icons/icon-01.jpg')} rounded="rounded-[14%]" />

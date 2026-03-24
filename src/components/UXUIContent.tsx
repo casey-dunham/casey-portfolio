@@ -162,7 +162,7 @@ function VideoCell({
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
       />
     </div>
   );

@@ -200,7 +200,7 @@ export default function RewiredProject() {
         </div>
 
         {/* App walkthrough videos */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
           {([
             ['/videos/uxui/rewired-onboarding-2b.mp4', 'Onboarding'],
             ['/videos/uxui/rewired-questions-7a.mp4', 'Assessment'],
@@ -247,7 +247,7 @@ export default function RewiredProject() {
             </motion.div>
             <div className="border-t border-[#2A2A2A] mb-4" />
             {/* 36 orb frames — 9x4 grid */}
-            <div className="grid grid-cols-9 gap-2">
+            <div className="grid grid-cols-6 sm:grid-cols-9 gap-2">
               {Array.from({ length: 36 }, (_, i) => (
                 <motion.div key={i} {...pop(i)}
                   whileHover={{ scale: 1.35, zIndex: 10 }}
@@ -276,7 +276,7 @@ export default function RewiredProject() {
         {...fade(0)}
         className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] py-16 md:py-20"
       >
-        <p className="font-display text-2xl md:text-3xl font-bold text-fg text-center leading-[1.25] tracking-tight whitespace-nowrap mx-auto">
+        <p className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-fg text-center leading-[1.25] tracking-tight mx-auto max-w-[600px]">
           Your brain isn&rsquo;t broken. It just needs <em className="font-serif italic text-accent">rewiring</em>.
         </p>
       </motion.div>
@@ -331,7 +331,7 @@ export default function RewiredProject() {
               </p>
             </motion.div>
             <div className="border-t border-[#2A2A2A] mb-4" />
-            <div className="grid grid-cols-9 gap-x-1.5 gap-y-3 mt-auto">
+            <div className="grid grid-cols-5 sm:grid-cols-9 gap-x-1.5 gap-y-3 mt-auto">
               {Array.from({ length: 45 }, (_, i) => {
                 const skip = [61, 62, 63]; // oddly sized avatars
                 let idx = i + 9;
@@ -356,7 +356,7 @@ export default function RewiredProject() {
 
       {/* ═══ KEY SCREENS ═══ */}
       <Sect label="Key Screens">
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
           {([
             ['/images/rewired/screenshots/welcome.png', 'Welcome'],
             ['/images/rewired/screenshots/npi.png', 'Assessment'],

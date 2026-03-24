@@ -65,9 +65,10 @@ class SpatialGrid {
 
 interface DotFieldProps {
   anchorRef?: React.RefObject<HTMLElement | null>;
+  mobile?: boolean;
 }
 
-export default function DotField({ anchorRef }: DotFieldProps) {
+export default function DotField({ anchorRef, mobile = false }: DotFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const centerRef = useRef({ x: 0, y: 0 });
   const mouseRef = useRef({ x: -9999, y: -9999, prevX: -9999, prevY: -9999 });
@@ -75,6 +76,8 @@ export default function DotField({ anchorRef }: DotFieldProps) {
   const dotsRef = useRef<Dot[]>([]);
   const gridRef = useRef(new SpatialGrid(20));
   const animRef = useRef<number>(0);
+  const mobileRef = useRef(mobile);
+  mobileRef.current = mobile;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -172,7 +175,7 @@ export default function DotField({ anchorRef }: DotFieldProps) {
       const minY = cy - 12 * s - margin;
       const maxY = cy + 12 * s + margin;
 
-      const count = 7000;
+      const count = mobileRef.current ? 2000 : 7000;
       let placed = 0;
       let attempts = 0;
 
@@ -332,10 +335,12 @@ export default function DotField({ anchorRef }: DotFieldProps) {
       const my = mouseRef.current.y;
       const mouseRadius = 80;
 
-      // Build spatial grid
-      grid.clear();
-      for (let i = 0; i < dots.length; i++) {
-        grid.insert(i, dots[i].x, dots[i].y);
+      // Build spatial grid (only needed for dot-dot repulsion on desktop)
+      if (!mobileRef.current) {
+        grid.clear();
+        for (let i = 0; i < dots.length; i++) {
+          grid.insert(i, dots[i].x, dots[i].y);
+        }
       }
 
       // Physics
@@ -361,27 +366,29 @@ export default function DotField({ anchorRef }: DotFieldProps) {
           dot.vy += (Math.random() - 0.5) * jiggle;
         }
 
-        // Dot-dot repulsion (neighbors only via spatial hash)
-        const neighbors = grid.getNeighbors(dot.x, dot.y);
-        for (let n = 0; n < neighbors.length; n++) {
-          const j = neighbors[n];
-          if (j <= i) continue;
+        // Dot-dot repulsion (neighbors only via spatial hash) — skip on mobile
+        if (!mobileRef.current) {
+          const neighbors = grid.getNeighbors(dot.x, dot.y);
+          for (let n = 0; n < neighbors.length; n++) {
+            const j = neighbors[n];
+            if (j <= i) continue;
 
-          const other = dots[j];
-          const ddx = dot.x - other.x;
-          const ddy = dot.y - other.y;
-          const dDist = Math.sqrt(ddx * ddx + ddy * ddy);
-          const minDist = dot.radius + other.radius + 2.5; // repulsion range
+            const other = dots[j];
+            const ddx = dot.x - other.x;
+            const ddy = dot.y - other.y;
+            const dDist = Math.sqrt(ddx * ddx + ddy * ddy);
+            const minDist = dot.radius + other.radius + 2.5; // repulsion range
 
-          if (dDist < minDist && dDist > 0.01) {
-            const overlap = (minDist - dDist) / minDist;
-            const force = overlap * 1.2;
-            const nx = ddx / dDist;
-            const ny = ddy / dDist;
-            dot.vx += nx * force;
-            dot.vy += ny * force;
-            other.vx -= nx * force;
-            other.vy -= ny * force;
+            if (dDist < minDist && dDist > 0.01) {
+              const overlap = (minDist - dDist) / minDist;
+              const force = overlap * 1.2;
+              const nx = ddx / dDist;
+              const ny = ddy / dDist;
+              dot.vx += nx * force;
+              dot.vy += ny * force;
+              other.vx -= nx * force;
+              other.vy -= ny * force;
+            }
           }
         }
 
@@ -467,7 +474,7 @@ export default function DotField({ anchorRef }: DotFieldProps) {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [mobile]);
 
   return (
     <canvas
