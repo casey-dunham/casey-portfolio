@@ -48,6 +48,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.nav-link {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+  transform: scaleX(1.05);
+}
+
 ::selection {
   background: var(--accent);
   color: white;
@@ -631,6 +640,18 @@ body:has(.video-lightbox-backdrop) header {
   max-width: 100%;
 }
 
+.art-cell-crop-bottom {
+  overflow: hidden;
+}
+
+.art-cell-crop-bottom .art-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: top;
+  margin-bottom: -0.5%;
+}
+
 .art-stacked-row {
   display: grid;
   gap: 8px;
@@ -850,65 +871,266 @@ body:has(.art-lightbox-backdrop) header {
   }
 }
 
-/* Illustration grid */
+/* Illustration layout */
 .illustration-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 0 1rem 2rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  overflow: hidden;
+  display: flex;
+  gap: 16px;
+  padding: 0 0 2rem;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-@media (min-width: 768px) {
-  .illustration-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
-    padding: 0 2rem 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .illustration-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    padding: 0 3rem 4rem;
-  }
+.illustration-grid .illustration-item.no-frame {
+  width: 33.33%;
+  max-width: 300px;
 }
 
 .illustration-item {
-  aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   line-height: 0;
   padding: 10%;
-  min-width: 0;
   overflow: hidden;
-  background: var(--bg-raised);
+  background: #252525;
   border: 1px solid var(--border);
   border-radius: 12px;
 }
 
+.illustration-item.no-frame {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 .illustration-item img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.2));
+}
+
+.illustration-item.no-frame img {
   border-radius: 12px;
 }
 
-.illustration-item.span-2 {
-  grid-column: span 2;
-  grid-row: span 2;
-  padding: 4%;
+/* ── Glucose Factor Sheet ── */
+
+/* Preview card — compact, half-width thumbnail */
+.glucose-preview-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #2A2A2A;
+  background: #111;
 }
 
-.illustration-item.featured {
-  padding: 6%;
+.glucose-preview-inner {
+  max-height: 240px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glucose-preview-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #111 5%, rgba(17,17,17,0.8) 45%, transparent 75%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-bottom: 14px;
+  pointer-events: none;
+}
+
+.glucose-preview-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: #666;
+}
+
+/* Expanded lightbox frame */
+.glucose-lightbox-frame {
+  display: flex;
+  flex-direction: column;
+  width: 92vw;
+  max-width: 900px;
+  max-height: 85vh;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #2A2A2A;
+}
+
+.glucose-lightbox-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #2A2A2A;
+  flex-shrink: 0;
+}
+
+.glucose-lightbox-body {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Table base */
+.glucose-factor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.glucose-lightbox-body .glucose-factor-table {
+  font-size: 0.78rem;
+  white-space: normal;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.glucose-factor-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.glucose-factor-table th {
+  background: #1a1a1a;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  padding: 6px 7px;
+  text-align: left;
+  border-bottom: 1px solid #2A2A2A;
+}
+
+.glucose-lightbox-body .glucose-factor-table th {
+  font-size: 0.68rem;
+  padding: 10px 14px;
+  background: #141414;
+}
+
+.glucose-factor-table td {
+  padding: 4px 7px;
+  color: #555;
+  border-bottom: 1px solid #1a1a1a;
+  vertical-align: middle;
+}
+
+.glucose-lightbox-body .glucose-factor-table td {
+  padding: 8px 14px;
+  color: #777;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.glucose-factor-table tbody tr:hover {
+  background: #1a1a1a;
+}
+
+.glucose-lightbox-body .glucose-factor-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+/* Highlighted pump rows — accent purple */
+.glucose-factor-table tbody tr.pump-row {
+  background: rgba(176, 171, 255, 0.04);
+}
+.glucose-factor-table tbody tr.pump-row:hover {
+  background: rgba(176, 171, 255, 0.08);
+}
+.glucose-factor-table tbody tr.pump-row td {
+  color: #888;
+}
+.glucose-lightbox-body .glucose-factor-table tbody tr.pump-row td {
+  color: #aaa;
+}
+.glucose-factor-table tbody tr.pump-row .factor-name {
+  color: var(--accent);
+}
+
+.glucose-factor-table .factor-name {
+  color: #999;
+  font-weight: 500;
+}
+
+.glucose-lightbox-body .glucose-factor-table .factor-name {
+  color: #ccc;
+}
+
+.category-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.effect-pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 0.62rem;
+}
+
+.glucose-lightbox-body .effect-pill {
+  font-size: 0.7rem;
+}
+
+.effect-raise { background: rgba(255, 100, 80, 0.1); color: #e07060; }
+.effect-lower { background: rgba(80, 200, 120, 0.1); color: #60b880; }
+.effect-both { background: rgba(255, 200, 60, 0.08); color: #c0a050; }
+
+/* Legend */
+.glucose-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 14px;
+  border-top: 1px solid #1e1e1e;
+  background: #111;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.glucose-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.glucose-legend-divider {
+  width: 1px;
+  height: 16px;
+  background: #2A2A2A;
+}
+
+.glucose-legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.pump-swatch {
+  background: rgba(176, 171, 255, 0.12);
+  border: 1px solid rgba(176, 171, 255, 0.35);
+}
+
+.dossi-swatch {
+  background: #1a1a1a;
+  border: 1px solid #2A2A2A;
 }

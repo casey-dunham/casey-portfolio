@@ -39,6 +39,9 @@ const media: MediaItem[] = [
   // Pitch slide deck
   { src: '/videos/dossi/dossi-slide-deck-recording.mov', alt: 'Slide deck', w: 1920, h: 1080, type: 'video',
     title: 'Pitch Deck', caption: 'Presented at Georgia Tech InVenture Prize and Startup Exchange. Covers the problem, solution, and technical architecture.', tags: ['Keynote'] },
+  // Pitch demo video
+  { src: '/videos/dossi/dossi-11b.mov', alt: 'Pitch demo', w: 886, h: 1920, type: 'video',
+    title: 'Pitch Demo', caption: 'Live demo shown during the pitch presentation.', tags: ['SwiftUI'] },
   // Before & after — grouped as the 4 "after" screens
   { src: '/images/dossi/screens/1b.png', alt: 'Redesign', w: 870, h: 1603, type: 'image',
     title: 'Before & After', caption: 'Complete redesign — every screen rethought for warmth and ease of use. Data density increased while perceived complexity went down.', tags: ['Figma', 'SwiftUI'],
@@ -100,6 +103,214 @@ function idx(src: string) {
   const direct = media.findIndex((m) => m.src === src);
   if (direct !== -1) return direct;
   return media.findIndex((m) => m.groupSrcs?.some((g) => g.src === src));
+}
+
+/* ── Glucose factor data ── */
+const GLUCOSE_FACTORS = [
+  { factor: 'Active energy burned', category: 'Activity', mechanism: 'Load/intensity proxy', effect: 'Usually lowers', delay: 'Min–hrs', resistance: '—', sensitivity: 'Increases', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Aerobic exercise', category: 'Activity', mechanism: 'Improves sensitivity', effect: 'Lowers', delay: 'Immed + 6–24h', resistance: '—', sensitivity: 'Increases', confidence: '2–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'Yes' },
+  { factor: 'Alcohol intake', category: 'Nutrition', mechanism: 'Hepatic suppression', effect: 'Raises then lowers', delay: '4–12h', resistance: '—', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Altitude', category: 'Environment', mechanism: 'Stress/dehydration', effect: 'Both', delay: 'Hrs–days', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Episodic', automation: 'No', pumps: 'No' },
+  { factor: 'Anaerobic / HIIT', category: 'Activity', mechanism: 'Adrenaline response', effect: 'Raises then lowers', delay: 'Immed + delayed', resistance: 'Increases (acute)', sensitivity: 'Increases (later)', confidence: '2–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Basal insulin delivered', category: 'Insulin delivery', mechanism: 'Background glucose disposal', effect: 'Both', delay: 'Min–hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Basal rate changes', category: 'Insulin delivery', mechanism: 'Time-varying background', effect: 'Both', delay: 'Min–hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Body temperature', category: 'Physiology', mechanism: 'Fever / cycle proxy', effect: 'Raises when febrile', delay: 'Hrs–days', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Bolus insulin', category: 'Insulin delivery', mechanism: 'Offsets meal glucose rise', effect: 'Lowers', delay: '10–60 min', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Bolus stacking', category: 'Insulin (derived)', mechanism: 'Overlapping doses', effect: 'Lowers later', delay: '1–4 hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Caffeine', category: 'Nutrition', mechanism: 'Catecholamine release', effect: 'Both', delay: '0–2 hrs', resistance: 'Partial increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Carbohydrates', category: 'Nutrition', mechanism: 'Primary glucose input', effect: 'Raises', delay: '10–90 min', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'Yes' },
+  { factor: 'CGM glucose readings', category: 'Glucose', mechanism: 'Observed interstitial glucose', effect: 'Measurement', delay: '5–15 min lag', resistance: '—', sensitivity: '—', confidence: '7–14 d', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'CGM sensor lag', category: 'Glucose measurement', mechanism: 'Interstitial vs blood delay', effect: 'Apparent delay', delay: 'Minutes', resistance: '—', sensitivity: '—', confidence: '7–14 d', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Circadian misalignment', category: 'Sleep', mechanism: 'Hormonal rhythm shift', effect: 'Both', delay: 'Days', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Cold exposure', category: 'Environment', mechanism: 'Stress response', effect: 'Can raise', delay: 'Min–hrs', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Complex carbs', category: 'Nutrition', mechanism: 'Slower absorption', effect: 'Raises later', delay: '30–180 min', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Compression lows', category: 'Glucose measurement', mechanism: 'Mechanical pressure artifact', effect: 'False low', delay: 'Immediate', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Correction bolus', category: 'Insulin delivery', mechanism: 'Lowers hyperglycemia', effect: 'Lowers', delay: '10–60 min', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Cortisol (chronic stress)', category: 'Hormones / cycle', mechanism: 'Hepatic glucose output', effect: 'Raises', delay: 'Min–hrs', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Extended / dual bolus', category: 'Insulin delivery', mechanism: 'Distributes bolus over time', effect: 'Lowers later', delay: '1–6 hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Fat (total)', category: 'Nutrition', mechanism: 'Delayed gastric emptying', effect: 'Raises later', delay: '2–6 hrs', resistance: 'Increases', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Fiber', category: 'Nutrition', mechanism: 'Slows absorption', effect: 'Delays spike', delay: '30–240 min', resistance: '—', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Glucose trend / rate', category: 'Glucose (derived)', mechanism: 'Slope / acceleration', effect: 'Both', delay: 'Immediate', resistance: '—', sensitivity: '—', confidence: '7–14 d', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Growth hormone overnight', category: 'Hormones / cycle', mechanism: 'Nighttime resistance', effect: 'Raises', delay: 'Night', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Heart rate', category: 'Physiology', mechanism: 'Stress/intensity proxy', effect: 'Both', delay: 'Immediate', resistance: 'Can increase', sensitivity: 'Can increase', confidence: '1–2 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Heart rate variability', category: 'Physiology', mechanism: 'Recovery/stress proxy', effect: 'Higher BG when low', delay: 'Days', resistance: 'Increase when low', sensitivity: 'Increases when high', confidence: '3–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Heat exposure', category: 'Environment', mechanism: 'Increased absorption', effect: 'Can lower', delay: 'Min–hrs', resistance: '—', sensitivity: 'Increases', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Infection / illness', category: 'Illness', mechanism: 'Inflammation-driven resistance', effect: 'Raises', delay: 'Hrs–days', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Episodic', automation: 'No', pumps: 'No' },
+  { factor: 'Infusion site aging', category: 'Pump / set', mechanism: 'Reduced absorption', effect: 'Raises', delay: 'Hrs–days', resistance: '—', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Insulin on Board', category: 'Insulin (derived)', mechanism: 'Active insulin remaining', effect: 'Lowers / hypo risk', delay: 'Min–hrs', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Late bolus timing', category: 'Insulin (derived)', mechanism: 'Carbs before insulin', effect: 'Raises then lowers', delay: '0–3 hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Meal timing', category: 'Nutrition', mechanism: 'Insulin–carb alignment', effect: 'Both', delay: 'Immediate', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Menstrual follicular', category: 'Hormones / cycle', mechanism: 'Increased sensitivity', effect: 'Can lower', delay: 'Days', resistance: '—', sensitivity: 'Increases', confidence: '3 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Menstrual luteal', category: 'Hormones / cycle', mechanism: 'Increased resistance', effect: 'Raises', delay: 'Days', resistance: 'Increase', sensitivity: '—', confidence: '3 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Missed bolus', category: 'Behavior', mechanism: 'Omitted insulin', effect: 'Raises', delay: '0–3 hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Occlusion / kink / leak', category: 'Pump / set', mechanism: 'Failed delivery', effect: 'Raises', delay: 'Immed–hrs', resistance: '—', sensitivity: '—', confidence: 'Immediate', learning: 'Episodic', automation: 'No', pumps: 'No' },
+  { factor: 'Post-exercise window', category: 'Activity', mechanism: 'Enhanced insulin action', effect: 'Lowers later', delay: '6–48 hrs', resistance: '—', sensitivity: 'Increases', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Protein', category: 'Nutrition', mechanism: 'Gluconeogenesis', effect: 'Raises later', delay: '2–6 hrs', resistance: '—', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Recovery after illness', category: 'Illness', mechanism: 'Sensitivity rebound', effect: 'Lowers', delay: 'Days', resistance: '—', sensitivity: 'Increases', confidence: '1–2 mo', learning: 'Episodic', automation: 'No', pumps: 'No' },
+  { factor: 'Simple carbs', category: 'Nutrition', mechanism: 'Fast absorption', effect: 'Raises faster', delay: '5–45 min', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Sleep duration', category: 'Sleep', mechanism: 'Sleep debt increases resistance', effect: 'Raises next day', delay: 'Next day', resistance: 'Increase', sensitivity: '—', confidence: '3–4 wk', learning: 'Ongoing', automation: 'No', pumps: 'Yes' },
+  { factor: 'Sleep quality', category: 'Sleep', mechanism: 'Poor recovery', effect: 'Raises next day', delay: 'Next day', resistance: 'Increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Steps / movement', category: 'Activity', mechanism: 'Mild uptake', effect: 'Lowers mildly', delay: 'Min–hrs', resistance: '—', sensitivity: 'Increases', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Suspend / pause delivery', category: 'Insulin delivery', mechanism: 'Stops insulin flow', effect: 'Raises', delay: 'Immed–hrs', resistance: '—', sensitivity: '—', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'Yes' },
+  { factor: 'Systemic steroids', category: 'Medications', mechanism: 'Strong insulin resistance', effect: 'Raises', delay: 'Hrs–days', resistance: 'Increase', sensitivity: '—', confidence: '3–4 wk', learning: 'Episodic', automation: 'No', pumps: 'No' },
+  { factor: 'Temp basal decrease', category: 'Insulin delivery', mechanism: 'Short-term reduction', effect: 'Both', delay: 'Min–hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Temp basal increase', category: 'Insulin delivery', mechanism: 'Short-term increase', effect: 'Both', delay: 'Min–hrs', resistance: '—', sensitivity: '—', confidence: '2–4 wk', learning: 'Ongoing', automation: 'Yes', pumps: 'Yes' },
+  { factor: 'Water / hydration', category: 'Nutrition', mechanism: 'Indirect physiology', effect: 'Raises if dehydrated', delay: 'Hours', resistance: 'Partial increase', sensitivity: '—', confidence: '1–2 mo', learning: 'Ongoing', automation: 'No', pumps: 'No' },
+  { factor: 'Workout session', category: 'Activity', mechanism: 'Increases uptake', effect: 'Both', delay: 'Immed–48h', resistance: '—', sensitivity: 'Increases', confidence: '2–3 wk', learning: 'Ongoing', automation: 'No', pumps: 'Yes' },
+];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  'Activity': '#6aaa82',
+  'Nutrition': '#c49a5a',
+  'Environment': '#5a9aaa',
+  'Insulin delivery': '#8a85c4',
+  'Insulin (derived)': '#9a95d4',
+  'Physiology': '#c47070',
+  'Glucose': '#6a8ab4',
+  'Glucose measurement': '#6a8ab4',
+  'Glucose (derived)': '#6a8ab4',
+  'Sleep': '#6a75b4',
+  'Hormones / cycle': '#c46a9a',
+  'Illness': '#c4805a',
+  'Pump / set': '#8a7a6a',
+  'Behavior': '#6a7a8a',
+  'Medications': '#5aaa8a',
+};
+
+function FactorTable({ isExpanded }: { isExpanded?: boolean }) {
+  const pumpCount = GLUCOSE_FACTORS.filter((f) => f.pumps === 'Yes').length;
+  const dossiCount = GLUCOSE_FACTORS.length;
+
+  return (
+    <div>
+      <table className="glucose-factor-table">
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>Category</th>
+            <th>Mechanism</th>
+            {isExpanded && <th>Effect</th>}
+            {isExpanded && <th>Delay</th>}
+            {isExpanded && <th>Confidence</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {GLUCOSE_FACTORS.map((f) => {
+            const isPump = f.pumps === 'Yes';
+            const isLower = f.effect === 'Lowers' || f.effect === 'Lowers later' || f.effect === 'Can lower' || f.effect === 'Lowers mildly' || f.effect === 'Lowers / hypo risk' || f.effect === 'Delays spike';
+            const isRaise = f.effect === 'Raises' || f.effect === 'Raises later' || f.effect === 'Raises faster' || f.effect === 'Raises next day' || f.effect === 'Can raise' || f.effect.startsWith('Raises');
+            return (
+              <tr key={f.factor} className={isPump ? 'pump-row' : ''}>
+                <td className="factor-name">{f.factor}</td>
+                <td>{f.category}</td>
+                <td>{f.mechanism}</td>
+                {isExpanded && <td><span className={`effect-pill ${isLower ? 'effect-lower' : isRaise ? 'effect-raise' : 'effect-both'}`}>{f.effect}</span></td>}
+                {isExpanded && <td>{f.delay}</td>}
+                {isExpanded && <td>{f.confidence}</td>}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      {/* Legend */}
+      {isExpanded && (
+        <div className="glucose-legend">
+          <div className="glucose-legend-item">
+            <span className="glucose-legend-swatch pump-swatch" />
+            <span>Considered by current pumps ({pumpCount} of {dossiCount})</span>
+          </div>
+          <div className="glucose-legend-item">
+            <span className="glucose-legend-swatch dossi-swatch" />
+            <span>Additional factors Dossi considers ({dossiCount - pumpCount})</span>
+          </div>
+          <div className="glucose-legend-divider" />
+          <div className="glucose-legend-item"><span className="effect-pill effect-raise" style={{ fontSize: '0.65rem' }}>Raises</span></div>
+          <div className="glucose-legend-item"><span className="effect-pill effect-lower" style={{ fontSize: '0.65rem' }}>Lowers</span></div>
+          <div className="glucose-legend-item"><span className="effect-pill effect-both" style={{ fontSize: '0.65rem' }}>Both / varies</span></div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GlucoseFactorSheet() {
+  const [expanded, setExpanded] = useState(false);
+  const pumpCount = GLUCOSE_FACTORS.filter((f) => f.pumps === 'Yes').length;
+
+  useEffect(() => {
+    if (!expanded) return;
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpanded(false); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [expanded]);
+
+  return (
+    <>
+      {/* Compact landscape preview — half width */}
+      <motion.div
+        className="glucose-preview-card group"
+        onClick={() => setExpanded(true)}
+        whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
+        <div className="glucose-preview-inner">
+          <FactorTable />
+        </div>
+        {/* Fade overlay */}
+        <div className="glucose-preview-fade">
+          <span className="font-body text-[0.72rem] text-[#666] flex items-center gap-2 group-hover:text-[#999] transition-colors">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            Explore all {GLUCOSE_FACTORS.length} factors
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Expanded — uses same lightbox pattern as rest of page */}
+      {typeof document !== 'undefined' && expanded && createPortal(
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+            className="art-lightbox-backdrop"
+            onClick={() => setExpanded(false)}
+          >
+            {/* Close button — same as existing lightbox */}
+            <motion.button
+              className="video-lightbox-close"
+              onClick={() => setExpanded(false)}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.15 }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+            </motion.button>
+
+            {/* Content frame */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              className="glucose-lightbox-frame"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header inside the frame */}
+              <div className="glucose-lightbox-header">
+                <div>
+                  <span className="font-display text-[0.95rem] font-semibold text-fg">Blood Glucose Variability Factors</span>
+                  <p className="font-body text-[0.72rem] text-[#666] mt-0.5">{GLUCOSE_FACTORS.length} factors &middot; {Object.keys(CATEGORY_COLORS).length} categories</p>
+                </div>
+              </div>
+              {/* Scrollable table */}
+              <div className="glucose-lightbox-body">
+                <FactorTable isExpanded />
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
+  );
 }
 
 /* ═══════════════════════════════════════════
@@ -196,25 +407,34 @@ export default function DossiProject() {
         className="px-4 md:px-8 lg:px-12 max-w-[1000px] mx-auto border-t border-[#2A2A2A] py-14 md:py-20"
       >
         <h2 className="font-display text-xs uppercase tracking-[0.2em] text-[#555] font-medium mb-8">The Pitch</h2>
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_0.8fr] gap-10 items-stretch">
-          <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer"
+        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr] gap-10 items-stretch">
+          <motion.div {...fade(0)} className="rounded-xl cursor-pointer p-[6px]" style={{ background: '#E8E8E8' }}
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => open('/videos/dossi/dossi-slide-deck-recording.mov')}
           >
-            <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline className="block w-[112%] max-w-none ml-[-6%]" />
+            <div className="rounded-lg overflow-hidden">
+              <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline className="block w-[110%] max-w-none ml-[-5%] mt-[2%]" />
+            </div>
           </motion.div>
-          <div>
-            <motion.p {...fade(0.1)} className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
-              I have Type&nbsp;1 Diabetes. I was diagnosed at age 14 and have been
-              managing insulin delivery every day since. I saw a gap in the
-              technology that no one was filling.
-            </motion.p>
-            <motion.p {...fade(0.15)} className="font-body text-[#888] text-[0.9rem] leading-[1.7]">
-              Current pumps only see glucose and carbs. They don&rsquo;t know if you
-              slept four hours, ran this morning, or ate pizza instead of salad.
-              I decided to build what I wished existed.
-            </motion.p>
+          <div className="flex flex-col justify-between">
+            <div>
+              <motion.p {...fade(0.1)} className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
+                I have Type&nbsp;1 Diabetes. I was diagnosed at age 14 and have been
+                managing insulin delivery every day since. I saw a gap in the
+                technology that no one was filling.
+              </motion.p>
+              <motion.p {...fade(0.15)} className="font-body text-[#888] text-[0.9rem] leading-[1.7]">
+                Current pumps only see glucose and carbs. I wanted something that saw the whole picture.
+              </motion.p>
+            </div>
+            <motion.div {...fade(0.2)} className="rounded-lg overflow-hidden cursor-pointer mt-4"
+              whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              onClick={() => open('/videos/dossi/dossi-11b.mov')}
+            >
+              <video src="/videos/dossi/dossi-11b.mov" autoPlay muted loop playsInline className="block w-full rounded-lg" />
+            </motion.div>
           </div>
         </div>
       </motion.section>
@@ -436,19 +656,44 @@ export default function DossiProject() {
       {/* ═══ CONTEXT ═══ */}
       <Sect label="Programs & Research">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { t: 'Programs', d: <>Built through Georgia Tech&rsquo;s <span className="text-fg font-medium">InVenture Prize</span> and <span className="text-fg font-medium">Startup Exchange</span>. Mentored by Rosa Arriaga, Senior Research Scientist in Interactive Computing.</>, img: '/images/dossi/startup-exchange.png', alt: 'Startup Exchange', w: 3420, h: 1897 },
-            { t: 'Research', d: <>Distributed flyers through Georgia Tech Disability Services to survey T1D students. The most consistent feedback: people wanted to understand <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.</>, img: '/images/dossi/t1d-flyer.jpg', alt: 'Research flyer', w: 5009, h: 6667 },
-          ].map((item, i) => (
-            <motion.div key={item.t} {...fade(i * 0.04)} className="py-4">
+          {/* Left column — Factor Research + Programs stacked */}
+          <div className="flex flex-col gap-10">
+            {/* 01 — Factor Research */}
+            <motion.div {...fade(0)}>
               <div className="flex items-baseline gap-3 mb-1.5">
-                <span className="font-display text-[1.1rem] font-light text-accent tabular-nums">{String(i + 1).padStart(2, '0')}.</span>
-                <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">{item.t}</h3>
+                <span className="font-display text-[1.1rem] font-light text-accent tabular-nums">01.</span>
+                <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Factor Research</h3>
               </div>
-              <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-5">{item.d}</p>
-              <Img src={item.img} alt={item.alt} w={item.w} h={item.h} onClick={open} />
+              <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-4">
+                Catalogued {GLUCOSE_FACTORS.length}&nbsp;factors that affect blood sugar &mdash; from insulin timing to sleep quality to menstrual cycle phase. This research directly informed Dossi&rsquo;s Bayesian learning engine.
+              </p>
+              <GlucoseFactorSheet />
             </motion.div>
-          ))}
+
+            {/* 02 — Programs */}
+            <motion.div {...fade(0.04)}>
+              <div className="flex items-baseline gap-3 mb-1.5">
+                <span className="font-display text-[1.1rem] font-light text-accent tabular-nums">02.</span>
+                <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Programs</h3>
+              </div>
+              <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-5">
+                Built through Georgia Tech&rsquo;s <span className="text-fg font-medium">InVenture Prize</span> and <span className="text-fg font-medium">Startup Exchange</span>. Mentored by Rosa Arriaga, Senior Research Scientist in Interactive Computing.
+              </p>
+              <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
+            </motion.div>
+          </div>
+
+          {/* Right column — User Research */}
+          <motion.div {...fade(0.08)}>
+            <div className="flex items-baseline gap-3 mb-1.5">
+              <span className="font-display text-[1.1rem] font-light text-accent tabular-nums">03.</span>
+              <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">User Research</h3>
+            </div>
+            <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-5">
+              Distributed flyers through Georgia Tech Disability Services to survey T1D students. The most consistent feedback: people wanted to understand <em className="text-fg not-italic font-medium">patterns</em>, not just numbers.
+            </p>
+            <Img src="/images/dossi/t1d-flyer.jpg" alt="Research flyer" w={5009} h={6667} onClick={open} />
+          </motion.div>
         </div>
       </Sect>
 

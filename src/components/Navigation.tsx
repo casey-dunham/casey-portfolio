@@ -26,8 +26,16 @@ export default function Navigation() {
     if (isHome) {
       e.preventDefault();
       const hashOnly = hash.includes('#') ? '#' + hash.split('#')[1] : hash;
-      window.location.hash = hashOnly;
-      document.getElementById('section-tabs')?.scrollIntoView({ behavior: 'smooth' });
+      // Clear hash first so re-setting it always fires hashchange
+      window.location.hash = '';
+      requestAnimationFrame(() => {
+        window.location.hash = hashOnly;
+        const el = document.getElementById('section-tabs');
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      });
     }
   }, [isHome]);
 
@@ -41,7 +49,7 @@ export default function Navigation() {
 
   const allItems = [...leftItems, ...rightItems];
 
-  const linkClass = "text-sm font-body font-medium text-fg hover:text-accent transition-colors duration-300 uppercase tracking-widest";
+  const linkClass = "nav-link text-sm font-body font-medium text-fg hover:text-fg transition-colors duration-300 uppercase tracking-widest";
 
   const renderLink = (item: { name: string; href: string }) => {
     const isSection = item.name === 'Gallery' || item.name === 'Projects';
@@ -70,16 +78,21 @@ export default function Navigation() {
         style={{ backgroundColor: 'var(--bg)' }}
       >
         <nav className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-5 flex items-center justify-between">
-          <Link
+          <a
             href="/"
-            className={`group transition-opacity duration-300 ${
-              isHome ? 'opacity-0 pointer-events-none' : 'opacity-100'
-            }`}
+            className="group"
+            onClick={(e) => {
+              if (isHome) {
+                e.preventDefault();
+                window.history.replaceState(null, '', '/');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
           >
             <span className="font-display text-2xl font-semibold tracking-tight text-fg">
               Casey Dunham
             </span>
-          </Link>
+          </a>
 
           <ul className="hidden md:flex items-center gap-10">
             {allItems.map((item) => (
@@ -88,7 +101,7 @@ export default function Navigation() {
             <li>
               <Link
                 href="/skills"
-                className="flex items-center justify-center text-fg hover:text-accent transition-colors duration-300"
+                className="flex items-center justify-center text-fg hover:text-fg transition-colors duration-300"
                 aria-label="Search skills"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

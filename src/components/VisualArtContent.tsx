@@ -25,6 +25,7 @@ interface ArtPiece {
   alt: string;
   width: number;
   height: number;
+  cropBottom?: boolean;
   detail?: ArtDetail;
 }
 
@@ -62,7 +63,7 @@ const rows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
       { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards. Drawn in tenth grade.', tags: ['Fine Art', 'Graphite'] } },
       { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Fine Art', 'Graphite'] } },
       { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Fine Art', 'Graphite'] } },
@@ -72,10 +73,9 @@ const rows: ArtRow[] = [
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/midnight.jpg', alt: 'Midnight — Charcoal and graphite', width: 1200, height: 1801, detail: { title: 'Midnight', description: 'Charcoal and graphite, 2023. A portrait lit only by candlelight, exploring extreme contrast and the way light dissolves into shadow.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Fine Art', 'Graphite'] } },
       { src: '/images/art/lemons-and-antlers.jpg', alt: 'Still Life with Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life with Antlers', description: 'Oil on canvas, 2023. A traditional still life pairing organic forms — shed antlers and lemons — against a richly patterned draped fabric. Focus on color temperature and reflected light within a muted palette.', tags: ['Fine Art', 'Paint'] } },
       { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his confident brushwork and approach to rendering light on skin and fabric.', tags: ['Fine Art', 'Paint'] } },
-      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
     ],
   },
 ];
@@ -85,10 +85,10 @@ const photoRows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Orange — Kenya, 2024', width: 716, height: 1200, detail: { title: 'Orange', description: 'Kenya, 2024. A boy mid-sip in the afternoon sun, his orange polo echoing the warm tones of the soda bottle. Shot during a community gathering in the Rift Valley.', tags: ['Photography'] } },
-      { src: '/images/art/basket-of-mangos.jpeg', alt: 'The Harvest — Kenya, 2024', width: 675, height: 1200, detail: { title: 'The Harvest', description: 'Kenya, 2024. A child proudly holds a basin of freshly picked mangoes outside a school gate. The pink basin and red sweater cut against the muted stone and iron behind him.', tags: ['Photography'] } },
-      { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Water Carry', description: 'Kenya, 2024. A girl stands with a jerry can in the midday heat, smiling despite the weight. The harsh light flattens the scene into planes of white and warm shadow.', tags: ['Photography'] } },
-      { src: '/images/art/clothesline.jpg', alt: 'Drying Day — Kenya, 2024', width: 1600, height: 900, detail: { title: 'Drying Day', description: 'Kenya, 2024. Laundry dries on a balcony railing overlooking a schoolyard. The patterned fabrics and ochre walls create a layered composition of color and texture.', tags: ['Photography'] } },
+      { src: '/images/art/boy-drinking-soda.jpeg', alt: 'Fanta Break — Kenya, 2024', width: 716, height: 1200, detail: { title: 'Fanta Break', description: 'Kenya, 2024. A boy mid-sip in the afternoon sun.', tags: ['Photography'] } },
+      { src: '/images/art/basket-of-mangos.jpeg', alt: 'Mango Haul — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Mango Haul', description: 'Kenya, 2024. A child holds a basin of freshly picked mangoes. The pink basin and red sweater cut against the muted stone and iron behind him.', tags: ['Photography'] } },
+      { src: '/images/art/girl-with-water.jpg', alt: 'Water Carry — Kenya, 2024', width: 675, height: 1200, detail: { title: 'Water Carry', description: 'Kenya, 2024. A girl with a jerry can in the midday heat. The harsh light flattens the scene into planes of white and warm shadow.', tags: ['Photography'] } },
+      { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', width: 5884, height: 1533, cropBottom: true, detail: { title: 'The Herd', description: 'Kenya, 2024. Zebras grazing on the Maasai Mara.', tags: ['Photography'] } },
     ],
   },
   {
@@ -98,12 +98,6 @@ const photoRows: ArtRow[] = [
       { src: '/images/art/sink.jpeg', alt: 'Wash — Kenya, 2024', width: 737, height: 1200, detail: { title: 'Wash', description: 'Kenya, 2024. Two children at a hand-washing station at Happy Life Children\'s Home. Shot in black and white to draw attention to gesture and the geometry of the signs and tiles around them.', tags: ['Photography'] } },
       { src: '/images/art/portrait.jpg', alt: 'Hands to Heart — Kenya, 2024', width: 719, height: 1200, detail: { title: 'Hands to Heart', description: 'Kenya, 2024. A quiet portrait — hands pressed to chest, eyes steady. The shallow depth of field dissolves the palm trees behind into soft light.', tags: ['Photography'] } },
       { src: '/images/art/supersonic.jpg', alt: 'Window Seat — Kenya, 2024', width: 1067, height: 1200, detail: { title: 'Window Seat', description: 'Kenya, 2024. Reading by the glow of an airplane window on the flight over. The cabin darkness isolates the figure in a cocoon of blue light.', tags: ['Photography'] } },
-    ],
-  },
-  {
-    cols: 1,
-    pieces: [
-      { src: '/images/art/zebrastripe.jpg', alt: 'The Herd — Kenya, 2024', width: 5884, height: 1533, detail: { title: 'The Herd', description: 'Kenya, 2024. A panoramic shot of zebras grazing on the Maasai Mara. The wide crop emphasizes the rhythm of stripes repeating across the grassland.', tags: ['Photography'] } },
     ],
   },
 ];
@@ -143,6 +137,7 @@ interface IllustrationPiece {
   featured?: boolean;
   span?: number;
   noFrame?: boolean;
+  crop?: boolean;
   detail?: ArtDetail;
 }
 
@@ -155,17 +150,6 @@ const illDetail = (title: string, desc: string): ArtDetail => ({
 // Ordered to balance tall/short and cluster brains at the bottom.
 const illustrationPieces: IllustrationPiece[] = [
   { src: '/images/illustrations/eyes-watching.png', alt: 'Eyes Watching', width: 1024, height: 1536, bg: 'none', noFrame: true, detail: illDetail('Eyes Watching', 'Digital illustration created for Rewired, a neuroscience education platform.') },
-  { src: '/images/illustrations/sad-illustration.png', alt: 'Sad Illustration', width: 820, height: 1024, bg: 'none', detail: illDetail('Sad Illustration', 'A figure in quiet distress — exploring emotional states.') },
-  { src: '/images/illustrations/telescope.png', alt: 'Telescope', width: 1024, height: 400, bg: 'none', detail: illDetail('Telescope', 'A telescope — exploring the unknown.') },
-  { src: '/images/illustrations/bird-head.png', alt: 'Bird Head', width: 1507, height: 1850, bg: 'none', detail: illDetail('Bird Head', 'A surreal figure with a bird for a head.') },
-  { src: '/images/illustrations/umbrella.png', alt: 'Umbrella', width: 769, height: 1024, bg: 'none', detail: illDetail('Umbrella', 'An umbrella — protection and coping.') },
-  { src: '/images/illustrations/statue-with-headphones.png', alt: 'Statue with Headphones', width: 587, height: 1024, bg: 'none', detail: illDetail('Statue with Headphones', 'A classical statue wearing headphones.') },
-  { src: '/images/illustrations/knitting-brain.png', alt: 'Knitting Brain', width: 945, height: 860, bg: 'none', detail: illDetail('Knitting Brain', 'A brain being knitted together — representing neuroplasticity.') },
-  { src: '/images/illustrations/tree-with-optic-roots.png', alt: 'Tree with Optic Roots', width: 1400, height: 2096, bg: 'none', detail: illDetail('Tree with Optic Roots', 'A tree with optic-nerve roots.') },
-  { src: '/images/illustrations/brain-turtle.png', alt: 'Brain Turtle', width: 1024, height: 805, bg: 'none', detail: illDetail('Brain Turtle', 'A turtle carrying a brain.') },
-  { src: '/images/illustrations/brain-cut-out.png', alt: 'Brain Cut-Out', width: 820, height: 1024, bg: 'none', detail: illDetail('Brain Cut-Out', 'A brain silhouette cut from a head.') },
-  { src: '/images/illustrations/brain-tree.png', alt: 'Brain Tree', width: 801, height: 1024, bg: 'none', detail: illDetail('Brain Tree', 'A tree growing from a brain.') },
-  { src: '/images/illustrations/anvil-with-balloon.png', alt: 'Anvil with Balloon', width: 677, height: 1024, bg: 'none', detail: illDetail('Anvil with Balloon', 'An anvil suspended by a balloon — tension between weight and lightness.') },
 ];
 
 const illustrationArtPieces: ArtPiece[] = illustrationPieces.map(p => ({
@@ -242,7 +226,7 @@ function AnimatedArtCell({
   return (
     <motion.div
       ref={ref}
-      className={`art-cell ${isHero ? 'art-cell-hero' : ''}`}
+      className={`art-cell ${isHero ? 'art-cell-hero' : ''}${piece.cropBottom ? ' art-cell-crop-bottom' : ''}`}
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -455,15 +439,20 @@ function UnifiedLightbox({
               </>
             ) : (
               <>
-                <Image
-                  src={item.piece.src}
-                  alt={item.piece.alt}
-                  width={item.piece.width}
-                  height={item.piece.height}
-                  className="art-lightbox-image"
-                  quality={90}
-                  style={item.piece.width / item.piece.height > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined}
-                />
+                <div style={item.piece.cropBottom ? { maxHeight: '55vh', overflow: 'hidden' } : undefined}>
+                  <Image
+                    src={item.piece.src}
+                    alt={item.piece.alt}
+                    width={item.piece.width}
+                    height={item.piece.height}
+                    className="art-lightbox-image"
+                    quality={90}
+                    style={{
+                      ...(item.piece.width / item.piece.height > 2 ? { maxWidth: '80vw', width: '80vw' } : {}),
+                      ...(item.piece.cropBottom ? { objectFit: 'cover', objectPosition: 'top', width: '100%', height: 'auto' } : {}),
+                    }}
+                  />
+                </div>
                 {item.piece.detail && (
                   <div className="video-lightbox-detail" style={item.piece.width / item.piece.height > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
                     {item.piece.detail.href === '/work/rewired' ? (
@@ -787,8 +776,8 @@ function AnimatedIllustrationCell({
   return (
     <motion.div
       ref={ref}
-      className={`${piece.noFrame ? 'illustration-item-noframe' : 'illustration-item'}${piece.span === 2 ? ' span-2' : ''}${piece.featured ? ' featured' : ''}`}
-      style={!piece.noFrame ? { aspectRatio: `${piece.width} / ${piece.height}` } : undefined}
+      className={`illustration-item${piece.noFrame ? ' no-frame' : ''}`}
+      style={{ aspectRatio: `${piece.width} / ${piece.height}` }}
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -815,7 +804,7 @@ export function IllustrationContent() {
         <AnimatedIllustrationCell
           key={piece.src}
           piece={piece}
-          delay={(i % 5) * 0.06}
+          delay={i * 0.06}
           onClick={() => openLightbox(piece.src)}
         />
       ))}
