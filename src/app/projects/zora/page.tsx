@@ -365,8 +365,10 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
                 <video src={m.src} autoPlay loop muted playsInline className="video-lightbox-video" style={{ cursor: 'pointer' }} />
               </div>
             ) : (
-              <Image src={m.src} alt={m.alt} width={m.w} height={m.h} quality={90}
-                className="art-lightbox-image" />
+              <div className="art-lightbox-image-wrap">
+                <Image src={m.src} alt={m.alt} width={m.w} height={m.h} quality={90}
+                  className="art-lightbox-image" />
+              </div>
             )}
 
             {/* Detail panel */}

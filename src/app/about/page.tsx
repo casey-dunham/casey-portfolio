@@ -50,7 +50,7 @@ export default function About() {
               <p className="font-body text-fg-muted text-[0.95rem] leading-[1.7] mb-8">
                 I have explored this myself in web development, building and designing
                 full stack apps on my own, which you can learn more
-                about{' '}<a href="/projects" className="text-fg-muted hover:text-fg transition-colors underline underline-offset-2">here</a>.
+                about{' '}<a href="/#projects" className="text-fg-muted hover:text-fg transition-colors underline underline-offset-2">here</a>.
               </p>
               <motion.a
                 href="/resume"

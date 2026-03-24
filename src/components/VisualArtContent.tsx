@@ -26,6 +26,7 @@ interface ArtPiece {
   width: number;
   height: number;
   cropBottom?: boolean;
+  imageStyle?: React.CSSProperties;
   detail?: ArtDetail;
 }
 
@@ -63,8 +64,8 @@ const rows: ArtRow[] = [
     cols: 2,
     layout: 'left-tall-right-grid',
     pieces: [
-      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
-      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards. Drawn in tenth grade.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, imageStyle: { objectPosition: '52% 52%' }, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
+      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards.', tags: ['Fine Art', 'Graphite'] } },
       { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Fine Art', 'Graphite'] } },
       { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Fine Art', 'Graphite'] } },
     ],
@@ -241,7 +242,7 @@ function AnimatedArtCell({
         quality={85}
         sizes={isHero ? '100vw' : undefined}
         className="art-image"
-        style={isHero ? { width: '100%', height: 'auto' } : undefined}
+        style={isHero ? { width: '100%', height: 'auto' } : piece.imageStyle}
       />
     </motion.div>
   );
@@ -439,7 +440,7 @@ function UnifiedLightbox({
               </>
             ) : (
               <>
-                <div style={item.piece.cropBottom ? { maxHeight: '55vh', overflow: 'hidden' } : undefined}>
+                <div className={item.piece.cropBottom ? undefined : 'art-lightbox-image-wrap'} style={item.piece.cropBottom ? { maxHeight: '55vh', overflow: 'hidden', borderRadius: '14px' } : undefined}>
                   <Image
                     src={item.piece.src}
                     alt={item.piece.alt}
@@ -448,7 +449,7 @@ function UnifiedLightbox({
                     className="art-lightbox-image"
                     quality={90}
                     style={{
-                      ...(item.piece.width / item.piece.height > 2 ? { maxWidth: '80vw', width: '80vw' } : {}),
+                      ...(item.piece.width / item.piece.height > 2 ? { maxWidth: '80vw' } : {}),
                       ...(item.piece.cropBottom ? { objectFit: 'cover', objectPosition: 'top', width: '100%', height: 'auto' } : {}),
                     }}
                   />

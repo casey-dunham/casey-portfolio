@@ -975,8 +975,10 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
               </>
             ) : (
               <>
-                <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
-                  style={m.w / m.h > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined} />
+                <div className="art-lightbox-image-wrap">
+                  <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
+                    style={m.w / m.h > 2 ? { maxWidth: '80vw', width: '80vw' } : undefined} />
+                </div>
                 <div className="video-lightbox-detail" style={m.w / m.h > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
                   <a href="/projects/dossi" className="video-lightbox-detail-header">
                     <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
