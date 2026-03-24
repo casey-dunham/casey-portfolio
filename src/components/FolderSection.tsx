@@ -59,7 +59,7 @@ export default function FolderSection({
         ease: 'power2.out',
         onComplete: () => {
           content.style.maxHeight = 'none';
-          content.style.overflow = '';
+          content.style.overflow = 'visible';
         },
       });
       setIsOpen(true);
@@ -75,6 +75,7 @@ export default function FolderSection({
     if (startOpen) {
       content.style.maxHeight = 'none';
       content.style.opacity = '1';
+      content.style.overflow = 'visible';
       return;
     }
 
@@ -97,7 +98,7 @@ export default function FolderSection({
           ease: 'power2.out',
           onComplete: () => {
             content.style.maxHeight = 'none';
-            content.style.overflow = '';
+            content.style.overflow = 'visible';
             ScrollTrigger.refresh();
           },
         });

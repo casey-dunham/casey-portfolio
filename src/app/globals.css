@@ -635,19 +635,6 @@ body:has(.video-lightbox-backdrop) header {
   overflow: hidden;
   cursor: pointer;
   line-height: 0;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-@media (hover: hover) {
-  .art-cell {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .art-cell:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  }
 }
 
 .art-cell-hero {
@@ -943,19 +930,6 @@ body:has(.art-lightbox-backdrop) header {
   background: #252525;
   border: 1px solid var(--border);
   border-radius: 12px;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-@media (hover: hover) {
-  .illustration-item {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .illustration-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  }
 }
 
 .illustration-item.no-frame {
