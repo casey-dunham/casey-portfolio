@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HIDDEN_PILL_TAGS } from '@/data/projects';
@@ -113,6 +113,17 @@ export default function DossiProject() {
   const prev = useCallback(() => { setDir(-1); setLi((i) => (i !== null && i > 0 ? i - 1 : i)); }, []);
   const next = useCallback(() => { setDir(1); setLi((i) => (i !== null && i < media.length - 1 ? i + 1 : i)); }, []);
 
+  const pitchVideoRef = useRef<HTMLVideoElement>(null);
+  const isInViewPitch = useInView(pitchVideoRef, { amount: 0.8 });
+
+  useEffect(() => {
+    if (isInViewPitch) {
+      pitchVideoRef.current?.play();
+    } else {
+      pitchVideoRef.current?.pause();
+    }
+  }, [isInViewPitch]);
+
   return (
     <main className="min-h-screen pb-0">
 
@@ -191,7 +202,7 @@ export default function DossiProject() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={() => open('/videos/dossi/dossi-slide-deck-recording.mov')}
           >
-            <video src="/videos/dossi/dossi-slide-deck-recording.mov" autoPlay muted loop playsInline className="block w-[112%] max-w-none ml-[-6%]" />
+            <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline className="block w-[112%] max-w-none ml-[-6%]" />
           </motion.div>
           <div>
             <motion.p {...fade(0.1)} className="font-body text-fg text-[0.95rem] leading-[1.7] mb-5">
