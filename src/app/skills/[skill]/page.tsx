@@ -79,7 +79,7 @@ export default function SkillPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.04, ease: [0.25, 1, 0.5, 1] }}
               >
-                <Link href={`/work/${item.projectSlug}`} className="group block">
+                <Link href={`/projects/${item.projectSlug}`} className="group block">
                   <div className="bg-bg-raised rounded-lg border border-border overflow-hidden transition-all duration-300 hover:border-border-light">
                     <div className="overflow-hidden bg-[#111]">
                       {item.type === 'image' ? (

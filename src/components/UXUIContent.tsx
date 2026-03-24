@@ -30,13 +30,13 @@ interface VideoRow {
 const dossi: VideoProject = {
   icon: '/images/dossi-app-icon.png',
   name: 'Dossi',
-  href: '/work/dossi',
+  href: '/projects/dossi',
 };
 
 const rewired: VideoProject = {
   icon: '/images/rewired-app-icon.png',
   name: 'Rewired',
-  href: '/work/rewired',
+  href: '/projects/rewired',
 };
 
 const tags = { figma: 'Figma', swift: 'SwiftUI', uxui: 'UX/UI' };

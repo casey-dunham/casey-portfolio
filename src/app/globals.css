@@ -50,11 +50,13 @@ body {
 
 .nav-link {
   display: inline-block;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  transform-origin: center;
 }
 
 .nav-link:hover {
-  transform: scaleX(1.05);
+  transform: scale(1.08);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
 }
 
 ::selection {

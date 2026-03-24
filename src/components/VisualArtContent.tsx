@@ -143,7 +143,7 @@ interface IllustrationPiece {
 
 // Helper to build illustration detail
 const illDetail = (title: string, desc: string): ArtDetail => ({
-  title, description: desc, href: '/work/rewired', tags: ['Illustration', 'Procreate'],
+  title, description: desc, href: '/projects/rewired', tags: ['Illustration', 'Procreate'],
 });
 
 // Masonry (CSS columns) fills top-to-bottom per column.
@@ -455,18 +455,18 @@ function UnifiedLightbox({
                 </div>
                 {item.piece.detail && (
                   <div className="video-lightbox-detail" style={item.piece.width / item.piece.height > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
-                    {item.piece.detail.href === '/work/rewired' ? (
+                    {item.piece.detail.href === '/projects/rewired' ? (
                       <>
-                        <a href="/work/rewired" className="video-lightbox-detail-header">
+                        <a href="/projects/rewired" className="video-lightbox-detail-header">
                           <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
                           <span className="video-lightbox-detail-name">Rewired</span>
                           <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
                         </a>
                         <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
                       </>
-                    ) : item.piece.detail.href === '/work/dossi' ? (
+                    ) : item.piece.detail.href === '/projects/dossi' ? (
                       <>
-                        <a href="/work/dossi" className="video-lightbox-detail-header">
+                        <a href="/projects/dossi" className="video-lightbox-detail-header">
                           <img src="/images/dossi-app-icon.png" alt="Dossi" className="video-lightbox-detail-icon" />
                           <span className="video-lightbox-detail-name">Dossi</span>
                           <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
@@ -476,7 +476,7 @@ function UnifiedLightbox({
                     ) : null}
                     <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{item.piece.detail.title}</span>
                     <p className="video-lightbox-detail-desc">{item.piece.detail.description}</p>
-                    {item.piece.detail.href && !item.piece.detail.href.startsWith('/work/') && (
+                    {item.piece.detail.href && !item.piece.detail.href.startsWith('/projects/') && (
                       <a href={item.piece.detail.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--fg-muted)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                         View in AP Art &amp; Design Exhibit →
                       </a>

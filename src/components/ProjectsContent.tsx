@@ -51,7 +51,7 @@ function ProjectCard({
         ease: [0.25, 1, 0.5, 1],
       }}
     >
-      <Link href={`/work/${project.slug}`} className="group block">
+      <Link href={`/projects/${project.slug}`} className="group block">
         <div className="relative bg-bg-raised rounded-2xl border border-border overflow-hidden transition-all duration-500 hover:border-border-light">
           <div className="p-7 md:p-8 pb-0 md:pb-0">
             <div className="flex items-start justify-between gap-4 mb-1">
