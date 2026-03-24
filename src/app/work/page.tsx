@@ -14,14 +14,15 @@ const projects = [
   {
     slug: 'dossi',
     title: 'Dossi',
-    tagline: 'Contextual Metabolic Intelligence',
+    tagline: 'Smart Insulin Delivery',
     tags: ['iOS', 'Health Tech', 'Product Design', 'AI/ML'],
     color: '#6366F1',
     screens: [
       { src: '/images/dossi/screens/4b.png', alt: 'Dossi nutrition' },
       { src: '/images/dossi/screens/1b.png', alt: 'Dossi dashboard' },
     ],
-    phoneSize: { back: 'w-[62%] md:w-[58%]', front: 'w-[67%] md:w-[62%]' },
+    phoneSize: { back: 'w-[70%] md:w-[64%]', front: 'w-[75%] md:w-[68%]' },
+    flipped: false,
   },
   {
     slug: 'rewired',
@@ -33,7 +34,8 @@ const projects = [
       { src: '/images/rewired/group39.png', alt: 'Rewired screen' },
       { src: '/images/rewired/group40.png', alt: 'Rewired screen' },
     ],
-    phoneSize: { back: 'w-[62%] md:w-[58%]', front: 'w-[67%] md:w-[62%]' },
+    phoneSize: { back: 'w-[70%] md:w-[64%]', front: 'w-[75%] md:w-[68%]' },
+    flipped: true,
   },
 ];
 
@@ -81,7 +83,7 @@ function ProjectCard({
                   strokeLinejoin="round"
                   className="text-fg-dim group-hover:text-fg transition-colors duration-300"
                 >
-                  <path d="M3 8h10M9 4l4 4-4 4" />
+                  <path d="M4 12L12 4M12 4H6M12 4v6" />
                 </svg>
               </div>
             </div>
@@ -110,15 +112,25 @@ function ProjectCard({
               }}
             />
 
-            {/* Back phone (left, tilted) */}
+            {/* Back phone (tilted, behind) */}
             <div
               className={`absolute left-1/2 top-10 ${project.phoneSize.back} z-10`}
-              style={{ transform: 'translateX(-75%) rotate(-6deg)', transition: 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' }}
+              style={{
+                transform: project.flipped
+                  ? 'translateX(-25%) rotate(6deg)'
+                  : 'translateX(-70%) rotate(-6deg)',
+                transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+              }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateX(-75%) rotate(-6deg) scale(1.03)';
+                const base = project.flipped
+                  ? 'translateX(-25%) rotate(6deg)'
+                  : 'translateX(-70%) rotate(-6deg)';
+                e.currentTarget.style.transform = base + ' scale(1.03)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateX(-75%) rotate(-6deg)';
+                e.currentTarget.style.transform = project.flipped
+                  ? 'translateX(-25%) rotate(6deg)'
+                  : 'translateX(-70%) rotate(-6deg)';
               }}
             >
               <Image
@@ -131,15 +143,25 @@ function ProjectCard({
               />
             </div>
 
-            {/* Front phone (right, overlapping) */}
+            {/* Front phone (overlapping) */}
             <div
               className={`absolute left-1/2 top-4 ${project.phoneSize.front} z-20`}
-              style={{ transform: 'translateX(-35%)', transition: 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' }}
+              style={{
+                transform: project.flipped
+                  ? 'translateX(-65%)'
+                  : 'translateX(-25%)',
+                transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+              }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateX(-35%) scale(1.03)';
+                const base = project.flipped
+                  ? 'translateX(-65%)'
+                  : 'translateX(-25%)';
+                e.currentTarget.style.transform = base + ' scale(1.03)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateX(-35%)';
+                e.currentTarget.style.transform = project.flipped
+                  ? 'translateX(-65%)'
+                  : 'translateX(-25%)';
               }}
             >
               <Image
@@ -184,6 +206,24 @@ export default function Work() {
           ))}
         </div>
       </section>
+
+      <footer className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 py-16 mt-20 border-t border-border">
+        <div className="flex flex-col md:flex-row md:justify-between gap-12">
+          <div>
+            <h3 className="font-display text-xl font-bold text-fg mb-4">Get in touch</h3>
+            <div className="flex flex-col gap-2 font-body text-sm text-fg-muted">
+              <a href="mailto:caseyedunham@gmail.com" className="hover:text-fg transition-colors">caseyedunham@gmail.com</a>
+              <a href="tel:302-377-5638" className="hover:text-fg transition-colors">302-377-5638</a>
+              <a href="https://www.linkedin.com/in/casey-dunham/" target="_blank" rel="noopener noreferrer" className="hover:text-fg transition-colors">LinkedIn</a>
+              <span>Atlanta, GA</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 font-body text-sm text-fg-dim">
+            <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
+            <span>Designed &amp; built by hand</span>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
