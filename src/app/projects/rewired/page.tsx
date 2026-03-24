@@ -141,7 +141,7 @@ const media: MediaItem[] = [
   // Avatars — grouped
   { src: '/images/rewired/avatars/avatar_009.png', alt: 'Avatars', w: 376, h: 435, type: 'image',
     title: 'Avatar Library', caption: '97 unique avatar illustrations drawn in the app\'s signature purple palette. Users select one during onboarding to represent them throughout the experience.', tags: ['AI Generation', 'Procreate'],
-    groupSrcs: Array.from({ length: 97 }, (_, i) => ({
+    groupSrcs: Array.from({ length: 96 }, (_, i) => ({
       src: `/images/rewired/avatars/avatar_${String(i + 1).padStart(3, '0')}.png`, alt: `Avatar ${i + 1}`, w: 376, h: 435,
     })),
   },
@@ -528,6 +528,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   dirRef.current = direction;
   const isGroup = !!m.groupSrcs;
   const isVideo = m.type === 'video';
+  const isIllustration = m.tags.includes('Illustration');
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -545,8 +546,11 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   };
 
   const getOrientationClass = () => {
-    if (isVideo || isGroup) return '';
+    if (isGroup) return '';
     const ar = m.w / m.h;
+    if (isVideo) {
+      return ar >= 1 ? ' video-lightbox-landscape' : '';
+    }
     if (ar > 2) return ' art-lightbox-ultrawide';
     if (ar >= 1) return ' art-lightbox-landscape';
     return ' art-lightbox-portrait';
@@ -558,7 +562,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   };
 
   const backdropClass = isVideo ? 'video-lightbox-backdrop' : 'art-lightbox-backdrop';
-  const contentClass = isVideo ? 'video-lightbox-content' : `art-lightbox-content${getOrientationClass()}`;
+  const contentClass = isVideo ? `video-lightbox-content${getOrientationClass()}` : `art-lightbox-content${getOrientationClass()}`;
 
   return (
     <motion.div
@@ -655,23 +659,25 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
                   <Image src={m.src} alt={m.alt} width={m.w} height={m.h} className="art-lightbox-image" quality={90}
                     style={m.w / m.h > 2 ? { maxWidth: '80vw' } : undefined} />
                 </div>
-                <div className="video-lightbox-detail" style={m.w / m.h > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
-                  <a href="/projects/rewired" className="video-lightbox-detail-header">
-                    <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
-                    <span className="video-lightbox-detail-name">Rewired</span>
-                    <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-                  </a>
-                  <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
-                  <p className="video-lightbox-detail-desc">{m.caption}</p>
-                  {visibleTags(m.tags).length > 0 && (
-                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-                      {visibleTags(m.tags).map((tag) => (
-                        <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                {!isIllustration && (
+                  <div className="video-lightbox-detail" style={m.w / m.h > 2 ? { maxWidth: 'none', paddingTop: '0.75rem' } : undefined}>
+                    <a href="/projects/rewired" className="video-lightbox-detail-header">
+                      <img src="/images/rewired-app-icon.png" alt="Rewired" className="video-lightbox-detail-icon" />
+                      <span className="video-lightbox-detail-name">Rewired</span>
+                      <svg className="video-lightbox-detail-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                    </a>
+                    <div style={{ height: '1px', background: 'var(--border)', marginBottom: '0.75rem' }} />
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 600, color: 'var(--fg)', display: 'block', marginBottom: '0.5rem' }}>{m.title}</span>
+                    <p className="video-lightbox-detail-desc">{m.caption}</p>
+                    {visibleTags(m.tags).length > 0 && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                        {visibleTags(m.tags).map((tag) => (
+                          <a key={tag} href={`/skills?t=${encodeURIComponent(tag)}`} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '999px', border: '1px solid var(--border-light)', color: 'var(--fg-muted)', fontFamily: 'var(--font-body)', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.borderColor = 'var(--fg-dim)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.borderColor = 'var(--border-light)'; }}>{tag}</a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </motion.div>

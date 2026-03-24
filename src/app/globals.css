@@ -483,6 +483,33 @@ body:has(.video-lightbox-backdrop) header {
   transform: scale(1.08);
 }
 
+/* Landscape video: column layout, video centered, text below */
+.video-lightbox-content.video-lightbox-landscape {
+  flex-direction: column !important;
+  align-items: center !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+.video-lightbox-landscape .video-lightbox-video-wrap {
+  width: auto;
+  max-width: 75vw;
+}
+
+.video-lightbox-landscape .video-lightbox-video {
+  max-width: 75vw;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  transform: none;
+  border-radius: 12px;
+}
+
+.video-lightbox-landscape .video-lightbox-detail {
+  max-width: none;
+  padding-top: 0.75rem;
+}
+
 .video-lightbox-nav {
   position: fixed;
   top: 50%;

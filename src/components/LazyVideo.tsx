@@ -20,13 +20,14 @@ export default function LazyVideo({
   /** IntersectionObserver rootMargin for triggering the download */
   loadMargin?: string;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const placeholderRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loaded, setLoaded] = useState(false);
 
-  // Lazy-load: set src only when element is near the viewport
+  // Lazy-load: observe the placeholder element directly (not a display:contents wrapper)
   useEffect(() => {
-    const el = wrapRef.current;
+    if (loaded) return;
+    const el = placeholderRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -39,7 +40,7 @@ export default function LazyVideo({
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [loadMargin]);
+  }, [loadMargin, loaded]);
 
   // Play/pause based on visibility
   useEffect(() => {
@@ -59,23 +60,27 @@ export default function LazyVideo({
     return () => obs.disconnect();
   }, [loaded]);
 
+  if (loaded) {
+    return (
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className={className}
+        style={style}
+        onClick={onClick}
+      />
+    );
+  }
+
   return (
-    <div ref={wrapRef} style={{ display: 'contents' }}>
-      {loaded ? (
-        <video
-          ref={videoRef}
-          src={src}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className={className}
-          style={style}
-          onClick={onClick}
-        />
-      ) : (
-        <div className={className} style={{ ...style, background: 'transparent' }} />
-      )}
-    </div>
+    <div
+      ref={placeholderRef}
+      className={className}
+      style={{ ...style, background: 'transparent', minHeight: 1 }}
+    />
   );
 }

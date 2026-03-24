@@ -870,8 +870,11 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   };
 
   const getOrientationClass = () => {
-    if (isVideo || isGroup) return '';
+    if (isGroup) return '';
     const ar = m.w / m.h;
+    if (isVideo) {
+      return ar >= 1 ? ' video-lightbox-landscape' : '';
+    }
     if (ar > 2) return ' art-lightbox-ultrawide';
     if (ar >= 1) return ' art-lightbox-landscape';
     return ' art-lightbox-portrait';
@@ -883,7 +886,7 @@ function LB({ index, direction, onClose, onPrev, onNext }: {
   };
 
   const backdropClass = isVideo ? 'video-lightbox-backdrop' : 'art-lightbox-backdrop';
-  const contentClass = isVideo ? 'video-lightbox-content' : `art-lightbox-content${getOrientationClass()}`;
+  const contentClass = isVideo ? `video-lightbox-content${getOrientationClass()}` : `art-lightbox-content${getOrientationClass()}`;
 
   return (
     <motion.div
