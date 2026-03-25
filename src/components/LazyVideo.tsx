@@ -16,6 +16,13 @@ export default function LazyVideo({
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 
+  // React doesn't reliably apply the `muted` attribute on initial render
+  // (https://github.com/facebook/react/issues/10389).
+  // Without it the browser treats the video as unmuted and blocks autoplay.
+  useEffect(() => {
+    if (ref.current) ref.current.muted = true;
+  }, []);
+
   useEffect(() => {
     const vid = ref.current;
     if (!vid) return;
