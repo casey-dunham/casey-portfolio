@@ -21,18 +21,32 @@ export default function LazyVideo({
     if (!vid) return;
     vid.muted = true;
 
+    let visible = false;
+
+    const tryPlay = () => {
+      if (visible) vid.play().catch(() => {});
+    };
+
+    // Retry play when video has buffered enough data
+    vid.addEventListener('canplay', tryPlay);
+
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          vid.play().catch(() => {});
+        visible = entry.isIntersecting;
+        if (visible) {
+          tryPlay();
         } else {
           vid.pause();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.5 },
     );
     obs.observe(vid);
-    return () => obs.disconnect();
+
+    return () => {
+      vid.removeEventListener('canplay', tryPlay);
+      obs.disconnect();
+    };
   }, []);
 
   return (
