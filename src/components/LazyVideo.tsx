@@ -19,47 +19,26 @@ export default function LazyVideo({
   useEffect(() => {
     const vid = ref.current;
     if (!vid) return;
-
     vid.muted = true;
 
-    let srcSet = false;
-
-    // Start loading video data early, before it's visible
-    const loadObs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !srcSet) {
-          vid.src = src;
-          srcSet = true;
-          loadObs.disconnect();
-        }
-      },
-      { rootMargin: '600px 0px' },
-    );
-
-    // Play/pause based on visibility
-    const playObs = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           vid.play().catch(() => {});
-        } else if (srcSet) {
+        } else {
           vid.pause();
         }
       },
       { threshold: 0.1 },
     );
-
-    loadObs.observe(vid);
-    playObs.observe(vid);
-
-    return () => {
-      loadObs.disconnect();
-      playObs.disconnect();
-    };
-  }, [src]);
+    obs.observe(vid);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <video
       ref={ref}
+      src={src}
       muted
       loop
       playsInline
