@@ -172,6 +172,7 @@ function Portrait() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+      whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)', transition: { duration: 0.2, ease: 'easeOut' } }}
       className="aspect-[3/4] rounded-lg overflow-hidden"
     >
       <Image
