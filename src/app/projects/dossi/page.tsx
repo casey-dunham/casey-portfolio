@@ -38,10 +38,10 @@ const media: MediaItem[] = [
   { src: '/videos/dossi/dossi-welcome-flow-1a.mp4', alt: 'Welcome flow', w: 886, h: 1920, type: 'video',
     title: 'Welcome Flow', caption: 'First-launch onboarding sequence that introduces core features and collects user health preferences to personalize the experience.', tags: ['SwiftUI', 'Figma'] },
   // Pitch slide deck
-  { src: '/videos/dossi/dossi-slide-deck-recording.mov', alt: 'Slide deck', w: 1920, h: 1080, type: 'video',
+  { src: '/videos/dossi/dossi-slide-deck-recording.mp4', alt: 'Slide deck', w: 1920, h: 1080, type: 'video',
     title: 'Pitch Deck', caption: 'Presented at Georgia Tech InVenture Prize and Startup Exchange. Covers the problem, solution, and technical architecture.', tags: ['Keynote'] },
   // Pitch demo video
-  { src: '/videos/dossi/dossi-11b.mov', alt: 'Pitch demo', w: 886, h: 1920, type: 'video',
+  { src: '/videos/dossi/dossi-11b.mp4', alt: 'Pitch demo', w: 886, h: 1920, type: 'video',
     title: 'Pitch Demo', caption: 'Live demo shown during the pitch presentation.', tags: ['SwiftUI'] },
   // Before & after — grouped as the 4 "after" screens
   { src: '/images/dossi/screens/1b.png', alt: 'Redesign', w: 870, h: 1603, type: 'image',
@@ -57,7 +57,7 @@ const media: MediaItem[] = [
   { src: '/videos/dossi/landscape.mp4', alt: 'Dashboard', w: 1920, h: 1080, type: 'video',
     title: 'Dashboard', caption: 'Real-time glucose monitoring with contextual factor cards showing sleep, exercise, and meal data.', tags: ['SwiftUI', 'HealthKit'] },
   // AI chat video
-  { src: '/videos/dossi/11a.mov', alt: 'AI chat', w: 886, h: 1920, type: 'video',
+  { src: '/videos/dossi/11a.mp4', alt: 'AI chat', w: 886, h: 1920, type: 'video',
     title: 'AI Chat', caption: 'Natural language meal logging. Describe what you ate and Dossi estimates carbs, suggests a bolus, and logs the meal.', tags: ['Gemini AI', 'SwiftUI'] },
   // Sign-up pages — grouped
   { src: '/images/dossi/screens/create-account-3.jpg', alt: 'Sign-up directions', w: 1280, h: 2778, type: 'image',
@@ -412,10 +412,10 @@ export default function DossiProject() {
           <motion.div {...fade(0)} className="rounded-xl cursor-pointer p-[6px]" style={{ background: '#E8E8E8' }}
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            onClick={() => open('/videos/dossi/dossi-slide-deck-recording.mov')}
+            onClick={() => open('/videos/dossi/dossi-slide-deck-recording.mp4')}
           >
             <div className="rounded-lg overflow-hidden relative">
-              <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mov" muted loop playsInline preload="none" className="block w-[110%] max-w-none ml-[-5%] mt-[3.5%]" />
+              <video ref={pitchVideoRef} src="/videos/dossi/dossi-slide-deck-recording.mp4" muted loop playsInline preload="none" className="block w-[110%] max-w-none ml-[-5%] mt-[3.5%]" />
               <div className="absolute inset-0 rounded-lg pointer-events-none" style={{ boxShadow: 'inset 0 0 12px 6px #E8E8E8' }} />
             </div>
           </motion.div>
@@ -433,9 +433,9 @@ export default function DossiProject() {
             <motion.div {...fade(0.2)} className="rounded-lg overflow-hidden cursor-pointer mt-4"
               whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              onClick={() => open('/videos/dossi/dossi-11b.mov')}
+              onClick={() => open('/videos/dossi/dossi-11b.mp4')}
             >
-              <LazyVideo src="/videos/dossi/dossi-11b.mov" className="block w-full rounded-lg" />
+              <LazyVideo src="/videos/dossi/dossi-11b.mp4" className="block w-full rounded-lg" />
             </motion.div>
           </div>
         </div>
@@ -457,9 +457,9 @@ export default function DossiProject() {
           <motion.div {...fade(0.04)} className="rounded-lg overflow-hidden cursor-pointer h-full"
             whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            onClick={() => open('/videos/dossi/11a.mov')}
+            onClick={() => open('/videos/dossi/11a.mp4')}
           >
-            <LazyVideo src="/videos/dossi/11a.mov" className="h-full w-auto block" />
+            <LazyVideo src="/videos/dossi/11a.mp4" className="h-full w-auto block" />
           </motion.div>
         </div>
       </div>

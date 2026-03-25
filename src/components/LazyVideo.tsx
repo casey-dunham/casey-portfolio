@@ -65,6 +65,7 @@ export default function LazyVideo({
       <video
         ref={videoRef}
         src={src}
+        autoPlay
         muted
         loop
         playsInline
