@@ -27,7 +27,7 @@ const paragraphs: ParagraphData[] = [
     serifWords: [],
   },
   {
-    text: "I'm interested in creating things that meet that standard. I'm also curious how AI is expanding design beyond aesthetics into the full experience, redefining the role of the designer and opening new ways to shape how products are built and\u00a0experienced.",
+    text: "I'm interested in creating experiences that meet that standard. I'm also curious how AI is expanding design beyond aesthetics into the full experience, redefining the role of the designer and opening new ways to shape how products are built and\u00a0experienced.",
     serifWords: [],
   },
 ];

@@ -37,7 +37,7 @@ export default function About() {
             <motion.div {...fade(0.35)}>
               <p className="font-body text-fg text-[1.15rem] md:text-[1.25rem] leading-[1.6] font-light mb-6">
                 I&rsquo;m studying Industrial Design at Georgia&nbsp;Tech. I&rsquo;m
-                obsessed with building things, and making them&nbsp;beautiful.
+                obsessed with building things and making them&nbsp;beautiful.
               </p>
               <p className="font-body text-fg-muted text-[0.95rem] leading-[1.7] mb-6">
                 I&rsquo;m fascinated by how designers can now participate in the full
