@@ -250,6 +250,8 @@ export default function RewiredProject() {
           ] as const).map(([src, label], i) => (
             <motion.div key={src} {...pop(i)} className="rounded-lg overflow-hidden cursor-pointer"
               onClick={() => open(src)}
+              whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             >
               <LazyVideo src={src} className="w-full block scale-[1.02]" />
             </motion.div>
@@ -305,7 +307,10 @@ export default function RewiredProject() {
             </div>
           </div>
           {/* Right: live video */}
-          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/ai-orb-6b.mp4')}>
+          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/ai-orb-6b.mp4')}
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
             <LazyVideo src="/videos/uxui/ai-orb-6b.mp4" className="w-full block scale-[1.02]" />
           </motion.div>
         </div>
@@ -324,7 +329,10 @@ export default function RewiredProject() {
       {/* ═══ THE WEBSITE ═══ */}
       <Sect label="The Website">
         <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr] gap-8 items-start">
-          <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/rewired-website-scroll.mp4')}>
+          <motion.div {...fade(0)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/rewired-website-scroll.mp4')}
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
             <LazyVideo src="/videos/uxui/rewired-website-scroll.mp4" className="w-full block" />
           </motion.div>
           <motion.div {...fade(0.1)}>
@@ -353,7 +361,10 @@ export default function RewiredProject() {
       <Sect label="Avatar System">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 items-stretch">
           {/* Left: avatar selection video */}
-          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/avatar-selection-6a.mp4')}>
+          <motion.div {...fade(0.1)} className="rounded-lg overflow-hidden cursor-pointer" onClick={() => open('/videos/uxui/avatar-selection-6a.mp4')}
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
             <LazyVideo src="/videos/uxui/avatar-selection-6a.mp4" className="w-full block scale-[1.02]" />
           </motion.div>
           {/* Right: text + avatar grid */}
@@ -380,6 +391,8 @@ export default function RewiredProject() {
                   <motion.div key={i} {...pop(i)}
                     className="aspect-[4/5] overflow-hidden rounded-sm cursor-pointer"
                     onClick={() => open('/images/rewired/avatars/avatar_009.png')}
+                    whileHover={{ scale: 1.15, zIndex: 10 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                   >
                     <Image
                       src={`/images/rewired/avatars/avatar_${String(idx).padStart(3, '0')}.png`}

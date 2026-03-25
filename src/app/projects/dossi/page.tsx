@@ -762,7 +762,10 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
           experience for users.
         </p>
 
-        <div ref={containerRef} className="relative rounded-lg overflow-hidden bg-[#B0ABFF] p-3 md:p-4 cursor-pointer" onClick={() => open('/images/dossi/screens/1b.png')}>
+        <motion.div ref={containerRef} className="relative rounded-lg overflow-hidden bg-[#B0ABFF] p-3 md:p-4 cursor-pointer" onClick={() => open('/images/dossi/screens/1b.png')}
+          whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        >
           {/* Old phones row */}
           <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-1" style={{ opacity: oldOpacity }}>
             {(['1', '2', '3', '4'] as const).map((n, i) => (
@@ -794,7 +797,7 @@ function BeforeAfter({ open }: { open: (src: string) => void }) {
               ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </motion.section>
   );
