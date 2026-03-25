@@ -42,22 +42,38 @@ export default function LazyVideo({
     return () => obs.disconnect();
   }, [loadMargin, loaded]);
 
+  // Kick off playback once data is ready (autoPlay alone is unreliable for dynamically-inserted videos)
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const tryPlay = () => vid.play().catch(() => {});
+    if (vid.readyState >= 2) tryPlay();
+    else vid.addEventListener('loadeddata', tryPlay, { once: true });
+    return () => vid.removeEventListener('loadeddata', tryPlay);
+  }, [loaded]);
+
   // Play/pause based on visibility
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
+    let hasPlayed = false;
+    const onPlay = () => { hasPlayed = true; };
+    vid.addEventListener('playing', onPlay);
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           vid.play().catch(() => {});
-        } else {
+        } else if (hasPlayed) {
           vid.pause();
         }
       },
       { threshold: 0.15 },
     );
     obs.observe(vid);
-    return () => obs.disconnect();
+    return () => {
+      vid.removeEventListener('playing', onPlay);
+      obs.disconnect();
+    };
   }, [loaded]);
 
   if (loaded) {
