@@ -20,27 +20,41 @@ export default function LazyVideo({
     const vid = ref.current;
     if (!vid) return;
 
-    // React doesn't reliably apply the muted attribute on initial render
     vid.muted = true;
 
-    let loaded = false;
-    const obs = new IntersectionObserver(
+    let srcSet = false;
+
+    // Start loading video data early, before it's visible
+    const loadObs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !srcSet) {
+          vid.src = src;
+          srcSet = true;
+          loadObs.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+
+    // Play/pause based on visibility
+    const playObs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          if (!loaded) {
-            vid.src = src;
-            vid.load();
-            loaded = true;
-          }
           vid.play().catch(() => {});
-        } else if (loaded) {
+        } else if (srcSet) {
           vid.pause();
         }
       },
       { threshold: 0.1 },
     );
-    obs.observe(vid);
-    return () => obs.disconnect();
+
+    loadObs.observe(vid);
+    playObs.observe(vid);
+
+    return () => {
+      loadObs.disconnect();
+      playObs.disconnect();
+    };
   }, [src]);
 
   return (
