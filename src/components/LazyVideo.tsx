@@ -17,42 +17,14 @@ export default function LazyVideo({
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const vid = ref.current;
-    if (!vid) return;
-    vid.muted = true;
-
-    let visible = false;
-
-    const tryPlay = () => {
-      if (visible) vid.play().catch(() => {});
-    };
-
-    // Retry play when video has buffered enough data
-    vid.addEventListener('canplay', tryPlay);
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        if (visible) {
-          tryPlay();
-        } else {
-          vid.pause();
-        }
-      },
-      { threshold: 0.5 },
-    );
-    obs.observe(vid);
-
-    return () => {
-      vid.removeEventListener('canplay', tryPlay);
-      obs.disconnect();
-    };
+    if (ref.current) ref.current.muted = true;
   }, []);
 
   return (
     <video
       ref={ref}
       src={src}
+      autoPlay
       muted
       loop
       playsInline
