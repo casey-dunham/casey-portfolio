@@ -16,37 +16,40 @@ export default function LazyVideo({
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 
-  // React doesn't reliably apply the `muted` attribute on initial render
-  // (https://github.com/facebook/react/issues/10389).
-  // Without it the browser treats the video as unmuted and blocks autoplay.
-  useEffect(() => {
-    if (ref.current) ref.current.muted = true;
-  }, []);
-
   useEffect(() => {
     const vid = ref.current;
     if (!vid) return;
+
+    // React doesn't reliably apply the muted attribute on initial render
+    vid.muted = true;
+
+    let loaded = false;
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          if (!loaded) {
+            vid.src = src;
+            vid.load();
+            loaded = true;
+          }
           vid.play().catch(() => {});
-        } else {
+        } else if (loaded) {
           vid.pause();
         }
       },
-      { threshold: 0.3 },
+      { threshold: 0.1 },
     );
     obs.observe(vid);
     return () => obs.disconnect();
-  }, []);
+  }, [src]);
 
   return (
     <video
       ref={ref}
-      src={src}
       muted
       loop
       playsInline
+      preload="auto"
       className={className}
       style={style}
       onClick={onClick}
