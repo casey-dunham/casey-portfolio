@@ -155,6 +155,8 @@ export default function ResumePage() {
               <span>302-377-5638</span>
               <span className="resume-contact-dot" style={{ color: t.contactDot, margin: '0 4px' }}>·</span>
               <a href="https://linkedin.com/in/casey-dunham" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity" style={{ color: t.contact }}>linkedin.com/in/casey-dunham</a>
+              <span className="resume-contact-dot" style={{ color: t.contactDot, margin: '0 4px' }}>·</span>
+              <a href="https://caseydunham.design" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity" style={{ color: t.contact }}>caseydunham.design</a>
             </motion.div>
           </div>
 
@@ -167,11 +169,11 @@ export default function ResumePage() {
                   <span className="resume-edu-detail font-normal" style={{ color: t.subtext }}>, Atlanta, GA</span>
                 </p>
                 <p className="resume-edu-detail" style={{ fontSize: '12px', color: t.subtext, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
-                  Bachelor of Science in Industrial Design — GPA: 4.00/4.00
+                  Bachelor of Science in Industrial Design — GPA: 3.80/4.00
                 </p>
               </div>
               <span className="resume-edu-date whitespace-nowrap" style={{ fontSize: '11px', color: t.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
-                May 2027
+                May 2028
               </span>
             </div>
             <div className="resume-edu-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between">
@@ -197,15 +199,15 @@ export default function ResumePage() {
                 Dossi
                 <span className="resume-project-subtitle font-normal" style={{ color: t.subtext }}> — Intelligent Insulin Delivery iOS App</span>
               </p>
-              <Bullet theme={t}>Built a full-stack iOS app in SwiftUI that connects directly to insulin pumps via Bluetooth LE to deliver automated bolus dosing with insulin-on-board tracking and safety checks</Bullet>
-              <Bullet theme={t}>Developed a Bayesian attribution engine and ML prediction service for glucose forecasting, pattern detection, and personalized basal rate optimization</Bullet>
-              <Bullet theme={t}>Integrated CGM monitoring, HealthKit sync, AI-powered meal recognition with photo-based carb estimation, and a natural language diabetes assistant</Bullet>
+              <Bullet theme={t}>Built a full-stack SwiftUI app connecting to insulin pumps via Bluetooth LE for automated bolus dosing with insulin-on-board tracking, CGM monitoring, and HealthKit sync</Bullet>
+              <Bullet theme={t}>Developed Bayesian attribution engine, ML glucose forecasting, AI-powered meal recognition with photo-based carb estimation, and a natural language diabetes assistant</Bullet>
               <Bullet theme={t}>Designed complete brand identity, onboarding UX, and watchOS companion; conducted user research through Georgia Tech Disability Services</Bullet>
             </div>
             <div className="resume-project-block">
               <p className="resume-project-title font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                 Rewired
                 <span className="resume-project-subtitle font-normal" style={{ color: t.subtext }}> — Neuroplasticity iOS App</span>
+                <span className="resume-project-subtitle font-normal italic" style={{ color: t.muted, fontSize: '11px' }}> (Awaiting App Store Approval)</span>
               </p>
               <Bullet theme={t}>Designed and developed an iOS app combining psychoeducation, therapeutic exercises, and AI coaching to help users transform limiting beliefs through personalized daily sessions</Bullet>
               <Bullet theme={t}>Built adaptive session engine, custom illustrations, and brand identity from concept through implementation</Bullet>
@@ -227,6 +229,18 @@ export default function ResumePage() {
               </div>
               <Bullet theme={t}>Advocated to members of Congress on diabetes legislation and insulin pricing policy</Bullet>
               <Bullet theme={t}>Mentored younger individuals newly diagnosed with Type 1 Diabetes</Bullet>
+            </div>
+            <div className="resume-exp-block mb-4">
+              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
+                <p className="resume-exp-company font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+                  Freelance Design
+                  <span className="resume-exp-role font-normal" style={{ color: t.muted }}> — Illustrator & Designer</span>
+                </p>
+                <span className="resume-exp-date whitespace-nowrap" style={{ fontSize: '11px', color: t.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
+                  2023–2025
+                </span>
+              </div>
+              <Bullet theme={t}>Completed illustration and design commissions for private clients, managing projects from concept through final delivery</Bullet>
             </div>
             <div className="resume-exp-block">
               <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
@@ -265,8 +279,7 @@ export default function ResumePage() {
 
           {/* Skills */}
           <ResumeSection title="Skills" delay={0.5} theme={t}>
-            <SkillRow label="Programming" value="Swift, SwiftUI, TypeScript, React, Next.js, Python, HTML/CSS, Git" theme={t} />
-            <SkillRow label="Design" value="Figma, Adobe Creative Suite, Fusion 360" theme={t} />
+            <SkillRow label="Design" value="Figma, Adobe Creative Suite, Framer, Procreate, Fusion 360" theme={t} />
             <SkillRow label="AI Tools" value="Claude Code, Codex, Cursor, Windsurf, Gemini" theme={t} />
             <SkillRow label="Languages" value="English; Conversational in German" theme={t} />
           </ResumeSection>

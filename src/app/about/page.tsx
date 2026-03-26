@@ -84,7 +84,7 @@ export default function About() {
 
         {/* Education */}
         <ResumeGroup label="Education" groupIndex={0}>
-          <ResumeItem index={0} name="Georgia Institute of Technology" role="BS Industrial Design · GPA 4.00" date="May 2027" />
+          <ResumeItem index={0} name="Georgia Institute of Technology" role="BS Industrial Design · GPA 3.80" date="May 2028" />
           <ResumeItem index={1} name="Wilmington Christian School" role="Valedictorian · 1 of 50 · GPA 4.70" date="June 2025" />
         </ResumeGroup>
 
