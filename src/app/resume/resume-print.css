@@ -38,15 +38,17 @@
     padding: 0 !important;
     max-width: none !important;
     background: white !important;
+    aspect-ratio: unset !important;
+    overflow: visible !important;
   }
 
   /* Fit one page — moderate compression */
-  .resume-header { margin-bottom: 14px !important; }
-  .resume-name { font-size: 24px !important; margin-bottom: 4px !important; }
+  .resume-header { margin-bottom: 10px !important; }
+  .resume-name { font-size: 24px !important; margin-bottom: 3px !important; }
   .resume-contact { font-size: 11px !important; gap: 6px !important; }
   .resume-contact-dot { margin: 0 3px !important; }
 
-  .resume-section { margin-bottom: 10px !important; }
+  .resume-section { margin-bottom: 8px !important; }
   .resume-section-title {
     font-size: 10px !important;
     padding-bottom: 3px !important;

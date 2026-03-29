@@ -115,22 +115,24 @@ export default function ResumePage() {
         {/* Paper */}
         <motion.div
           {...fade(0.1)}
-          className="resume-paper max-w-[820px] mx-auto rounded-lg px-5 sm:px-10 md:px-14 py-8 sm:py-10 md:py-12"
+          className="resume-paper max-w-[816px] mx-auto rounded-lg px-5 sm:px-10 md:px-[53px] py-6 sm:py-8 md:py-[43px]"
           style={{
             background: t.paperBg,
             boxShadow: t.paperShadow,
             border: `1px solid ${t.paperBorder}`,
             transition: 'background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease',
+            aspectRatio: '8.5 / 11',
+            overflow: 'hidden',
           }}
         >
           {/* Header */}
-          <div className="resume-header mb-8 text-center">
+          <div className="resume-header mb-4 text-center">
             <motion.h1
               {...fade(0.15)}
-              className="resume-name font-bold tracking-tight mb-2"
+              className="resume-name font-bold tracking-tight mb-1"
               style={{
                 fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)',
-                fontSize: '28px',
+                fontSize: '24px',
                 color: t.name,
                 letterSpacing: '-0.02em',
                 transition: 'color 0.4s ease',
@@ -143,7 +145,7 @@ export default function ResumePage() {
               className="resume-contact flex flex-wrap items-center justify-center gap-x-2 gap-y-1"
               style={{
                 fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)',
-                fontSize: '12px',
+                fontSize: '11px',
                 color: t.contact,
                 transition: 'color 0.4s ease',
               }}
@@ -162,13 +164,13 @@ export default function ResumePage() {
 
           {/* Education */}
           <ResumeSection title="Education" delay={0.25} theme={t}>
-            <div className="resume-edu-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
+            <div className="resume-edu-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
               <div className="flex-1">
-                <p className="resume-edu-school font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+                <p className="resume-edu-school font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                   Georgia Institute of Technology
                   <span className="resume-edu-detail font-normal" style={{ color: t.subtext }}>, Atlanta, GA</span>
                 </p>
-                <p className="resume-edu-detail" style={{ fontSize: '12px', color: t.subtext, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
+                <p className="resume-edu-detail" style={{ fontSize: '11px', color: t.subtext, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
                   Bachelor of Science in Industrial Design — GPA: 3.80/4.00
                 </p>
               </div>
@@ -178,11 +180,11 @@ export default function ResumePage() {
             </div>
             <div className="resume-edu-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between">
               <div className="flex-1">
-                <p className="resume-edu-school font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+                <p className="resume-edu-school font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                   Wilmington Christian School
                   <span className="resume-edu-detail font-normal" style={{ color: t.subtext }}>, Hockessin, DE</span>
                 </p>
-                <p className="resume-edu-detail" style={{ fontSize: '12px', color: t.subtext, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
+                <p className="resume-edu-detail" style={{ fontSize: '11px', color: t.subtext, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
                   Valedictorian (1/50) — GPA: 4.70/4.00
                 </p>
               </div>
@@ -194,8 +196,8 @@ export default function ResumePage() {
 
           {/* Projects */}
           <ResumeSection title="Projects" delay={0.3} theme={t}>
-            <div className="resume-project-block mb-4">
-              <p className="resume-project-title font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+            <div className="resume-project-block mb-2">
+              <p className="resume-project-title font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                 Dossi
                 <span className="resume-project-subtitle font-normal" style={{ color: t.subtext }}> — Intelligent Insulin Delivery iOS App</span>
               </p>
@@ -203,8 +205,8 @@ export default function ResumePage() {
               <Bullet theme={t}>Developed Bayesian attribution engine, ML glucose forecasting, AI-powered meal recognition with photo-based carb estimation, and a natural language diabetes assistant</Bullet>
               <Bullet theme={t}>Designed complete brand identity, onboarding UX, and watchOS companion; conducted user research through Georgia Tech Disability Services</Bullet>
             </div>
-            <div className="resume-project-block">
-              <p className="resume-project-title font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+            <div className="resume-project-block mb-1">
+              <p className="resume-project-title font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                 Rewired
                 <span className="resume-project-subtitle font-normal" style={{ color: t.subtext }}> — Neuroplasticity iOS App</span>
                 <span className="resume-project-subtitle font-normal italic" style={{ color: t.muted, fontSize: '11px' }}> (Awaiting App Store Approval)</span>
@@ -216,9 +218,9 @@ export default function ResumePage() {
 
           {/* Experience */}
           <ResumeSection title="Experience" delay={0.35} theme={t}>
-            <div className="resume-exp-block mb-4">
-              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
-                <p className="resume-exp-company font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+            <div className="resume-exp-block mb-2">
+              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-0.5">
+                <p className="resume-exp-company font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                   Breakthrough T1D
                   <span className="font-normal" style={{ color: t.subtext }}>, King of Prussia, PA</span>
                   <span className="resume-exp-role font-normal" style={{ color: t.muted }}> — Youth Ambassador</span>
@@ -230,9 +232,9 @@ export default function ResumePage() {
               <Bullet theme={t}>Advocated to members of Congress on diabetes legislation and insulin pricing policy</Bullet>
               <Bullet theme={t}>Mentored younger individuals newly diagnosed with Type 1 Diabetes</Bullet>
             </div>
-            <div className="resume-exp-block mb-4">
-              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
-                <p className="resume-exp-company font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+            <div className="resume-exp-block mb-2">
+              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-0.5">
+                <p className="resume-exp-company font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                   Freelance Design
                   <span className="resume-exp-role font-normal" style={{ color: t.muted }}> — Illustrator & Designer</span>
                 </p>
@@ -243,8 +245,8 @@ export default function ResumePage() {
               <Bullet theme={t}>Completed illustration and design commissions for private clients, managing projects from concept through final delivery</Bullet>
             </div>
             <div className="resume-exp-block">
-              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
-                <p className="resume-exp-company font-semibold" style={{ fontSize: '13px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
+              <div className="resume-exp-header flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-0.5">
+                <p className="resume-exp-company font-semibold" style={{ fontSize: '12.5px', color: t.heading, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', transition: 'color 0.4s ease' }}>
                   Fontspring
                   <span className="font-normal" style={{ color: t.subtext }}>, Wilmington, DE</span>
                   <span className="resume-exp-role font-normal" style={{ color: t.muted }}> — Administrative Assistant</span>
@@ -337,9 +339,9 @@ export default function ResumePage() {
 
 function ResumeSection({ title, delay, theme, children }: { title: string; delay: number; theme: Theme; children: React.ReactNode }) {
   return (
-    <motion.section {...fade(delay)} className="resume-section mb-6">
+    <motion.section {...fade(delay)} className="resume-section mb-3">
       <h2
-        className="resume-section-title uppercase font-semibold pb-2 mb-4"
+        className="resume-section-title uppercase font-semibold pb-1 mb-2"
         style={{
           fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)',
           fontSize: '10px',
@@ -364,11 +366,11 @@ function Bullet({ theme, children }: { theme: Theme; children: React.ReactNode }
       className="resume-bullet relative"
       style={{
         fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)',
-        fontSize: '12px',
-        lineHeight: '1.55',
+        fontSize: '11px',
+        lineHeight: '1.4',
         color: theme.bullet,
-        paddingLeft: '14px',
-        marginBottom: '2px',
+        paddingLeft: '12px',
+        marginBottom: '1px',
         transition: 'color 0.4s ease',
       }}
     >
@@ -382,12 +384,12 @@ function Bullet({ theme, children }: { theme: Theme; children: React.ReactNode }
 
 function HonorRow({ name, org, date, theme }: { name: string; org: string; date: string; theme: Theme }) {
   return (
-    <div className="resume-honor-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between" style={{ marginBottom: '3px' }}>
-      <p style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '12px' }}>
+    <div className="resume-honor-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between" style={{ marginBottom: '1.5px' }}>
+      <p style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '11px' }}>
         <span className="resume-honor-name font-medium" style={{ color: theme.heading, transition: 'color 0.4s ease' }}>{name}</span>
-        <span className="resume-honor-org" style={{ color: theme.muted }}>, {org}</span>
+        <span className="resume-honor-org" style={{ color: theme.muted, fontSize: '10.5px' }}>, {org}</span>
       </p>
-      <span className="resume-honor-date whitespace-nowrap" style={{ fontSize: '11px', color: theme.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
+      <span className="resume-honor-date whitespace-nowrap" style={{ fontSize: '10.5px', color: theme.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
         {date}
       </span>
     </div>
@@ -398,12 +400,12 @@ function HonorRow({ name, org, date, theme }: { name: string; org: string; date:
 
 function LeadershipRow({ name, role, date, theme }: { name: string; role: string; date: string; theme: Theme }) {
   return (
-    <div className="resume-leadership-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between" style={{ marginBottom: '3px' }}>
-      <p style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '12px' }}>
+    <div className="resume-leadership-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between" style={{ marginBottom: '1.5px' }}>
+      <p style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '11px' }}>
         <span className="resume-leadership-name font-medium" style={{ color: theme.heading, transition: 'color 0.4s ease' }}>{name}</span>
-        <span className="resume-leadership-role" style={{ color: theme.muted }}> — {role}</span>
+        <span className="resume-leadership-role" style={{ color: theme.muted, fontSize: '10.5px' }}> — {role}</span>
       </p>
-      <span className="resume-leadership-date whitespace-nowrap" style={{ fontSize: '11px', color: theme.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
+      <span className="resume-leadership-date whitespace-nowrap" style={{ fontSize: '10.5px', color: theme.date, fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontVariantNumeric: 'tabular-nums' }}>
         {date}
       </span>
     </div>
@@ -414,11 +416,11 @@ function LeadershipRow({ name, role, date, theme }: { name: string; role: string
 
 function SkillRow({ label, value, theme }: { label: string; value: string; theme: Theme }) {
   return (
-    <div className="resume-skills-row flex" style={{ marginBottom: '3px' }}>
-      <span className="resume-skills-label font-medium" style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '12px', color: theme.heading, minWidth: '90px', transition: 'color 0.4s ease' }}>
+    <div className="resume-skills-row flex" style={{ marginBottom: '2px' }}>
+      <span className="resume-skills-label font-medium" style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '11px', color: theme.heading, minWidth: '80px', transition: 'color 0.4s ease' }}>
         {label}
       </span>
-      <span className="resume-skills-value" style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '12px', color: theme.subtext }}>
+      <span className="resume-skills-value" style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)', fontSize: '11px', color: theme.subtext }}>
         {value}
       </span>
     </div>
