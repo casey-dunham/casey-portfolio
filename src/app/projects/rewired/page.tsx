@@ -36,19 +36,19 @@ interface MediaItem {
 const media: MediaItem[] = [
   // Hero video
   { src: '/videos/uxui/rewired-value-props-2a.mp4', alt: 'Value props', w: 886, h: 1920, type: 'video',
-    title: 'Value Propositions', caption: 'Animated onboarding sequence introducing Rewired\'s core promise — personalized neuroplasticity sessions, AI coaching, and growth tracking.', tags: ['SwiftUI', 'Figma'] },
+    title: 'Value Propositions', caption: 'Animated onboarding sequence introducing Rewired\'s core promise — personalized neuroplasticity sessions, AI coaching, and growth tracking.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Walkthrough videos
   { src: '/videos/uxui/rewired-onboarding-2b.mp4', alt: 'Onboarding', w: 886, h: 1920, type: 'video',
-    title: 'Onboarding Flow', caption: 'Personalization questions that collect user goals, preferences, and current mindset to tailor the experience.', tags: ['SwiftUI', 'Figma'] },
+    title: 'Onboarding Flow', caption: 'Personalization questions that collect user goals, preferences, and current mindset to tailor the experience.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/videos/uxui/rewired-questions-7a.mp4', alt: 'Questions', w: 886, h: 1920, type: 'video',
-    title: 'Assessment', caption: '8-question behavioral assessment that identifies core limiting beliefs and builds a neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'Assessment', caption: '8-question behavioral assessment that identifies core limiting beliefs and builds a neuroprofile.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/videos/uxui/rewired-finished-7b.mp4', alt: 'Finished', w: 886, h: 1920, type: 'video',
-    title: 'Results', caption: 'AI reads your story, finds themes, and detects belief patterns to generate your personalized neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'Results', caption: 'AI reads your story, finds themes, and detects belief patterns to generate your personalized neuroprofile.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/videos/uxui/rewired-lesson-7c.mp4', alt: 'Lesson flow', w: 886, h: 1920, type: 'video',
-    title: 'Daily Session', caption: '8-minute session combining psychoeducation and therapeutic exercises. Each targets a specific belief pattern.', tags: ['SwiftUI'] },
+    title: 'Daily Session', caption: '8-minute session combining psychoeducation and therapeutic exercises. Each targets a specific belief pattern.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // AI Orb video
   { src: '/videos/uxui/ai-orb-6b.mp4', alt: 'AI Orb', w: 886, h: 1920, type: 'video',
-    title: 'AI Orb', caption: 'The animated orb coaching interaction — it pulses, breathes, and shifts color in response to conversation state.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'AI Orb', caption: 'The animated orb coaching interaction — it pulses, breathes, and shifts color in response to conversation state.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Orb frames — grouped
   { src: '/images/rewired/orbs/orb-01.png', alt: 'Orb frames', w: 350, h: 350, type: 'image',
     title: 'Orb Animation Frames', caption: '36 individually created frames. Hue rotation and light source shifted frame by frame to create a seamless looping animation.', tags: ['Procreate'],
@@ -58,31 +58,31 @@ const media: MediaItem[] = [
   },
   // Website video
   { src: '/videos/uxui/rewired-website-scroll.mp4', alt: 'Website', w: 1920, h: 1080, type: 'video',
-    title: 'Marketing Website', caption: 'Scrolling single-page experience built with Next.js and Framer Motion. Scroll-triggered animations reveal content progressively.', tags: ['Next.js', 'Framer Motion'] },
+    title: 'Marketing Website', caption: 'Scrolling single-page experience built with Next.js and Framer Motion. Scroll-triggered animations reveal content progressively.', tags: ['Framer', 'UX/UI'] },
   // Avatar selection video
   { src: '/videos/uxui/avatar-selection-6a.mp4', alt: 'Avatar selection', w: 886, h: 1920, type: 'video',
-    title: 'Avatar Selection', caption: 'Personalization screen where users choose from 97 unique avatars to represent them throughout the experience.', tags: ['SwiftUI'] },
+    title: 'Avatar Selection', caption: 'Personalization screen where users choose from 97 unique avatars to represent them throughout the experience.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Key screens
   { src: '/images/rewired/screenshots/welcome.png', alt: 'Welcome', w: 1242, h: 2688, type: 'image',
-    title: 'Welcome Screen', caption: 'The rewired brain hero illustration sets the tone — warm, approachable, and grounded in neuroscience.', tags: ['SwiftUI', 'Procreate'] },
+    title: 'Welcome Screen', caption: 'The rewired brain hero illustration sets the tone — warm, approachable, and grounded in neuroscience.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/npi.png', alt: 'Assessment', w: 1242, h: 2688, type: 'image',
-    title: 'Assessment', caption: 'Neuroplasticity assessment — behavioral pattern questions that surface core limiting beliefs.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'Assessment', caption: 'Neuroplasticity assessment — behavioral pattern questions that surface core limiting beliefs.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/results.png', alt: 'Results', w: 1242, h: 2688, type: 'image',
-    title: 'Results', caption: 'AI analysis of core themes and belief patterns — generating a personalized neuroprofile.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'Results', caption: 'AI analysis of core themes and belief patterns — generating a personalized neuroprofile.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/dashboard.png', alt: 'Dashboard', w: 1242, h: 2688, type: 'image',
-    title: 'Dashboard', caption: 'Daily dashboard — today\'s session, current belief focus, streak tracking, and progress.', tags: ['SwiftUI', 'SwiftData'] },
+    title: 'Dashboard', caption: 'Daily dashboard — today\'s session, current belief focus, streak tracking, and progress.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/profile.png', alt: 'Neuroprofile', w: 1242, h: 2688, type: 'image',
-    title: 'Neuroprofile', caption: 'Your ideal self, core traits, and growth tracking — the central view of your progress.', tags: ['SwiftUI', 'SwiftData'] },
+    title: 'Neuroprofile', caption: 'Your ideal self, core traits, and growth tracking — the central view of your progress.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/lessonintro.png', alt: 'Lesson intro', w: 1242, h: 2688, type: 'image',
-    title: 'Lesson Intro', caption: 'Session introduction with progress tracking and the day\'s belief focus.', tags: ['SwiftUI'] },
+    title: 'Lesson Intro', caption: 'Session introduction with progress tracking and the day\'s belief focus.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/lesson.png', alt: 'Lesson', w: 1242, h: 2688, type: 'image',
-    title: 'Lesson', caption: 'Psychoeducation content — awareness, practice, and integration phases for each session.', tags: ['SwiftUI'] },
+    title: 'Lesson', caption: 'Psychoeducation content — awareness, practice, and integration phases for each session.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/aichattext.png', alt: 'AI Coach', w: 1242, h: 2688, type: 'image',
-    title: 'AI Coach', caption: 'The orb responds with personalized guidance grounded in CBT and neuroplasticity principles.', tags: ['SwiftUI', 'Gemini AI'] },
+    title: 'AI Coach', caption: 'The orb responds with personalized guidance grounded in CBT and neuroplasticity principles.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/notifications.png', alt: 'Notifications', w: 1242, h: 2688, type: 'image',
-    title: 'Notifications', caption: 'Session reminders and check-in preferences — customizable to support habit formation.', tags: ['SwiftUI'] },
+    title: 'Notifications', caption: 'Session reminders and check-in preferences — customizable to support habit formation.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/rewired/screenshots/screen1.png', alt: 'Onboarding', w: 1242, h: 2688, type: 'image',
-    title: 'Onboarding', caption: 'First screen of the onboarding flow — setting expectations and building trust.', tags: ['SwiftUI', 'Figma'] },
+    title: 'Onboarding', caption: 'First screen of the onboarding flow — setting expectations and building trust.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Illustrations — individual entries
   ...([
     ['brain-tree', 'Brain Tree', 'A tree growing from neural pathways — representing organic growth and neuroplasticity.'],
@@ -136,11 +136,11 @@ const media: MediaItem[] = [
     ['brain-turtle', 'Brain Turtle', 'A brain turtle — slow, steady progress in building lasting change.'],
   ] as const).map(([name, title, caption]) => ({
     src: `/images/rewired/illustrations/${name}.png`, alt: title, w: 1024, h: 1024, type: 'image' as const,
-    title, caption, tags: ['AI Generation', 'Illustration', 'Illustrator'],
+    title, caption, tags: ['Illustration', 'Illustrator'],
   })),
   // Avatars — grouped
   { src: '/images/rewired/avatars/avatar_009.png', alt: 'Avatars', w: 376, h: 435, type: 'image',
-    title: 'Avatar Library', caption: '97 unique avatar illustrations drawn in the app\'s signature purple palette. Users select one during onboarding to represent them throughout the experience.', tags: ['AI Generation', 'Procreate'],
+    title: 'Avatar Library', caption: '97 unique avatar illustrations drawn in the app\'s signature purple palette. Users select one during onboarding to represent them throughout the experience.', tags: ['Procreate'],
     groupSrcs: Array.from({ length: 96 }, (_, i) => ({
       src: `/images/rewired/avatars/avatar_${String(i + 1).padStart(3, '0')}.png`, alt: `Avatar ${i + 1}`, w: 376, h: 435,
     })),
@@ -175,8 +175,8 @@ export default function RewiredProject() {
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_0.9fr] gap-10 md:gap-12 items-start">
           <div>
             <motion.div {...fade(0.1)} className="mb-8">
-              <Link href="/projects" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
-                &larr; Projects
+              <Link href="/" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
+                &larr; Home
               </Link>
             </motion.div>
 

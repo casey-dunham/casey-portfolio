@@ -77,8 +77,8 @@ export default function ZoraProject() {
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_0.9fr] gap-10 md:gap-12 items-start">
           <div>
             <motion.div {...fade(0.1)} className="mb-8">
-              <Link href="/projects" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
-                &larr; Projects
+              <Link href="/" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
+                &larr; Home
               </Link>
             </motion.div>
 

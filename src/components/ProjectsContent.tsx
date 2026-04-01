@@ -9,7 +9,7 @@ const projects = [
     slug: 'dossi',
     title: 'Dossi',
     tagline: 'Smart Insulin Delivery',
-    tags: ['iOS', 'Health Tech', 'Product Design', 'AI/ML'],
+    tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'],
     color: '#6366F1',
     screens: [
       { src: '/images/dossi/screens/4b.png', alt: 'Dossi nutrition' },
@@ -22,7 +22,7 @@ const projects = [
     slug: 'rewired',
     title: 'Rewired',
     tagline: 'Neuroplasticity Transformation',
-    tags: ['iOS', 'SwiftUI', 'Branding', 'AI Coaching'],
+    tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'],
     color: '#8B5CF6',
     screens: [
       { src: '/images/rewired/group39.png', alt: 'Rewired screen' },

@@ -47,7 +47,7 @@ const birdPieces: ArtPiece[] = [
 const birdDetail: ArtDetail = {
   title: 'Brandywine Zoo Series',
   description: 'Charcoal and colored pencil on toned paper, 2022. Drawn for a volunteer project with the Brandywine Zoo in Delaware. Each piece in this series depicts an endangered bird species native to the state.',
-  tags: ['Fine Art', 'Graphite'],
+  tags: ['Fine Art'],
   groupPieces: birdPieces,
 };
 birdPieces.forEach((p) => { p.detail = birdDetail; });
@@ -65,18 +65,18 @@ const rows: ArtRow[] = [
     layout: 'left-tall-right-grid',
     pieces: [
       { src: '/images/art/beach-digital.jpg', alt: 'Riviera — Digital', width: 2295, height: 2994, imageStyle: { objectPosition: '52% 52%' }, detail: { title: 'Riviera', description: 'Digital, 2023. Created in Procreate. An aerial view of a crowded beach rendered in flat, graphic color — striped umbrellas and sun chairs forming a dense pattern of shape and shadow.', tags: ['Fine Art', 'Procreate'] } },
-      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards.', tags: ['Fine Art', 'Graphite'] } },
-      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Fine Art', 'Graphite'] } },
-      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Fine Art', 'Graphite'] } },
+      { src: '/images/art/delicate.png', alt: 'Delicate — Graphite', width: 3563, height: 2670, detail: { title: 'Delicate', description: 'Graphite, 2022. National Silver Medal recipient, Scholastic Art & Writing Awards.', tags: ['Fine Art'] } },
+      { src: '/images/art/portrait-study.jpg', alt: 'Portrait Study — Graphite', width: 1056, height: 1439, detail: { title: 'Portrait Study', description: 'Graphite, 2023. Drawn from a photograph found in the Library of Congress archives. A profile study focused on rendering hair texture and delicate lace detail.', tags: ['Fine Art'] } },
+      { src: '/images/art/hold-the-phone.jpeg', alt: 'Hold the Phone — Graphite', width: 4513, height: 2957, detail: { title: 'Hold the Phone', description: 'Graphite, 2023. Drawn from a Library of Congress archival photograph. A study in soft light, fabric texture, and the quiet intimacy of a child lost in thought.', tags: ['Fine Art'] } },
     ],
   },
   {
     cols: 3,
     equalHeight: true,
     pieces: [
-      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Fine Art', 'Graphite'] } },
-      { src: '/images/art/lemons-and-antlers.jpg', alt: 'Still Life with Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life with Antlers', description: 'Oil on canvas, 2023. A traditional still life pairing organic forms — shed antlers and lemons — against a richly patterned draped fabric. Focus on color temperature and reflected light within a muted palette.', tags: ['Fine Art', 'Paint'] } },
-      { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his confident brushwork and approach to rendering light on skin and fabric.', tags: ['Fine Art', 'Paint'] } },
+      { src: '/images/art/treasured.jpeg', alt: 'Treasured — Charcoal', width: 3292, height: 4907, detail: { title: 'Treasured', description: 'Charcoal, 2023. Featured in College Board\'s AP Art & Design Exhibit. This piece explores themes of memory and personal value through detailed charcoal rendering.', href: 'https://apartanddesign.collegeboard.org/2024-student04?excmpid=SM068-PR-1-LI', tags: ['Fine Art'] } },
+      { src: '/images/art/lemons-and-antlers.jpg', alt: 'Still Life with Antlers — Oil on canvas', width: 2123, height: 2503, detail: { title: 'Still Life with Antlers', description: 'Oil on canvas, 2023. A traditional still life pairing organic forms — shed antlers and lemons — against a richly patterned draped fabric. Focus on color temperature and reflected light within a muted palette.', tags: ['Fine Art'] } },
+      { src: '/images/art/sargent-study.jpg', alt: 'After Sargent — Oil on canvas', width: 1892, height: 2763, detail: { title: 'After Sargent', description: 'Oil on canvas, 2023. A master copy after John Singer Sargent, studying his confident brushwork and approach to rendering light on skin and fabric.', tags: ['Fine Art'] } },
     ],
   },
 ];

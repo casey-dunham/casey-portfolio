@@ -36,16 +36,16 @@ interface MediaItem {
 const media: MediaItem[] = [
   // Hero welcome video
   { src: '/videos/dossi/dossi-welcome-flow-1a.mp4', alt: 'Welcome flow', w: 886, h: 1920, type: 'video',
-    title: 'Welcome Flow', caption: 'First-launch onboarding sequence that introduces core features and collects user health preferences to personalize the experience.', tags: ['SwiftUI', 'Figma'] },
+    title: 'Welcome Flow', caption: 'First-launch onboarding sequence that introduces core features and collects user health preferences to personalize the experience.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Pitch slide deck
   { src: '/videos/dossi/dossi-slide-deck-recording.mp4', alt: 'Slide deck', w: 1920, h: 1080, type: 'video',
     title: 'Pitch Deck', caption: 'Presented at Georgia Tech InVenture Prize and Startup Exchange. Covers the problem, solution, and technical architecture.', tags: ['Keynote'] },
   // Pitch demo video
   { src: '/videos/dossi/dossi-11b.mp4', alt: 'Pitch demo', w: 886, h: 1920, type: 'video',
-    title: 'Pitch Demo', caption: 'Live demo shown during the pitch presentation.', tags: ['SwiftUI'] },
+    title: 'Pitch Demo', caption: 'Live demo shown during the pitch presentation.', tags: ['Keynote'] },
   // Before & after — grouped as the 4 "after" screens
   { src: '/images/dossi/screens/1b.png', alt: 'Redesign', w: 870, h: 1603, type: 'image',
-    title: 'Before & After', caption: 'Complete redesign — every screen rethought for warmth and ease of use. Data density increased while perceived complexity went down.', tags: ['Figma', 'SwiftUI'],
+    title: 'Before & After', caption: 'Complete redesign — every screen rethought for warmth and ease of use. Data density increased while perceived complexity went down.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'],
     groupSrcs: [
       { src: '/images/dossi/screens/1b.png', alt: 'Sign-in after', w: 870, h: 1603 },
       { src: '/images/dossi/screens/2b.png', alt: 'Dashboard after', w: 870, h: 1603 },
@@ -55,10 +55,10 @@ const media: MediaItem[] = [
   },
   // Landscape dashboard video
   { src: '/videos/dossi/landscape.mp4', alt: 'Dashboard', w: 1920, h: 1080, type: 'video',
-    title: 'Dashboard', caption: 'Real-time glucose monitoring with contextual factor cards showing sleep, exercise, and meal data.', tags: ['SwiftUI', 'HealthKit'] },
+    title: 'Dashboard', caption: 'Real-time glucose monitoring with contextual factor cards showing sleep, exercise, and meal data.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // AI chat video
   { src: '/videos/dossi/11a.mp4', alt: 'AI chat', w: 886, h: 1920, type: 'video',
-    title: 'AI Chat', caption: 'Natural language meal logging. Describe what you ate and Dossi estimates carbs, suggests a bolus, and logs the meal.', tags: ['Gemini AI', 'SwiftUI'] },
+    title: 'AI Chat', caption: 'Natural language meal logging. Describe what you ate and Dossi estimates carbs, suggests a bolus, and logs the meal.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Sign-up pages — grouped
   { src: '/images/dossi/screens/create-account-3.jpg', alt: 'Sign-up directions', w: 1280, h: 2778, type: 'image',
     title: 'Sign-Up Page', caption: 'Five directions exploring tone, hierarchy, and how to balance warmth with medical credibility.', tags: ['Figma'],
@@ -78,26 +78,26 @@ const media: MediaItem[] = [
   },
   // Key screens
   { src: '/images/dossi/screens/welcome.png', alt: 'Welcome', w: 1170, h: 2532, type: 'image',
-    title: 'Welcome Screen', caption: 'The first thing users see. Sets the tone with Dossi\'s purple gradient and a clear call to action.', tags: ['Figma', 'SwiftUI'] },
+    title: 'Welcome Screen', caption: 'The first thing users see. Sets the tone with Dossi\'s purple gradient and a clear call to action.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/aichat.jpg', alt: 'AI Chat', w: 1170, h: 2532, type: 'image',
-    title: 'AI Chat', caption: 'Conversational meal logging and insulin guidance powered by Gemini. No menus, just describe what you ate.', tags: ['Gemini AI', 'SwiftUI'] },
+    title: 'AI Chat', caption: 'Conversational meal logging and insulin guidance powered by Gemini. No menus, just describe what you ate.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/nutrition.png', alt: 'Nutrition', w: 1170, h: 2532, type: 'image',
-    title: 'Nutrition', caption: 'Macro breakdown and meal history. Tracks carbs, protein, fat, and calories with running daily totals.', tags: ['SwiftUI', 'HealthKit'] },
+    title: 'Nutrition', caption: 'Macro breakdown and meal history. Tracks carbs, protein, fat, and calories with running daily totals.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/insights.png', alt: 'Insights', w: 1170, h: 2532, type: 'image',
-    title: 'Insights', caption: 'Glucose score, time in range, and pattern analysis. Surfaces trends across sleep, meals, and exercise.', tags: ['SwiftUI', 'Bayesian ML'] },
+    title: 'Insights', caption: 'Glucose score, time in range, and pattern analysis. Surfaces trends across sleep, meals, and exercise.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/quickaction.png', alt: 'Quick Action', w: 1170, h: 2532, type: 'image',
-    title: 'Quick Bolus', caption: 'Fast insulin delivery with safety confirmation and biometric auth. Designed for speed when it matters.', tags: ['SwiftUI', 'Bluetooth LE'] },
+    title: 'Quick Bolus', caption: 'Fast insulin delivery with safety confirmation and biometric auth. Designed for speed when it matters.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/omnipod.png', alt: 'Omnipod', w: 1170, h: 2532, type: 'image',
-    title: 'Omnipod Management', caption: 'Pod status, remaining insulin, time since change, and direct Bluetooth controls.', tags: ['SwiftUI', 'Bluetooth LE'] },
+    title: 'Omnipod Management', caption: 'Pod status, remaining insulin, time since change, and direct Bluetooth controls.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/settings.png', alt: 'Settings', w: 1170, h: 2532, type: 'image',
-    title: 'Settings', caption: 'Therapy parameters, device connections, notification preferences, and learning system configuration.', tags: ['SwiftUI', 'SwiftData'] },
+    title: 'Settings', caption: 'Therapy parameters, device connections, notification preferences, and learning system configuration.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   { src: '/images/dossi/screens/dash.png', alt: 'Dashboard', w: 1170, h: 2532, type: 'image',
-    title: 'Dashboard', caption: 'Real-time glucose with prediction curve, active insulin, and contextual factors at a glance.', tags: ['SwiftUI', 'HealthKit'] },
+    title: 'Dashboard', caption: 'Real-time glucose with prediction curve, active insulin, and contextual factors at a glance.', tags: ['Figma', 'SwiftUI', 'Framer', 'UX/UI'] },
   // Programs & Research
   { src: '/images/dossi/startup-exchange.png', alt: 'Startup Exchange', w: 3420, h: 1897, type: 'image',
-    title: 'Startup Exchange', caption: 'Georgia Tech Startup Exchange Genesis — where Dossi was incubated alongside faculty mentorship and peer founders.', tags: ['Georgia Tech'] },
+    title: 'Startup Exchange', caption: 'Built through Georgia Tech\'s InVenture Prize and Startup Exchange. Mentored by Rosa Arriaga, Associate Professor in the School of Interactive Computing.', tags: [] },
   { src: '/images/dossi/t1d-flyer.jpg', alt: 'Research flyer', w: 5009, h: 6667, type: 'image',
-    title: 'User Research', caption: 'Flyer distributed through Georgia Tech Disability Services to survey T1D students about their insulin management.', tags: ['Research'] },
+    title: 'User Research', caption: 'Flyer distributed through Georgia Tech Disability Services to survey T1D students about their insulin management.', tags: ['InDesign', 'Illustrator'] },
 ];
 
 function idx(src: string) {
@@ -344,8 +344,8 @@ export default function DossiProject() {
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_0.9fr] gap-10 md:gap-12 items-start">
           <div>
             <motion.div {...fade(0.1)} className="mb-8">
-              <Link href="/projects" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
-                &larr; Projects
+              <Link href="/" className="font-body text-xs text-[#555] uppercase tracking-[0.2em] hover:text-fg transition-colors">
+                &larr; Back
               </Link>
             </motion.div>
 
@@ -679,7 +679,7 @@ export default function DossiProject() {
                 <h3 className="font-display text-[1rem] font-semibold text-[#ccc] tracking-[-0.01em]">Programs</h3>
               </div>
               <p className="font-body text-[0.82rem] text-[#777] leading-[1.7] mb-5">
-                Built through Georgia Tech&rsquo;s <span className="text-fg font-medium">InVenture Prize</span> and <span className="text-fg font-medium">Startup Exchange</span>. Mentored by Rosa Arriaga, Senior Research Scientist in Interactive Computing.
+                Built through Georgia Tech&rsquo;s <span className="text-fg font-medium">InVenture Prize</span> and <span className="text-fg font-medium">Startup Exchange</span>. Mentored by Rosa Arriaga, Associate Professor in the School of Interactive Computing.
               </p>
               <Img src="/images/dossi/startup-exchange.png" alt="Startup Exchange" w={3420} h={1897} onClick={open} />
             </motion.div>
