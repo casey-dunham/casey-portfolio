@@ -247,7 +247,10 @@ export default function ZoraProject() {
           </div>
           <div className="md:self-end flex flex-col items-start md:items-end gap-3 font-body text-sm text-fg-dim">
             <ThemeToggle />
-            <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
+            <div className="flex items-center gap-4">
+              <span>&copy; {new Date().getFullYear()} Casey Dunham</span>
+              <a href="/privacy" className="hover:text-fg-muted transition-colors">Privacy Policy</a>
+            </div>
           </div>
         </div>
       </footer>

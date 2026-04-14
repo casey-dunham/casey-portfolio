@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: 'Privacy policy for caseydunham.design.',
 };
 
-const EFFECTIVE_DATE = 'April 14, 2025';
+const EFFECTIVE_DATE = 'April 14, 2026';
 const SITE_URL = 'https://www.caseydunham.design';
 const CONTACT_EMAIL = 'caseyedunham@gmail.com';
 
@@ -125,7 +125,7 @@ export default function PrivacyPolicy() {
           <p>
             The Site itself does not set any cookies. Your browser may store a theme
             preference (&ldquo;light&rdquo; or &ldquo;dark&rdquo;) in{' '}
-            <code className="text-[0.85em] bg-surface px-1.5 py-0.5 rounded">
+            <code className="text-[0.85em] bg-bg-raised px-1.5 py-0.5 rounded">
               localStorage
             </code>
             ; this data never leaves your device and is not transmitted to any server.
